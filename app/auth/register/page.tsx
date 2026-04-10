@@ -48,10 +48,16 @@ export default function RegisterPage() {
 
       if (!response.ok) {
         setError(data.error || "Failed to send OTP");
+        setLoading(false);
         return;
       }
 
-      setSuccess("OTP sent to your email!");
+      // In development mode, show the OTP if email is not configured
+      if (data.otp && !data.emailConfigured) {
+        setSuccess(`OTP generated: ${data.otp} (Development mode - email not configured)`);
+      } else {
+        setSuccess("OTP sent to your email!");
+      }
       setStep("otp");
     } catch (err: any) {
       setError(err.message || "An error occurred");
@@ -175,14 +181,25 @@ export default function RegisterPage() {
                   I am a...
                 </label>
                 <Select value={userType} onValueChange={(val: any) => setUserType(val)}>
-                  <SelectTrigger className="bg-slate-700/50 border-slate-600 text-white">
+                  <SelectTrigger className="bg-slate-700/50 border-slate-600 text-white h-10">
                     <SelectValue placeholder="Select your role" />
                   </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="client">Client (Hiring)</SelectItem>
-                    <SelectItem value="freelancer">Freelancer (Looking for Work)</SelectItem>
+                  <SelectContent className="bg-slate-800 border-slate-600 text-white">
+                    <SelectItem value="client" className="text-white focus:bg-slate-700 focus:text-white">
+                      <div className="flex flex-col">
+                        <span className="font-medium">Client</span>
+                        <span className="text-xs text-slate-400">I want to hire talent</span>
+                      </div>
+                    </SelectItem>
+                    <SelectItem value="freelancer" className="text-white focus:bg-slate-700 focus:text-white">
+                      <div className="flex flex-col">
+                        <span className="font-medium">Freelancer</span>
+                        <span className="text-xs text-slate-400">I want to find work</span>
+                      </div>
+                    </SelectItem>
                   </SelectContent>
                 </Select>
+                <p className="text-xs text-slate-400 mt-2">Choose your role to get started</p>
               </div>
 
               <Button

@@ -26,13 +26,13 @@ export function Navbar() {
         {/* Nav Links - Hidden on mobile */}
         <div className="hidden items-center gap-8 md:flex">
           {NAV_LINKS.map((link) => (
-            <a
+            <Link
               key={link.label}
               href={link.href}
               className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
             >
               {link.label}
-            </a>
+            </Link>
           ))}
         </div>
 
@@ -40,24 +40,19 @@ export function Navbar() {
         <div className="flex items-center gap-2 md:gap-3">
           {/* Platform Links - Hidden on mobile */}
           <div className="hidden gap-3 lg:flex">
-            <Link href="/jobs">
+            <Link href="/auth/register">
               <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
-                Browse Jobs
+                Get Started
               </Button>
             </Link>
-            <Link href="/earnings">
+            <Link href="/auth/login">
               <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
-                Earnings
-              </Button>
-            </Link>
-            <Link href="/freelancer/dashboard">
-              <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
-                Dashboard
+                Login
               </Button>
             </Link>
           </div>
 
-          <Link href="/jobs/post">
+          <Link href="/auth/register">
             <Button
               variant="outline"
               size="sm"
@@ -66,7 +61,7 @@ export function Navbar() {
               Post a Job
             </Button>
           </Link>
-          <Link href="/jobs">
+          <Link href="/auth/register">
             <Button
               size="sm"
               className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white"

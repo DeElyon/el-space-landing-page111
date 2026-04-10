@@ -15,9 +15,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (!VALID_TYPES.includes(type)) {
+    if (!type || !VALID_TYPES.includes(type)) {
       return NextResponse.json(
-        { error: 'Invalid request type' },
+        { error: 'Invalid request type. Must be one of: ' + VALID_TYPES.join(', ') },
         { status: 400 }
       );
     }
@@ -26,15 +26,32 @@ export async function POST(request: NextRequest) {
     const otp = generateOTP(6);
     storeOTP(email, otp, 900); // 15 minutes
 
-    // Send email
-    await sendOTPEmail(email, otp);
+    // Try to send email, but don't fail if email is not configured
+    try {
+      await sendOTPEmail(email, otp);
+      console.log(`[OTP] Sent to ${email} for ${type}`);
+    } catch (emailError) {
+      console.warn('[OTP] Email sending failed, but OTP is stored:', emailError);
+      // In development, return the OTP in the response for testing
+      if (process.env.NODE_ENV === 'development') {
+        return NextResponse.json(
+          { 
+            success: true, 
+            message: `OTP for ${type} generated (email not configured)`,
+            otp: otp, // Only in development!
+            emailConfigured: false
+          },
+          { status: 200 }
+        );
+      }
+    }
 
     return NextResponse.json(
       { success: true, message: `OTP for ${type} sent to your email` },
       { status: 200 }
     );
   } catch (error) {
-    console.error('Error in send-otp:', error);
+    console.error('[OTP] Error in send-otp:', error);
     return NextResponse.json(
       { error: 'Failed to send OTP. Please try again.' },
       { status: 500 }

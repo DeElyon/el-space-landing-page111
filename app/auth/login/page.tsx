@@ -33,10 +33,16 @@ export default function LoginPage() {
 
       if (!response.ok) {
         setError(data.error || "Failed to send OTP");
+        setLoading(false);
         return;
       }
 
-      setSuccess("OTP sent to your email!");
+      // In development mode, show the OTP if email is not configured
+      if (data.otp && !data.emailConfigured) {
+        setSuccess(`OTP generated: ${data.otp} (Development mode - email not configured)`);
+      } else {
+        setSuccess("OTP sent to your email!");
+      }
       setStep("otp");
     } catch (err: any) {
       setError(err.message || "An error occurred");
