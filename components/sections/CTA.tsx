@@ -1,19 +1,10 @@
-'use client'
-
-import { motion } from 'framer-motion'
 import { Button } from '@/components/ui/button'
 
 export function CTA() {
   return (
     <section className="py-20 md:py-32 bg-gradient-to-r from-primary to-accent/20">
       <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-        <motion.div
-          className="text-center space-y-8"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-        >
+        <div className="text-center space-y-8">
           <h2 className="text-4xl md:text-5xl font-bold text-white text-balance">
             Ready to Transform Your Freelance Career?
           </h2>
@@ -41,7 +32,7 @@ export function CTA() {
           <p className="text-sm text-white/70 pt-4">
             No credit card required • Free to post • Start earning today
           </p>
-        </motion.div>
+        </div>
       </div>
     </section>
   )

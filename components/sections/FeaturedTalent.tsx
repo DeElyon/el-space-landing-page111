@@ -1,6 +1,3 @@
-'use client'
-
-import { motion } from 'framer-motion'
 import { FEATURED_FREELANCERS } from '@/lib/constants'
 import { SectionHeader } from '@/components/ui/SectionHeader'
 import { Button } from '@/components/ui/button'
@@ -17,14 +14,9 @@ export function FeaturedTalent() {
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
           {FEATURED_FREELANCERS.map((freelancer, idx) => (
-            <motion.div
+            <div
               key={freelancer.id}
               className="rounded-lg border border-border bg-card p-6 transition-all hover:border-accent hover:shadow-lg"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              whileHover={{ y: -8 }}
-              transition={{ duration: 0.5, delay: idx * 0.1 }}
-              viewport={{ once: true }}
             >
               {/* Avatar Placeholder */}
               <div className="mb-4 h-24 w-24 rounded-full bg-gradient-to-br from-accent to-primary/80 flex items-center justify-center text-2xl font-bold text-white">
@@ -70,7 +62,7 @@ export function FeaturedTalent() {
               <Button variant="outline" size="sm" className="w-full">
                 View Profile →
               </Button>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>

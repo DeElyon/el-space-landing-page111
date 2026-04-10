@@ -1,4 +1,3 @@
-import { motion } from 'framer-motion'
 import { FEATURES } from '@/lib/constants'
 import { SectionHeader } from '@/components/ui/SectionHeader'
 import { FeatureCard } from '@/components/ui/FeatureCard'
@@ -14,19 +13,13 @@ export function Features() {
         />
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {FEATURES.map((feature, idx) => (
-            <motion.div
-              key={idx}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: idx * 0.1 }}
-              viewport={{ once: true }}
-            >
+            <div key={idx}>
               <FeatureCard
                 icon={feature.icon}
                 title={feature.title}
                 description={feature.description}
               />
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>
