@@ -48,8 +48,8 @@ const getSupabaseClient = () => {
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
   // Check if we have valid environment variables
-  if (!supabaseUrl || !supabaseAnonKey || 
-      supabaseUrl.includes('placeholder') || 
+  if (!supabaseUrl || !supabaseAnonKey ||
+      supabaseUrl.includes('placeholder') ||
       supabaseAnonKey.includes('placeholder')) {
     console.warn('Warning: Supabase environment variables are not properly configured. Using mock client.');
     isMockClient = true;
