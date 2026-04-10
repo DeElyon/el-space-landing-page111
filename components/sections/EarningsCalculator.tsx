@@ -95,7 +95,7 @@ export function EarningsCalculator() {
                     ${earnings.toFixed(2)}
                   </p>
                   <p className="mt-3 text-sm font-semibold text-foreground">
-                    That's only {((fee / projectValue) * 100).toFixed(1)}% above project cost
+                    That&apos;s only {((fee / projectValue) * 100).toFixed(1)}% above project cost
                   </p>
                 </div>
               </>
