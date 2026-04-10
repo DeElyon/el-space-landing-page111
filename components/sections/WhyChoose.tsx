@@ -17,7 +17,7 @@ export function WhyClientsChoose() {
               key={idx}
               title={benefit.title}
               description={benefit.description}
-              icon="✓"
+              icon={benefit.icon}
             />
           ))}
         </div>
@@ -41,7 +41,7 @@ export function WhyFreelancersChoose() {
               key={idx}
               title={benefit.title}
               description={benefit.description}
-              icon="⭐"
+              icon={benefit.icon}
             />
           ))}
         </div>

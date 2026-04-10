@@ -444,3 +444,294 @@ export const PROJECT_CATEGORIES = [
   "Business Consulting",
   "Other",
 ];
+
+// Navigation links
+export const NAV_LINKS = [
+  { label: "How It Works", href: "#how-it-works" },
+  { label: "Features", href: "#features" },
+  { label: "Pricing", href: "#pricing" },
+  { label: "FAQ", href: "#faq" },
+];
+
+// Hero content for clients
+export const HERO_CLIENT = {
+  badge: "For Clients",
+  headline: "Find Elite Freelancers for Your Projects",
+  subheadline: "Connect with verified professionals. Secure escrow protection. Milestone-based payments.",
+  fee: "Service fee: 3-5% or flat rate",
+  cta: "Post a Project",
+};
+
+// Hero content for freelancers
+export const HERO_FREELANCER = {
+  badge: "For Freelancers",
+  headline: "Unlock Your Earning Potential",
+  subheadline: "Work with top clients. Transparent payments. Full control over your projects.",
+  fee: "Commission: 5-10% (decreases with earnings)",
+  cta: "Start Earning",
+};
+
+// How it works for clients
+export const HOW_IT_WORKS_CLIENTS = [
+  {
+    step: 1,
+    title: "Post Your Project",
+    description: "Describe your project needs and timeline",
+    icon: "📝",
+  },
+  {
+    step: 2,
+    title: "Review Proposals",
+    description: "Get matched with qualified freelancers",
+    icon: "👥",
+  },
+  {
+    step: 3,
+    title: "Work & Collaborate",
+    description: "Use milestone tracking and messaging",
+    icon: "💼",
+  },
+  {
+    step: 4,
+    title: "Release Payment",
+    description: "Pay securely after work is completed",
+    icon: "✅",
+  },
+];
+
+// How it works for freelancers
+export const HOW_IT_WORKS_FREELANCERS = [
+  {
+    step: 1,
+    title: "Build Your Profile",
+    description: "Showcase your skills and portfolio",
+    icon: "🎯",
+  },
+  {
+    step: 2,
+    title: "Find Projects",
+    description: "Browse or get matched with projects",
+    icon: "🔍",
+  },
+  {
+    step: 3,
+    title: "Submit & Deliver",
+    description: "Complete work and submit for approval",
+    icon: "💻",
+  },
+  {
+    step: 4,
+    title: "Get Paid",
+    description: "Receive secure payments to your wallet",
+    icon: "💰",
+  },
+];
+
+// Features
+export const FEATURES = [
+  {
+    title: "Secure Escrow",
+    description: "All payments are protected in escrow. Release funds only when you're satisfied.",
+    icon: "🔒",
+  },
+  {
+    title: "Milestone Tracking",
+    description: "Break projects into milestones for better progress tracking and payment security.",
+    icon: "📊",
+  },
+  {
+    title: "Verified Talent",
+    description: "Work with professionals who have passed our verification and skill assessments.",
+    icon: "✓",
+  },
+  {
+    title: "Real-Time Messaging",
+    description: "Communicate instantly with your team. Keep all conversations in one place.",
+    icon: "💬",
+  },
+  {
+    title: "Ratings & Reviews",
+    description: "Transparent feedback system builds trust and helps you make informed decisions.",
+    icon: "⭐",
+  },
+  {
+    title: "Flexible Payment",
+    description: "Multiple payment methods and currencies supported globally.",
+    icon: "💳",
+  },
+];
+
+// Pricing tables
+export const PRICING_CLIENT_TABLE = [
+  { 
+    size: "Micro",
+    range: "Under $500",
+    fee: "Free",
+    example: "Small bug fixes, minimal changes"
+  },
+  { 
+    size: "Small",
+    range: "$500 - $2,500",
+    fee: "$25-50",
+    example: "Website redesign, small app"
+  },
+  { 
+    size: "Medium",
+    range: "$2,500 - $10,000",
+    fee: "$100-500",
+    example: "Full build, custom feature"
+  },
+  { 
+    size: "Large",
+    range: "$10,000+",
+    fee: "Flat rate negotiable",
+    example: "Enterprise solutions, scaling"
+  },
+];
+
+export const PRICING_FREELANCER_TABLE = [
+  { 
+    size: "Starter",
+    range: "0-$1,000 earnings/month",
+    fee: "10%",
+    example: "Building your reputation"
+  },
+  { 
+    size: "Professional",
+    range: "$1,000 - $5,000/month",
+    fee: "8%",
+    example: "Established professionals"
+  },
+  { 
+    size: "Expert",
+    range: "$5,000+/month",
+    fee: "5%",
+    example: "Top-rated freelancers"
+  },
+];
+
+// Footer sections
+export const FOOTER_SECTIONS = {
+  about: {
+    subtitle: "Premium Freelancing Platform",
+    description: "Connect exceptional talent with visionary companies. Secure. Transparent. Fair.",
+  },
+  forClients: {
+    title: "For Clients",
+    links: [
+      { label: "How It Works", href: "/how-it-works" },
+      { label: "Pricing", href: "/pricing" },
+      { label: "Browse Freelancers", href: "/freelancers" },
+      { label: "Post a Project", href: "/jobs/post" },
+    ],
+  },
+  forFreelancers: {
+    title: "For Freelancers",
+    links: [
+      { label: "How It Works", href: "/how-it-works" },
+      { label: "Browse Projects", href: "/jobs" },
+      { label: "My Dashboard", href: "/freelancer/dashboard" },
+      { label: "Earnings", href: "/earnings" },
+    ],
+  },
+  ecosystem: {
+    title: "Ecosystem",
+    links: [
+      { label: "EL CODERS", href: "https://elcoders.com" },
+      { label: "EL SPACE", href: "#" },
+      { label: "ELITES", href: "https://elites.com" },
+      { label: "ELACCESS", href: "https://elaccess.com" },
+    ],
+  },
+  legal: {
+    title: "Legal",
+    links: [
+      { label: "Privacy Policy", href: "/privacy" },
+      { label: "Terms of Service", href: "/terms" },
+      { label: "Cookie Policy", href: "/cookies" },
+      { label: "Contact", href: "/contact" },
+    ],
+  },
+};
+
+// Featured freelancers
+export const FEATURED_FREELANCERS = [
+  {
+    id: 1,
+    name: "Sarah Johnson",
+    title: "Full Stack Developer",
+    hourlyRate: "$85/hr",
+    availability: "Available now",
+    skills: ["React", "Node.js", "PostgreSQL"],
+    badges: ["⭐ 4.9 rating (127 reviews)", "Verified Expert", "Top Performer"],
+  },
+  {
+    id: 2,
+    name: "Ahmed Hassan",
+    title: "UI/UX Designer",
+    hourlyRate: "$65/hr",
+    availability: "Available now",
+    skills: ["Figma", "Web Design", "Prototyping"],
+    badges: ["⭐ 4.8 rating (89 reviews)", "Verified Expert", "Client Favorite"],
+  },
+  {
+    id: 3,
+    name: "Maria Garcia",
+    title: "Python Developer",
+    hourlyRate: "$75/hr",
+    availability: "Available now",
+    skills: ["Python", "Django", "Data Science"],
+    badges: ["⭐ 4.9 rating (156 reviews)", "Verified Expert", "Top Performer"],
+  },
+  {
+    id: 4,
+    name: "James Wilson",
+    title: "Mobile Developer",
+    hourlyRate: "$80/hr",
+    availability: "Available now",
+    skills: ["React Native", "Swift", "Firebase"],
+    badges: ["⭐ 4.7 rating (94 reviews)", "Verified Professional", "Quick Responder"],
+  },
+];
+
+// Testimonials
+export const TESTIMONIALS = [
+  {
+    text: "EL SPACE revolutionized how we hire. Finding quality developers is now effortless.",
+    author: "John Doe",
+    role: "CEO, TechStartup",
+    image: "/testimonial-1.jpg",
+  },
+  {
+    text: "As a freelancer, I've tripled my income since joining. The platform is reliable and secure.",
+    author: "Emily Chen",
+    role: "Freelance Developer",
+    image: "/testimonial-2.jpg",
+  },
+  {
+    text: "The escrow system gave us peace of mind. We've hired 15+ developers without issues.",
+    author: "David Miller",
+    role: "CTO, Digital Agency",
+    image: "/testimonial-3.jpg",
+  },
+];
+
+// Why clients choose us
+export const WHY_CLIENTS_CHOOSE = [
+  { icon: "✔️", title: "Vetted Professionals", description: "All freelancers pass our verification" },
+  { icon: "🛡️", title: "Secure Payments", description: "Escrow protection for every project" },
+  { icon: "⏱️", title: "On-Time Delivery", description: "Milestone tracking ensures accountability" },
+  { icon: "💬", title: "24/7 Support", description: "We're here when you need us" },
+  { icon: "🌍", title: "Global Talent Pool", description: "Access professionals worldwide" },
+  { icon: "📈", title: "Scalable Teams", description: "Grow your capacity as needed" },
+];
+
+// Why freelancers choose us
+export const WHY_FREELANCERS_CHOOSE = [
+  { icon: "💰", title: "Fair Rates", description: "Keep more of what you earn" },
+  { icon: "🎯", title: "Quality Projects", description: "Work with vetted clients" },
+  { icon: "🔒", title: "Secure Income", description: "Guaranteed payment for completed work" },
+  { icon: "📊", title: "Grow Your Career", description: "Build reputation with verified reviews" },
+  { icon: "⚡", title: "Flexible Schedule", description: "Work on your terms" },
+  { icon: "🤝", title: "Community", description: "Connect with other professionals" },
+];

@@ -24,8 +24,8 @@ const config: Config = {
         'accent-foreground': '#1E1B4B',
         destructive: '#EF4444',
         'destructive-foreground': '#FFFFFF',
-        border: '#E5E7EB',
-        input: '#E5E7EB',
+        border: 'hsl(var(--border) / <alpha-value>)',
+        input: 'hsl(var(--input) / <alpha-value>)',
         ring: '#1E1B4B',
       },
       fontFamily: {
