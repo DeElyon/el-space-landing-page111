@@ -1,102 +1,35 @@
 @import 'tailwindcss';
 
-:root {
-  /* EL SPACE Brand Colors */
-  --primary: #1E1B4B;
-  --primary-light: #3F3A6B;
-  --accent-cyan: #06B6D4;
-  --accent-amber: #F59E0B;
-  
-  /* Light Mode */
-  --background: #FFFFFF;
-  --foreground: #1F2937;
-  --card: #FFFFFF;
-  --card-foreground: #1F2937;
-  --popover: #FFFFFF;
-  --popover-foreground: #1F2937;
-  --primary-foreground: #FFFFFF;
-  --secondary: #F3F4F6;
-  --secondary-foreground: #1F2937;
-  --muted: #F3F4F6;
-  --muted-foreground: #6B7280;
-  --accent: #06B6D4;
-  --accent-foreground: #1E1B4B;
-  --destructive: #EF4444;
-  --destructive-foreground: #FFFFFF;
-  --border: #E5E7EB;
-  --input: #E5E7EB;
-  --ring: #1E1B4B;
-  --chart-1: #1E1B4B;
-  --chart-2: #06B6D4;
-  --chart-3: #F59E0B;
-  --chart-4: #10B981;
-  --chart-5: #8B5CF6;
-  --radius: 0.625rem;
-  --sidebar: #FFFFFF;
-  --sidebar-foreground: #1F2937;
-  --sidebar-primary: #1E1B4B;
-  --sidebar-primary-foreground: #FFFFFF;
-  --sidebar-accent: #06B6D4;
-  --sidebar-accent-foreground: #1E1B4B;
-  --sidebar-border: #E5E7EB;
-  --sidebar-ring: #1E1B4B;
-}
-
-.dark {
-  --background: #0F172A;
-  --foreground: #F1F5F9;
-  --card: #1E293B;
-  --card-foreground: #F1F5F9;
-  --popover: #1E293B;
-  --popover-foreground: #F1F5F9;
-  --primary: #06B6D4;
-  --primary-foreground: #0F172A;
-  --secondary: #334155;
-  --secondary-foreground: #F1F5F9;
-  --muted: #334155;
-  --muted-foreground: #94A3B8;
-  --accent: #06B6D4;
-  --accent-foreground: #0F172A;
-  --destructive: #EF4444;
-  --destructive-foreground: #0F172A;
-  --border: #334155;
-  --input: #334155;
-  --ring: #06B6D4;
-  --chart-1: #06B6D4;
-  --chart-2: #F59E0B;
-  --chart-3: #1E1B4B;
-  --chart-4: #10B981;
-  --chart-5: #8B5CF6;
-  --sidebar: #1E293B;
-  --sidebar-foreground: #F1F5F9;
-  --sidebar-primary: #06B6D4;
-  --sidebar-primary-foreground: #0F172A;
-  --sidebar-accent: #F59E0B;
-  --sidebar-accent-foreground: #0F172A;
-  --sidebar-border: #334155;
-  --sidebar-ring: #06B6D4;
-}
-
-@theme inline {
-  --font-sans: 'Geist', 'Geist Fallback';
-  --font-mono: 'Geist Mono', 'Geist Mono Fallback';
+@theme {
+  --font-sans: 'Inter', 'Geist', 'Geist Fallback', sans-serif;
+  --font-mono: 'Geist Mono', 'Geist Mono Fallback', monospace;
 }
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    border-color: #E5E7EB;
+    outline-color: #1E1B4B;
   }
+  
   html {
     scroll-behavior: smooth;
   }
+  
   body {
-    @apply bg-background text-foreground;
+    background-color: #FFFFFF;
+    color: #1F2937;
+    font-family: 'Inter', 'Geist', 'Geist Fallback', sans-serif;
   }
+  
   h1, h2, h3, h4, h5, h6 {
-    @apply font-sans font-bold tracking-tight;
+    font-weight: 700;
+    letter-spacing: -0.02em;
   }
+  
   a {
-    @apply transition-colors;
+    transition-property: color;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
   }
 }
 
