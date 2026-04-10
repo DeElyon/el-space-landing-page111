@@ -107,6 +107,9 @@
   --color-chart-3: var(--chart-3);
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
+  --color-indigo-dark: var(--primary);
+  --color-cyan-accent: var(--accent-cyan);
+  --color-amber-accent: var(--accent-amber);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -141,7 +144,7 @@
 
 @layer utilities {
   .gradient-accent {
-    @apply bg-gradient-to-r from-indigo-dark via-cyan-accent to-amber-accent;
+    background: linear-gradient(to right, var(--primary), var(--accent-cyan), var(--accent-amber));
   }
   
   .text-balance {

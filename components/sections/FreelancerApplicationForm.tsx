@@ -178,7 +178,7 @@ export function FreelancerApplicationForm() {
         <div className="border-t border-border pt-6">
           <Button
             type="submit"
-            className="w-full bg-cyan-accent text-white hover:bg-cyan-accent/90"
+            className="w-full bg-accent text-white hover:bg-accent/90"
           >
             Apply to Join EL SPACE
           </Button>

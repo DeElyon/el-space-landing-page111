@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 
 export function CTA() {
   return (
-    <section className="py-20 md:py-32 bg-gradient-to-r from-indigo-dark to-cyan-accent/20">
+    <section className="py-20 md:py-32 bg-gradient-to-r from-primary to-accent/20">
       <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
         <motion.div
           className="text-center space-y-8"
@@ -25,7 +25,7 @@ export function CTA() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
             <Button
               size="lg"
-              className="bg-white text-indigo-dark hover:bg-white/90 font-semibold"
+              className="bg-white text-primary hover:bg-white/90 font-semibold"
             >
               Post a Job Today
             </Button>

@@ -50,7 +50,7 @@ export function Pricing() {
                         </div>
                       </td>
                       <td className="px-4 py-4">
-                        <p className="font-bold text-cyan-accent">{row.fee}</p>
+                        <p className="font-bold text-accent">{row.fee}</p>
                       </td>
                       <td className="px-4 py-4 text-muted-foreground">
                         {row.example}
@@ -62,10 +62,10 @@ export function Pricing() {
             </div>
 
             {/* Comparison Callout */}
-            <div className="rounded-lg border border-cyan-accent/30 bg-cyan-accent/5 p-6">
+            <div className="rounded-lg border border-accent/30 bg-accent/5 p-6">
               <p className="text-center font-semibold text-foreground">
                 Upwork takes 20%. Fiverr takes 20%.{' '}
-                <span className="text-cyan-accent">EL SPACE takes 3-5%</span> or a
+                <span className="text-accent">EL SPACE takes 3-5%</span> or a
                 simple flat fee. You do the math.
               </p>
             </div>
@@ -97,7 +97,7 @@ export function Pricing() {
                         </div>
                       </td>
                       <td className="px-4 py-4">
-                        <p className="font-bold text-amber-accent">{row.fee}</p>
+                        <p className="font-bold text-amber-400">{row.fee}</p>
                       </td>
                       <td className="px-4 py-4 text-muted-foreground">
                         {row.example}
@@ -109,10 +109,10 @@ export function Pricing() {
             </div>
 
             {/* Comparison Callout */}
-            <div className="rounded-lg border border-amber-accent/30 bg-amber-accent/5 p-6">
+            <div className="rounded-lg border border-amber-400/30 bg-amber-400/5 p-6">
               <p className="text-center font-semibold text-foreground">
                 Keep up to{' '}
-                <span className="text-amber-accent">97% of your earnings</span>. Get
+                <span className="text-amber-400">97% of your earnings</span>. Get
                 paid today, not in 30 days.
               </p>
             </div>

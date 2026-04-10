@@ -26,7 +26,7 @@ export function EarningsCalculator() {
   const earnings = userType === 'freelancer' ? projectValue - fee : projectValue + fee
 
   return (
-    <section className="py-16 md:py-24 lg:py-32 bg-gradient-to-br from-indigo-dark/5 to-cyan-accent/5">
+    <section className="py-16 md:py-24 lg:py-32 bg-gradient-to-br from-primary/5 to-accent/5">
       <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
         <SectionHeader
           heading="How Much Will You Make (or Pay)?"
@@ -45,7 +45,7 @@ export function EarningsCalculator() {
           {/* Slider */}
           <div className="mb-8">
             <label className="mb-4 block text-sm font-semibold text-foreground">
-              Project Value: <span className="text-cyan-accent">${projectValue.toLocaleString()}</span>
+              Project Value: <span className="text-accent">${projectValue.toLocaleString()}</span>
             </label>
             <Slider
               value={[projectValue]}
@@ -65,9 +65,9 @@ export function EarningsCalculator() {
           <div className="space-y-6">
             {userType === 'freelancer' ? (
               <>
-                <div className="rounded-lg bg-amber-accent/10 p-6">
+                <div className="rounded-lg bg-amber-400/10 p-6">
                   <p className="mb-2 text-sm text-muted-foreground">EL SPACE Fee</p>
-                  <p className="text-3xl font-bold text-amber-accent">
+                  <p className="text-3xl font-bold text-amber-400">
                     ${fee.toFixed(2)}
                   </p>
                 </div>
@@ -83,15 +83,15 @@ export function EarningsCalculator() {
               </>
             ) : (
               <>
-                <div className="rounded-lg bg-amber-accent/10 p-6">
+                <div className="rounded-lg bg-amber-400/10 p-6">
                   <p className="mb-2 text-sm text-muted-foreground">EL SPACE Fee</p>
-                  <p className="text-3xl font-bold text-amber-accent">
+                  <p className="text-3xl font-bold text-amber-400">
                     ${fee.toFixed(2)}
                   </p>
                 </div>
-                <div className="rounded-lg border border-cyan-accent/30 bg-cyan-accent/5 p-6">
+                <div className="rounded-lg border border-accent/30 bg-accent/5 p-6">
                   <p className="mb-2 text-sm text-muted-foreground">You Pay</p>
-                  <p className="text-4xl font-bold text-cyan-accent">
+                  <p className="text-4xl font-bold text-accent">
                     ${earnings.toFixed(2)}
                   </p>
                   <p className="mt-3 text-sm font-semibold text-foreground">
@@ -116,9 +116,9 @@ export function EarningsCalculator() {
                 <span className="font-semibold text-foreground">Fiverr</span>
                 <span className="text-lg font-bold text-foreground">20%</span>
               </div>
-              <div className="flex items-center justify-between rounded-lg border border-cyan-accent bg-cyan-accent/5 p-3">
+              <div className="flex items-center justify-between rounded-lg border border-accent bg-accent/5 p-3">
                 <span className="font-semibold text-foreground">EL SPACE</span>
-                <span className="text-lg font-bold text-cyan-accent">3-5%</span>
+                <span className="text-lg font-bold text-accent">3-5%</span>
               </div>
             </div>
           </div>

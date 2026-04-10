@@ -9,11 +9,11 @@ interface StepCardProps {
 
 export function StepCard({ icon, title, description, step }: StepCardProps) {
   return (
-    <div className="flex flex-col items-start gap-4 rounded-lg border border-border bg-card p-6 transition-all hover:border-cyan-accent hover:shadow-lg">
+    <div className="flex flex-col items-start gap-4 rounded-lg border border-border bg-card p-6 transition-all hover:border-accent hover:shadow-lg">
       <div className="text-4xl">{icon}</div>
       <div>
         {step && (
-          <p className="mb-2 text-sm font-semibold text-cyan-accent">
+          <p className="mb-2 text-sm font-semibold text-accent">
             Step {step}
           </p>
         )}

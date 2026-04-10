@@ -11,7 +11,7 @@ export function Navbar() {
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
           <div className="text-2xl font-bold">
-            <span className="text-cyan-accent">EL</span>
+            <span className="text-accent">EL</span>
             <span className="text-foreground"> SPACE</span>
           </div>
         </Link>
@@ -34,13 +34,13 @@ export function Navbar() {
           <Button
             variant="outline"
             size="sm"
-            className="hidden border-cyan-accent text-cyan-accent hover:bg-cyan-accent/10 sm:flex"
+            className="hidden border-accent text-accent hover:bg-accent/10 sm:flex"
           >
             Apply as Freelancer
           </Button>
           <Button
             size="sm"
-            className="bg-amber-accent text-white hover:bg-amber-accent/90"
+            className="bg-amber-400 text-white hover:bg-amber-400/90"
           >
             Post a Job
           </Button>

@@ -16,7 +16,7 @@ export function SectionHeader({
   return (
     <div className={`mb-12 ${centered ? 'text-center' : ''}`}>
       {subheading && (
-        <p className="mb-2 text-sm font-semibold text-cyan-accent uppercase tracking-wide">
+        <p className="mb-2 text-sm font-semibold text-accent uppercase tracking-wide">
           {subheading}
         </p>
       )}

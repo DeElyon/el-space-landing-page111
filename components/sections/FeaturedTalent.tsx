@@ -19,7 +19,7 @@ export function FeaturedTalent() {
           {FEATURED_FREELANCERS.map((freelancer, idx) => (
             <motion.div
               key={freelancer.id}
-              className="rounded-lg border border-border bg-card p-6 transition-all hover:border-cyan-accent hover:shadow-lg"
+              className="rounded-lg border border-border bg-card p-6 transition-all hover:border-accent hover:shadow-lg"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               whileHover={{ y: -8 }}
@@ -27,7 +27,7 @@ export function FeaturedTalent() {
               viewport={{ once: true }}
             >
               {/* Avatar Placeholder */}
-              <div className="mb-4 h-24 w-24 rounded-full bg-gradient-to-br from-cyan-accent to-indigo-dark/80 flex items-center justify-center text-2xl font-bold text-white">
+              <div className="mb-4 h-24 w-24 rounded-full bg-gradient-to-br from-accent to-primary/80 flex items-center justify-center text-2xl font-bold text-white">
                 {freelancer.name.charAt(0)}
               </div>
 
@@ -38,7 +38,7 @@ export function FeaturedTalent() {
               {/* Badges */}
               <div className="mb-3 space-y-1">
                 {freelancer.badges.map((badge, idx) => (
-                  <p key={idx} className="text-xs text-cyan-accent font-medium">
+                  <p key={idx} className="text-xs text-accent font-medium">
                     {badge}
                   </p>
                 ))}
@@ -58,7 +58,7 @@ export function FeaturedTalent() {
 
               {/* Rate & Availability */}
               <div className="mb-4 border-t border-border pt-4">
-                <p className="mb-2 text-sm font-semibold text-amber-accent">
+                <p className="mb-2 text-sm font-semibold text-amber-400">
                   {freelancer.hourlyRate}
                 </p>
                 <p className="text-xs text-muted-foreground">

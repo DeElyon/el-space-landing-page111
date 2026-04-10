@@ -10,7 +10,7 @@ export function BenefitCard({ title, description, icon = '✓' }: BenefitCardPro
   return (
     <div className="flex flex-col gap-3">
       <div className="flex items-start gap-3">
-        <span className="mt-1 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-amber-accent text-sm font-bold text-white">
+        <span className="mt-1 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-amber-400 text-sm font-bold text-white">
           {icon}
         </span>
         <div>

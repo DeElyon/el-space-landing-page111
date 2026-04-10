@@ -32,7 +32,7 @@ export function FAQ() {
             <Accordion type="single" collapsible className="w-full">
               {clientFAQ.map((item, idx) => (
                 <AccordionItem key={idx} value={`client-${idx}`}>
-                  <AccordionTrigger className="text-left hover:text-cyan-accent">
+                  <AccordionTrigger className="text-left hover:text-accent">
                     {item.question}
                   </AccordionTrigger>
                   <AccordionContent className="text-muted-foreground">
@@ -47,7 +47,7 @@ export function FAQ() {
             <Accordion type="single" collapsible className="w-full">
               {freelancerFAQ.map((item, idx) => (
                 <AccordionItem key={idx} value={`freelancer-${idx}`}>
-                  <AccordionTrigger className="text-left hover:text-cyan-accent">
+                  <AccordionTrigger className="text-left hover:text-accent">
                     {item.question}
                   </AccordionTrigger>
                   <AccordionContent className="text-muted-foreground">

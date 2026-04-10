@@ -30,7 +30,7 @@ export function Footer() {
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="text-sm text-muted-foreground hover:text-cyan-accent transition-colors"
+                    className="text-sm text-muted-foreground hover:text-accent transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -49,7 +49,7 @@ export function Footer() {
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="text-sm text-muted-foreground hover:text-cyan-accent transition-colors"
+                    className="text-sm text-muted-foreground hover:text-accent transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -68,7 +68,7 @@ export function Footer() {
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="text-sm text-muted-foreground hover:text-cyan-accent transition-colors"
+                    className="text-sm text-muted-foreground hover:text-accent transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -87,7 +87,7 @@ export function Footer() {
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="text-sm text-muted-foreground hover:text-cyan-accent transition-colors"
+                    className="text-sm text-muted-foreground hover:text-accent transition-colors"
                   >
                     {link.label}
                   </Link>

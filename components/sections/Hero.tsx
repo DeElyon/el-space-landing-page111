@@ -36,8 +36,8 @@ export function Hero() {
             whileInView="visible"
             viewport={{ once: true }}>
 
-            <motion.div variants={itemVariants} className="inline-block max-w-max rounded-full bg-cyan-accent/10 px-4 py-2">
-              <span className="text-sm font-semibold text-cyan-accent">
+            <motion.div variants={itemVariants} className="inline-block max-w-max rounded-full bg-accent/10 px-4 py-2">
+              <span className="text-sm font-semibold text-accent">
                 {HERO_CLIENT.badge}
               </span>
             </motion.div>
@@ -47,15 +47,15 @@ export function Hero() {
             <motion.p variants={itemVariants} className="text-lg text-muted-foreground">
               {HERO_CLIENT.subheadline}
             </motion.p>
-            <motion.div variants={itemVariants} className="rounded-lg border border-amber-accent/30 bg-amber-accent/5 p-4">
-              <p className="text-sm font-semibold text-amber-accent">
+            <motion.div variants={itemVariants} className="rounded-lg border border-amber-400/30 bg-amber-400/5 p-4">
+              <p className="text-sm font-semibold text-amber-400">
                 {HERO_CLIENT.fee}
               </p>
             </motion.div>
             <motion.div variants={itemVariants}>
               <Button
                 size="lg"
-                className="w-fit bg-amber-accent text-white hover:bg-amber-accent/90"
+                className="w-fit bg-amber-400 text-white hover:bg-amber-400/90"
               >
                 {HERO_CLIENT.cta} →
               </Button>
@@ -72,8 +72,8 @@ export function Hero() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}>
-            <motion.div variants={itemVariants} className="inline-block max-w-max rounded-full bg-cyan-accent/10 px-4 py-2">
-              <span className="text-sm font-semibold text-cyan-accent">
+            <motion.div variants={itemVariants} className="inline-block max-w-max rounded-full bg-accent/10 px-4 py-2">
+              <span className="text-sm font-semibold text-accent">
                 {HERO_FREELANCER.badge}
               </span>
             </motion.div>
@@ -83,8 +83,8 @@ export function Hero() {
             <motion.p variants={itemVariants} className="text-lg text-muted-foreground">
               {HERO_FREELANCER.subheadline}
             </motion.p>
-            <motion.div variants={itemVariants} className="rounded-lg border border-cyan-accent/30 bg-cyan-accent/5 p-4">
-              <p className="text-sm font-semibold text-cyan-accent">
+            <motion.div variants={itemVariants} className="rounded-lg border border-accent/30 bg-accent/5 p-4">
+              <p className="text-sm font-semibold text-accent">
                 {HERO_FREELANCER.fee}
               </p>
             </motion.div>
@@ -92,7 +92,7 @@ export function Hero() {
               <Button
                 variant="outline"
                 size="lg"
-                className="w-fit border-cyan-accent text-cyan-accent hover:bg-cyan-accent/10"
+                className="w-fit border-accent text-accent hover:bg-accent/10"
               >
                 {HERO_FREELANCER.cta} →
               </Button>

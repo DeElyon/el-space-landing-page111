@@ -49,7 +49,7 @@ export function JobPostingForm() {
           <div
             key={s}
             className={`h-2 flex-1 rounded-full transition-colors ${
-              s <= step ? 'bg-cyan-accent' : 'bg-border'
+              s <= step ? 'bg-accent' : 'bg-border'
             }`}
           ></div>
         ))}
@@ -182,12 +182,12 @@ export function JobPostingForm() {
           </Button>
         )}
         {step < 4 && (
-          <Button onClick={handleNext} className="flex-1 bg-cyan-accent text-white hover:bg-cyan-accent/90">
+          <Button onClick={handleNext} className="flex-1 bg-accent text-white hover:bg-accent/90">
             Continue
           </Button>
         )}
         {step === 4 && (
-          <Button onClick={handleSubmit} className="flex-1 bg-amber-accent text-white hover:bg-amber-accent/90">
+          <Button onClick={handleSubmit} className="flex-1 bg-amber-400 text-white hover:bg-amber-400/90">
             Post Job (Free)
           </Button>
         )}
