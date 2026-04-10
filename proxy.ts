@@ -4,6 +4,11 @@ import { type NextRequest, NextResponse } from "next/server";
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
+// Check if environment variables are properly configured
+const isConfigured = supabaseUrl && supabaseKey && 
+                     !supabaseUrl.includes('placeholder') && 
+                     !supabaseKey.includes('placeholder');
+
 export async function proxy(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
     request: {
@@ -11,9 +16,15 @@ export async function proxy(request: NextRequest) {
     },
   });
 
+  // If not configured, skip Supabase auth and just return the response
+  if (!isConfigured) {
+    console.warn('⚠️ Supabase not configured in middleware. Skipping auth.');
+    return supabaseResponse;
+  }
+
   const supabase = createServerClient(
-    supabaseUrl!,
-    supabaseKey!,
+    supabaseUrl,
+    supabaseKey,
     {
       cookies: {
         getAll() {
