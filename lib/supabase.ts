@@ -9,7 +9,7 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 // ============ USERS ============
 
 export const createUser = async (email: string, name: string, userType: 'client' | 'freelancer') => {
-  const el_space_id = `EL-${Math.random().toString(36).substring(2, 10).toUpperCase()}`;
+  const el_space_id = `EL-${Math.floor(10000000 + Math.random() * 90000000)}`;
   const { data, error } = await supabase
     .from('users')
     .insert([{ 
