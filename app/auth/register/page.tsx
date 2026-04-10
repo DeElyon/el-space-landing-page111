@@ -11,9 +11,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import Link from "next/link";
 import Image from "next/image";
-import { AlertCircle, CheckCircle, Loader } from "lucide-react";
+import { AlertCircle, CheckCircle, Loader, Mail } from "lucide-react";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -25,6 +32,8 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [generatedOtp, setGeneratedOtp] = useState("");
+  const [showOtpPopup, setShowOtpPopup] = useState(false);
 
   const handleSendOTP = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -52,12 +61,13 @@ export default function RegisterPage() {
         return;
       }
 
-      // In development mode, show the OTP if email is not configured
-      if (data.otp && !data.emailConfigured) {
-        setSuccess(`OTP generated: ${data.otp} (Development mode - email not configured)`);
-      } else {
-        setSuccess("OTP sent to your email!");
+      // Show OTP in popup modal
+      if (data.otp) {
+        setGeneratedOtp(data.otp);
+        setShowOtpPopup(true);
       }
+
+      setSuccess("OTP sent to your email!");
       setStep("otp");
     } catch (err: any) {
       setError(err.message || "An error occurred");
@@ -289,6 +299,47 @@ export default function RegisterPage() {
           © 2026 EL VERSE TECHNOLOGIES. Freelance Without Friction.
         </p>
       </div>
+
+      {/* OTP Popup Dialog */}
+      <Dialog open={showOtpPopup} onOpenChange={setShowOtpPopup}>
+        <DialogContent className="bg-slate-800 border-slate-700 text-white">
+          <DialogHeader>
+            <DialogTitle className="text-xl font-bold flex items-center gap-2">
+              <Mail className="w-6 h-6 text-cyan-500" />
+              Your Verification Code
+            </DialogTitle>
+            <DialogDescription className="text-slate-400">
+              We've sent this code to <strong className="text-white">{email}</strong>
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-6">
+            <div className="bg-slate-700/50 rounded-lg p-6 text-center">
+              <div className="text-4xl font-bold tracking-widest text-cyan-400 font-mono">
+                {generatedOtp}
+              </div>
+            </div>
+            <div className="space-y-2">
+              <p className="text-sm text-slate-300">
+                📧 This code has been sent to your email
+              </p>
+              <p className="text-xs text-slate-400">
+                ⏰ This code expires in 15 minutes
+              </p>
+            </div>
+            <Button
+              onClick={() => {
+                navigator.clipboard.writeText(generatedOtp);
+                setSuccess("OTP copied to clipboard!");
+                setTimeout(() => setSuccess(""), 3000);
+              }}
+              variant="outline"
+              className="w-full border-cyan-500 text-cyan-400 hover:bg-cyan-500/10"
+            >
+              Copy OTP
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

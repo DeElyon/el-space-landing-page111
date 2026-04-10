@@ -27,27 +27,22 @@ export async function POST(request: NextRequest) {
     storeOTP(email, otp, 900); // 15 minutes
 
     // Try to send email, but don't fail if email is not configured
+    let emailSent = false;
     try {
       await sendOTPEmail(email, otp);
       console.log(`[OTP] Sent to ${email} for ${type}`);
+      emailSent = true;
     } catch (emailError) {
       console.warn('[OTP] Email sending failed, but OTP is stored:', emailError);
-      // In development, return the OTP in the response for testing
-      if (process.env.NODE_ENV === 'development') {
-        return NextResponse.json(
-          { 
-            success: true, 
-            message: `OTP for ${type} generated (email not configured)`,
-            otp: otp, // Only in development!
-            emailConfigured: false
-          },
-          { status: 200 }
-        );
-      }
     }
 
     return NextResponse.json(
-      { success: true, message: `OTP for ${type} sent to your email` },
+      { 
+        success: true, 
+        message: `OTP for ${type} sent to your email`,
+        otp: otp,
+        emailSent
+      },
       { status: 200 }
     );
   } catch (error) {
