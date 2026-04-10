@@ -29,23 +29,42 @@ export function Navbar() {
           ))}
         </div>
 
-        {/* CTA Buttons */}
+        {/* CTA Buttons & Links */}
         <div className="flex items-center gap-2 md:gap-3">
-          <Link href="/auth/register">
+          {/* Platform Links - Hidden on mobile */}
+          <div className="hidden gap-3 lg:flex">
+            <Link href="/jobs">
+              <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
+                Browse Jobs
+              </Button>
+            </Link>
+            <Link href="/earnings">
+              <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
+                Earnings
+              </Button>
+            </Link>
+            <Link href="/freelancer/dashboard">
+              <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
+                Dashboard
+              </Button>
+            </Link>
+          </div>
+
+          <Link href="/jobs/post">
             <Button
               variant="outline"
               size="sm"
               className="hidden border-accent text-accent hover:bg-accent/10 sm:flex"
             >
-              Apply as Freelancer
+              Post a Job
             </Button>
           </Link>
-          <Link href="/auth/register">
+          <Link href="/jobs">
             <Button
               size="sm"
-              className="bg-amber-400 text-white hover:bg-amber-400/90"
+              className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white"
             >
-              Post a Job
+              Apply Now
             </Button>
           </Link>
         </div>
