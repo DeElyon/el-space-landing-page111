@@ -1,4 +1,5 @@
 import nodemailer from 'nodemailer';
+import * as templates from './email-templates';
 
 const transporter = nodemailer.createTransport({
   host: process.env.EMAIL_HOST,
@@ -10,17 +11,81 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-export async function sendOTPEmail(
-  email: string,
-  otp: string,
-  userName?: string
-) {
+function replacePlaceholders(content: string, data: Record<string, any>) {
+  let result = content;
+  
+  // Handle logoUrl
+  const logoUrl = `${process.env.NEXT_PUBLIC_APP_URL}/logo.png`;
+  result = result.replace(/{{logoUrl}}/g, logoUrl);
+
+  for (const key in data) {
+    const value = data[key];
+    if (Array.isArray(value)) {
+      // Simple array handling
+      const regex = new RegExp(`{{#each ${key}}}([\\s\\S]*?){{/each}}`, 'g');
+      result = result.replace(regex, (_, innerContent) => {
+        return value.map((item, index) => {
+          let replacedInner = innerContent.replace(/{{this}}/g, item);
+          if (typeof item === 'object') {
+            for (const subKey in item) {
+              replacedInner = replacedInner.replace(new RegExp(`{{${subKey}}}`, 'g'), item[subKey]);
+            }
+          }
+          replacedInner = replacedInner.replace(/{{@index}}/g, (index + 1).toString());
+          return replacedInner;
+        }).join('');
+      });
+    } else if (typeof value === 'boolean') {
+        const ifRegex = new RegExp(`{{#if ${key}}}([\\s\\S]*?){{/if}}`, 'g');
+        result = result.replace(ifRegex, (_, innerContent) => {
+            return value ? innerContent : '';
+        });
+    } else {
+      result = result.replace(new RegExp(`{{${key}}}`, 'g'), value);
+    }
+  }
+  
+  // Clean up remaining handlebars tags
+  result = result.replace(/{{#if [\s\S]*?}}([\s\S]*?){{\/if}}/g, '');
+  
+  return result;
+}
+
+export async function sendEmail({
+  to,
+  subject,
+  html,
+  text,
+}: {
+  to: string;
+  subject: string;
+  html?: string;
+  text?: string;
+}) {
   try {
     const mailOptions = {
-      from: process.env.NEXT_PUBLIC_EMAIL_FROM,
-      to: email,
-      subject: `Your EL SPACE OTP: ${otp}`,
-      html: `
+      from: process.env.NEXT_PUBLIC_EMAIL_FROM || 'hello@elspace.tech',
+      to,
+      subject,
+      html,
+      text,
+    };
+
+    const info = await transporter.sendMail(mailOptions);
+    console.log('Email sent:', info.response);
+    return { success: true, messageId: info.messageId };
+  } catch (error) {
+    console.error('Error sending email:', error);
+    throw error;
+  }
+}
+
+export async function sendOTPEmail(email: string, otp: string, userName?: string) {
+  const logoUrl = `${process.env.NEXT_PUBLIC_APP_URL}/logo.png`;
+  return sendEmail({
+    to: email,
+    subject: `Your EL SPACE OTP: ${otp}`,
+    html: `
         <!DOCTYPE html>
         <html>
           <head>
@@ -30,9 +95,7 @@ export async function sendOTPEmail(
           <body style="font-family: Inter, sans-serif; background-color: #f3f4f6; padding: 20px;">
             <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; padding: 40px;">
               <div style="text-align: center; margin-bottom: 30px;">
-                <h1 style="color: #1E1B4B; margin: 0;">
-                  <span style="color: #06B6D4;">EL</span> SPACE
-                </h1>
+                 <img src="${logoUrl}" alt="EL SPACE" style="height: 48px; margin-bottom: 16px;">
                 <p style="color: #6B7280; margin: 5px 0; font-size: 14px;">Freelance Without the Friction</p>
               </div>
               
@@ -58,116 +121,164 @@ export async function sendOTPEmail(
                 <p style="margin: 5px 0;">
                   © 2026 EL VERSE TECHNOLOGIES. All rights reserved.
                 </p>
-                <p style="margin: 5px 0;">
-                  <a href="https://elspace.io" style="color: #06B6D4; text-decoration: none;">Visit EL SPACE</a>
-                </p>
               </div>
             </div>
           </body>
         </html>
       `,
-    };
-
-    const info = await transporter.sendMail(mailOptions);
-    console.log('OTP email sent:', info.response);
-    return { success: true, messageId: info.messageId };
-  } catch (error) {
-    console.error('Error sending OTP email:', error);
-    throw error;
-  }
+  });
 }
 
-export async function sendWelcomeEmail(
-  email: string,
-  userName: string,
-  userType: 'client' | 'freelancer'
-) {
-  try {
-    const welcomeText = 
-      userType === 'client'
-        ? 'Start by posting your first project and find the perfect freelancer from our vetted talent pool.'
-        : 'Complete your profile, get verified, and start receiving project opportunities.';
+export async function sendClientWelcomeEmail(email: string, data: {
+  clientName: string;
+  jobTitle: string;
+  dashboardUrl: string;
+  slackInviteUrl: string;
+  linkedinUrl?: string;
+  twitterUrl?: string;
+  privacyUrl?: string;
+  unsubscribeUrl?: string;
+}) {
+  const html = replacePlaceholders(templates.CLIENT_WELCOME_HTML, {
+    ...data,
+    linkedinUrl: data.linkedinUrl || '#',
+    twitterUrl: data.twitterUrl || '#',
+    privacyUrl: data.privacyUrl || '#',
+    unsubscribeUrl: data.unsubscribeUrl || '#',
+  });
+  return sendEmail({ to: email, subject: 'Welcome to EL SPACE', html });
+}
 
-    const ctaText = userType === 'client' ? 'Post a Project' : 'Complete Profile';
+export async function sendFreelancerWelcomeEmail(email: string, data: {
+  freelancerName: string;
+  skills?: string[];
+  elitesUrl: string;
+  profileUrl: string;
+  slackInviteUrl: string;
+  linkedinUrl?: string;
+  twitterUrl?: string;
+  privacyUrl?: string;
+  unsubscribeUrl?: string;
+}) {
+  const html = replacePlaceholders(templates.FREELANCER_WELCOME_HTML, {
+    ...data,
+    skills: data.skills || [],
+    linkedinUrl: data.linkedinUrl || '#',
+    twitterUrl: data.twitterUrl || '#',
+    privacyUrl: data.privacyUrl || '#',
+    unsubscribeUrl: data.unsubscribeUrl || '#',
+  });
+  return sendEmail({ to: email, subject: 'Welcome to EL SPACE - You\'re In!', html });
+}
 
-    const mailOptions = {
-      from: process.env.NEXT_PUBLIC_EMAIL_FROM,
-      to: email,
-      subject: `Welcome to EL SPACE, ${userName}! 🚀`,
-      html: `
-        <!DOCTYPE html>
-        <html>
-          <head>
-            <meta charset="UTF-8">
-            <title>Welcome to EL SPACE</title>
-          </head>
-          <body style="font-family: Inter, sans-serif; background-color: #f3f4f6; padding: 20px;">
-            <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; padding: 40px;">
-              <div style="text-align: center; margin-bottom: 30px;">
-                <h1 style="color: #1E1B4B; margin: 0;">
-                  <span style="color: #06B6D4;">EL</span> SPACE
-                </h1>
-              </div>
-              
-              <h2 style="color: #1F2937; margin-bottom: 20px;">Welcome to EL SPACE, ${userName}! 🚀</h2>
-              
-              <p style="color: #4B5563; line-height: 1.6; margin-bottom: 20px;">
-                You've successfully joined ${userType === 'client' ? 'a community of forward-thinking businesses' : 'the top 5% of tech talent'}. 
-              </p>
-              
-              <p style="color: #4B5563; line-height: 1.6; margin-bottom: 30px;">
-                ${welcomeText}
-              </p>
-              
-              <div style="text-align: center; margin: 30px 0;">
-                <a href="${process.env.NEXT_PUBLIC_APP_URL}/dashboard" 
-                   style="display: inline-block; background-color: #F59E0B; color: white; padding: 12px 30px; border-radius: 6px; text-decoration: none; font-weight: 600;">
-                  ${ctaText}
-                </a>
-              </div>
-              
-              <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 30px 0;">
-              
-              <h3 style="color: #1F2937; margin-bottom: 15px;">What's Next?</h3>
-              <ul style="color: #4B5563; line-height: 1.8;">
-                ${userType === 'client' 
-                  ? `
-                    <li>📝 Post your first project</li>
-                    <li>🔍 Browse vetted talent</li>
-                    <li>💰 Get quality work at fair prices</li>
-                  `
-                  : `
-                    <li>✅ Get verified (Portfolio → Test Project)</li>
-                    <li>💼 Receive project matches</li>
-                    <li>💵 Start earning from day one</li>
-                  `
-                }
-              </ul>
-              
-              <p style="color: #6B7280; font-size: 14px; margin-top: 20px;">
-                Questions? Check our <a href="https://elspace.io/help" style="color: #06B6D4;">Help Center</a>
-              </p>
-              
-              <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 30px 0;">
-              
-              <div style="text-align: center; color: #9CA3AF; font-size: 12px;">
-                <p style="margin: 5px 0;">
-                  © 2026 EL VERSE TECHNOLOGIES. Freelance Without Friction.
-                </p>
-              </div>
-            </div>
-          </body>
-        </html>
-      `,
-    };
+export async function sendClientMatchNotification(email: string, data: {
+  clientName: string;
+  matchCount: number;
+  projectTitle: string;
+  matches: Array<{
+    name: string;
+    title: string;
+    verificationLevel: string;
+    rating: number;
+    completedProjects: number;
+    hourlyRate: number;
+    skillsList: string;
+    availability: string;
+    profileUrl: string;
+  }>;
+  dashboardUrl: string;
+  compareUrl: string;
+  supportUrl: string;
+  calendarUrl: string;
+  notificationSettingsUrl: string;
+}) {
+  const text = replacePlaceholders(templates.CLIENT_MATCHES_TEXT, data);
+  return sendEmail({ to: email, subject: `🎯 Your EL SPACE Matches Are Ready – ${data.matchCount} Vetted Freelancers for "${data.projectTitle}"`, text });
+}
 
-    const info = await transporter.sendMail(mailOptions);
-    console.log('Welcome email sent:', info.response);
-    return { success: true, messageId: info.messageId };
-  } catch (error) {
-    console.error('Error sending welcome email:', error);
-    throw error;
-  }
+export async function sendFreelancerMatchNotification(email: string, data: {
+  freelancerName: string;
+  projectTitle: string;
+  budgetMin: number;
+  budgetMax: number;
+  timeline: string;
+  clientCompany: string;
+  clientIndustry: string;
+  projectDescription: string;
+  skillsRequired: string;
+  availabilityUrl: string;
+  portfolioUrl: string;
+  profileViews: number;
+  matchRate: number;
+  completedProjects: number;
+  dashboardUrl: string;
+  pauseMatchingUrl: string;
+}) {
+  const text = replacePlaceholders(templates.FREELANCER_MATCH_TEXT, data);
+  return sendEmail({ to: email, subject: `🎯 New Match – Client Interested in Your Profile for "${data.projectTitle}"`, text });
+}
+
+export async function sendMilestoneFundedEmail(to: string, type: 'client' | 'freelancer', data: any) {
+  const template = type === 'client' ? templates.CLIENT_MILESTONE_FUNDED_TEXT : templates.FREELANCER_MILESTONE_FUNDED_TEXT;
+  const subject = type === 'client' 
+    ? `✅ Milestone 1 Funded – "${data.projectTitle}" is Ready to Begin`
+    : `💰 Milestone 1 Funded – Start Working on "${data.projectTitle}"`;
+  
+  const text = replacePlaceholders(template, data);
+  return sendEmail({ to, subject, text });
+}
+
+export async function sendStandupReminder(email: string, data: {
+  freelancerName: string;
+  projectTitle: string;
+  clientName: string;
+  projectSlug: string;
+  slackChannelUrl: string;
+  dashboardStandupUrl: string;
+}) {
+  const text = replacePlaceholders(templates.DAILY_STANDUP_REMINDER_TEXT, data);
+  return sendEmail({ to: email, subject: `⏰ Daily Standup Reminder – "${data.projectTitle}"`, text });
+}
+
+export async function sendPaymentReceivedEmail(email: string, data: {
+  freelancerName: string;
+  clientName: string;
+  milestoneNumber: number;
+  projectTitle: string;
+  milestoneDescription: string;
+  milestoneAmount: number;
+  feePercentage: string;
+  platformFee: number;
+  yourEarnings: number;
+  walletBalance: number;
+  instantFeeAmount: number;
+  instantWithdrawUrl: string;
+  standardWithdrawUrl: string;
+  m1Amount: number;
+  m2Amount: number;
+  m3Amount: number;
+  totalProjectValue: number;
+  earnedSoFar: number;
+  remainingValue: number;
+  dashboardUrl: string;
+  clientFeedbackSnippet: string;
+  monthToDateEarnings: number;
+  monthlyCompletedProjects: number;
+  averageProjectValue: number;
+  earningsUrl: string;
+}) {
+  const text = replacePlaceholders(templates.PAYMENT_RECEIVED_TEXT, data);
+  return sendEmail({ to: email, subject: `💵 Payment Received – $${data.yourEarnings} for "${data.projectTitle}" Milestone ${data.milestoneNumber}`, text });
+}
+
+export async function sendProjectCompletionEmail(to: string, type: 'client' | 'freelancer', data: any) {
+  const template = type === 'client' ? templates.CLIENT_PROJECT_COMPLETE_TEXT : templates.FREELANCER_PROJECT_COMPLETE_TEXT;
+  const subject = type === 'client'
+    ? `🎉 Project Complete – "${data.projectTitle}" + Leave a Review`
+    : `🎉 Project Complete – "${data.projectTitle}" + Leave a Review for ${data.clientName}`;
+  
+  const text = replacePlaceholders(template, data);
+  return sendEmail({ to, subject, text });
 }
 
 export async function verifyEmailConnection() {

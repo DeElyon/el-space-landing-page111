@@ -12,6 +12,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import Link from "next/link";
+import Image from "next/image";
 import { AlertCircle, CheckCircle, Loader } from "lucide-react";
 
 export default function RegisterPage() {
@@ -107,12 +108,17 @@ export default function RegisterPage() {
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-md">
         {/* Logo */}
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold">
-            <span className="text-cyan-500">EL</span>
-            <span className="text-white"> SPACE</span>
-          </h1>
-          <p className="text-slate-400 mt-2">Join the marketplace</p>
+        <div className="flex flex-col items-center mb-8">
+          <div className="relative h-12 w-48 mb-2">
+            <Image
+              src="/logo.png"
+              alt="EL SPACE"
+              fill
+              className="object-contain"
+              priority
+            />
+          </div>
+          <p className="text-slate-400">Join the marketplace</p>
         </div>
 
         {/* Card */}

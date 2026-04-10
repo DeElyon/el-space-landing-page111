@@ -89,7 +89,7 @@
 | Withdrawal requests | ✅ | Form + API |
 | 6-month chart | ✅ | Recharts graph |
 | Payment intent creation | ✅ | `/app/api/payments` |
-| Stripe integration ready | ✅ | API structure |
+| Korapay integration ready | ✅ | API structure |
 
 ### Database Layer (Complete)
 | Component | Status | Details |
@@ -325,7 +325,7 @@ npm start
 | Earnings | - | - | ✅ | Complete |
 | Dashboards | - | ✅ | ✅ | Complete |
 | Payments (API) | - | - | ✅ | Structure Ready |
-| Stripe (Integration) | - | - | - | Next Phase |
+| Korapay (Integration) | - | - | - | Next Phase |
 | Matching (Algorithm) | - | - | - | Next Phase |
 | Chat (Messaging) | - | - | - | Next Phase |
 | Time Tracking | - | - | - | Next Phase |
@@ -335,8 +335,8 @@ npm start
 ## 🎯 What's Next (Phase 4)
 
 ### Immediate (Week 1)
-1. **Stripe Integration**
-   - Set up Stripe Connect account
+1. **Korapay Integration**
+   - Set up Korapay Connect account
    - Implement payment intents
    - Add webhook handlers
    - Test escrow flow
@@ -486,7 +486,7 @@ All documentation is in the repository:
 **EL SPACE Platform MVP is complete and ready for:**
 1. ✅ Stand-alone operation (with mock data)
 2. ✅ Supabase database connection
-3. ✅ Stripe payment integration
+3. ✅ Korapay payment integration
 4. ✅ Production deployment
 5. ✅ User testing & feedback
 

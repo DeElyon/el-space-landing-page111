@@ -144,16 +144,16 @@ CREATE TABLE otp_sessions (
 
 ---
 
-### 3. Escrow Payment Integration (Stripe Connect)
+### 3. Escrow Payment Integration (Korapay Connect)
 
 ```typescript
 // Dependencies to add
-npm install stripe @stripe/react-stripe-js
+npm install korapay @korapay/react-korapay-js
 
-// File: lib/stripe.ts
+// File: lib/korapay.ts
 export const createPaymentIntent = async (projectId: string, amount: number) => {
-  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
-  const paymentIntent = await stripe.paymentIntents.create({
+  const korapay = new Korapay(process.env.STRIPE_SECRET_KEY!);
+  const paymentIntent = await korapay.paymentIntents.create({
     amount: amount * 100, // Convert to cents
     currency: 'usd',
     metadata: { projectId }
@@ -266,14 +266,14 @@ reviews table with:
 ```typescript
 // File: lib/payments.ts
 export const enableInstantPay = async (freelancerId: string, amount: number) => {
-  // Connect to Stripe account
-  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+  // Connect to Korapay account
+  const korapay = new Korapay(process.env.STRIPE_SECRET_KEY!);
   
   // Create payout
-  const payout = await stripe.payouts.create({
+  const payout = await korapay.payouts.create({
     amount: amount * 95 / 100, // 5% fee
     currency: 'usd',
-    destination: freelancer.stripe_account_id
+    destination: freelancer.korapay_account_id
   });
   
   return payout;
@@ -397,7 +397,7 @@ export const getFreelancerCourses = (freelancerId: string) => {
 
 ```
 Week 1-2: Job Posting + Freelancer Application + Milestone Tracking
-Week 3-4: Stripe Escrow Integration + Basic Review System
+Week 3-4: Korapay Escrow Integration + Basic Review System
 Week 5-6: Verified Badge System + Profile Pages
 Week 7-8: Instant Pay + Smart Matching Algorithm
 Week 9-10: Slack Integration + Time Tracking
@@ -460,7 +460,7 @@ GET    /api/dashboard/earnings
 - [ ] Database schema created in Supabase
 - [ ] Job posting form built
 - [ ] Freelancer application form built
-- [ ] Stripe integration complete
+- [ ] Korapay integration complete
 - [ ] Milestone tracking MVP
 - [ ] Verified badge system
 - [ ] Profile pages

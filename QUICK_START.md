@@ -7,7 +7,7 @@
 | 1 | ✅ Complete | Landing page (13 sections) |
 | 2 | ✅ Complete | OTP Authentication + Email |
 | 3 | ✅ Complete | **Jobs, Applications, Profiles, Earnings** |
-| 4 | 🔄 Pending | Stripe, Advanced Integrations |
+| 4 | 🔄 Pending | Korapay, Advanced Integrations |
 
 ---
 
@@ -182,7 +182,7 @@ PATCH /api/profile?userId=user-123
     ├── reviews/route.ts      # Review CRUD
     ├── earnings/route.ts     # Earnings & withdrawals
     ├── profile/route.ts      # User profile
-    └── payments/route.ts     # Payment handling (Stripe-ready)
+    └── payments/route.ts     # Payment handling (Korapay-ready)
 ```
 
 ---
@@ -196,7 +196,7 @@ NEXT_PUBLIC_SUPABASE_URL=your_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_key
 SUPABASE_SERVICE_ROLE_KEY=your_service_key
 
-# Optional - for Stripe
+# Optional - for Korapay
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_...
 STRIPE_SECRET_KEY=sk_test_...
 ```
@@ -288,7 +288,7 @@ Content-Type: application/json
 ## 🚀 Next Phase (Phase 4)
 
 **What's Coming:**
-1. Stripe payment integration (escrow, milestone automation)
+1. Korapay payment integration (escrow, milestone automation)
 2. Real-time notifications (job alerts, message inbox)
 3. Time tracking with screenshots
 4. Slack bot integration

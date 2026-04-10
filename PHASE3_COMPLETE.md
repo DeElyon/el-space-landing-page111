@@ -133,7 +133,7 @@
 - **Location**: `/app/api/payments/route.ts`
 - **Features**:
   - Payment intent creation
-  - Stripe integration ready (TODO: implement)
+  - Korapay integration ready (TODO: implement)
   - Escrow fund holding logic
   - Payment status tracking
   - Amount and currency support
@@ -243,11 +243,11 @@ All components use:
 
 ## 🔌 Additional Features Wired But Ready for Integration
 
-### Stripe Payment Integration
+### Korapay Payment Integration
 ```typescript
 // Ready in: /app/api/payments/route.ts
-// TODO: Configure Stripe API keys
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+// TODO: Configure Korapay API keys
+const korapay = new Korapay(process.env.STRIPE_SECRET_KEY);
 ```
 
 ### Milestone Payment Automation
@@ -336,7 +336,7 @@ NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
 SUPABASE_SERVICE_ROLE_KEY=your_service_key
 
-# Optional for Stripe integration:
+# Optional for Korapay integration:
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_...
 STRIPE_SECRET_KEY=sk_test_...
 
@@ -357,7 +357,7 @@ EMAIL_PASSWORD=...
 - [x] Database functions exported
 - [x] TypeScript types defined
 - [ ] End-to-end testing (next phase)
-- [ ] Stripe payment integration
+- [ ] Korapay payment integration
 - [ ] Real Supabase connection
 - [ ] Email notifications
 
@@ -365,8 +365,8 @@ EMAIL_PASSWORD=...
 
 ## 📋 Next Steps (Phase 4)
 
-### Priority 1: Stripe Integration
-- Install Stripe SDK
+### Priority 1: Korapay Integration
+- Install Korapay SDK
 - Configure payment intents
 - Implement fund holding/escrow
 - Add payment webhooks

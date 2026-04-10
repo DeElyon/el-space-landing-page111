@@ -166,7 +166,7 @@ EMAIL_PORT=587
 | **Email** | Nodemailer | SMTP email sending |
 | **Auth** | OTP | Secure, frictionless login |
 | **Database** | Supabase (planned) | PostgreSQL + Realtime |
-| **Payments** | Stripe (planned) | Payment processing & escrow |
+| **Payments** | Korapay (planned) | Payment processing & escrow |
 
 ---
 
@@ -243,7 +243,7 @@ NODE_ENV=production
 - [ ] Verified badges
 
 ### Phase 3 (Planned)
-- [ ] Escrow payments (Stripe)
+- [ ] Escrow payments (Korapay)
 - [ ] Milestone tracking
 - [ ] Instant pay
 - [ ] Smart matching
@@ -334,7 +334,7 @@ npm run dev
 - [shadcn/ui Components](https://ui.shadcn.com)
 - [Nodemailer Docs](https://nodemailer.com)
 - [Supabase Docs](https://supabase.com/docs)
-- [Stripe Connect](https://stripe.com/connect)
+- [Korapay Connect](https://korapay.com/connect)
 
 ---
 

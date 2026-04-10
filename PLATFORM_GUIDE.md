@@ -58,7 +58,7 @@ EL SPACE is a modern, high-converting freelance marketplace platform part of the
 
 ### 🔄 PHASE 3: Core Features (In Progress)
 - [ ] Verified Badge System
-- [ ] Escrow Payments (Stripe Connect)
+- [ ] Escrow Payments (Korapay Connect)
 - [ ] Milestone Tracking
 - [ ] Profile Pages
 - [ ] Review System
@@ -301,9 +301,26 @@ el-space-landing-page/
 
 ### Updating Email Templates
 1. Edit `/lib/email.ts`
-2. Update HTML in `sendOTPEmail()` or `sendWelcomeEmail()`
+2. Update HTML in `sendOTPEmail()`, `sendClientWelcomeEmail()`, or `sendFreelancerWelcomeEmail()`
 3. Test by triggering flow in browser
-4. Check Gmail for rendered HTML
+4. Check email for rendered HTML
+
+---
+
+## 💰 Payment Processing (Korapay)
+
+The platform uses Korapay for secure payments and escrow.
+1. **Wallet Funding**: Clients fund their wallet via Korapay.
+2. **Escrow**: Funds are moved from wallet to project escrow when a project starts.
+3. **Payouts**: Funds are released to freelancers (minus fees and late penalties) upon client approval.
+
+### Fees
+- **Clients**: $19 flat (<$500), 5% ($500-$5k), 3% ($5k+)
+- **Freelancers**: $9 flat (<$500), 5% ($500-$5k), 3% ($5k+)
+- **Instant Pay**: 5% withdrawal fee
+
+### Penalties
+- **Late Submission**: $20 flat penalty deducted from freelancer profit.
 
 ---
 
@@ -329,11 +346,9 @@ el-space-landing-page/
 
 ## 🎯 Next Steps
 
-1. **Database Integration** - Replace in-memory store with Supabase/Firebase
-2. **Payment Processing** - Integrate Stripe Connect for escrow
-3. **Advanced Features** - Slack bots, smart matching, time tracking
-4. **Mobile App** - React Native for iOS/Android
-5. **AI Integration** - ChatGPT for matching, profile improvements
+1. **Advanced Features** - Slack bots, smart matching, time tracking
+2. **Mobile App** - React Native for iOS/Android
+3. **AI Integration** - ChatGPT for matching, profile improvements
 
 ---
 

@@ -12,7 +12,7 @@
 - ✅ **Milestone System** - Track project phases with budget allocation
 - ✅ **Review System** - 5-star double-blind reviews
 - ✅ **Earnings Dashboard** - Income tracking with 6-month charts
-- ✅ **Payment Infrastructure** - Stripe-ready payment system
+- ✅ **Payment Infrastructure** - Korapay-ready payment system
 - ✅ **Database Layer** - 40+ CRUD functions ready
 - ✅ **11 RESTful APIs** - All endpoints functional
 
@@ -146,7 +146,7 @@ app/api/earnings/route.ts   Earnings tracking
 
 UPDATED:
 components/sections/Navbar.tsx  Added new navigation links
-.env.local                      Added Supabase & Stripe config
+.env.local                      Added Supabase & Korapay config
 ```
 
 ---
@@ -202,7 +202,7 @@ http://localhost:3000/freelancer/[id]
 
 ### Needs Configuration ⚙️
 - ⚙️ **Supabase Connection** - Replace placeholder URL/keys in .env.local
-- ⚙️ **Stripe Integration** - Set up Stripe API keys  
+- ⚙️ **Korapay Integration** - Set up Korapay API keys  
 - ⚙️ **Real Database** - Connect to actual PostgreSQL
 - ⚙️ **Auth Integration** - Connect auth to database
 - ⚙️ **Email Notifications** - Configure Nodemailer (ready, not connected yet)
@@ -267,7 +267,7 @@ Database Layer (Supabase-Ready)
 
 External Services (Ready)
   ├─ Supabase (PostgreSQL)
-  ├─ Stripe (Payments)
+  ├─ Korapay (Payments)
   ├─ Nodemailer (Email)
   └─ Google OAuth (Ready)
 ```
@@ -341,7 +341,7 @@ External Services (Ready)
   - Processing status
 
 ### 8. Payment Infrastructure
-- Stripe payment intents
+- Korapay payment intents
 - Fund holding (escrow)
 - Manual milestone releases
 - Transaction tracking
@@ -365,7 +365,7 @@ External Services (Ready)
 - CORS configuration
 - RLS (Row Level Security)
 - Webhook verification
-- Stripe webhook handling
+- Korapay webhook handling
 
 ---
 
@@ -380,11 +380,11 @@ External Services (Ready)
    - Enable database connection
    ```
 
-2. **Connect Stripe**
+2. **Connect Korapay**
    ```
-   - Get Stripe test API keys
+   - Get Korapay test API keys
    - Add to .env.local
-   - Install stripe SDK
+   - Install korapay SDK
    - Test payment flow
    ```
 
@@ -408,7 +408,7 @@ External Services (Ready)
 - TypeScript 5.7
 - Tailwind CSS 4.2
 - Supabase PostgreSQL
-- Stripe API
+- Korapay API
 
 **Performance:**
 - Build: 17.5s (optimized)
@@ -497,7 +497,7 @@ STATUS: ✓ READY FOR DEPLOYMENT
 3. Authentication integration
 4. Notifications
 
-### After Stripe Setup
+### After Korapay Setup
 1. Process real payments
 2. Escrow holding
 3. Milestone releases
@@ -545,7 +545,7 @@ A complete, production-ready freelance marketplace with:
 
 **🚀 Platform is ready to scale!**
 
-Next: Set up Supabase + Stripe, then deploy to production.
+Next: Set up Supabase + Korapay, then deploy to production.
 
 For questions, see the comprehensive documentation in the repository.
 

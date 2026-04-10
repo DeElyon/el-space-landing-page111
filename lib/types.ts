@@ -5,7 +5,7 @@ export type UserRole = 'admin' | 'moderator' | 'user';
 export type VerificationBadge = 0 | 1 | 2 | 3; // None, Portfolio, Test Passed, ELACCESS
 export type ProjectStatus = 'draft' | 'open' | 'in_progress' | 'completed' | 'cancelled';
 export type MilestoneStatus = 'pending' | 'in_progress' | 'submitted' | 'approved' | 'released' | 'disputed';
-export type PaymentStatus = 'pending' | 'processing' | 'completed' | 'failed' | 'refunded';
+export type PaymentStatus = 'pending' | 'processing' | 'completed' | 'failed' | 'refunded' | 'escrowed';
 export type ReviewVisibility = 'public' | 'private';
 export type AvailabilityStatus = 'available' | 'busy' | 'unavailable';
 
@@ -43,7 +43,7 @@ export interface FreelancerProfile {
   timezone?: string;
   languages: string[];
   verified_test_project_id?: string;
-  stripe_account_id?: string;
+  korapay_account_id?: string;
   created_at: Date;
   updated_at: Date;
 }
@@ -61,7 +61,7 @@ export interface ClientProfile {
   avg_rating: number;
   total_reviews: number;
   verification_status: 'unverified' | 'verified';
-  stripe_account_id?: string;
+  korapay_customer_id?: string;
   created_at: Date;
   updated_at: Date;
 }
@@ -110,17 +110,28 @@ export interface Milestone {
 // Payment/Transaction
 export interface Payment {
   id: string;
-  project_id: string;
+  project_id?: string;
   milestone_id?: string;
-  client_id: string;
-  freelancer_id: string;
+  user_id: string;
   amount: number;
   fee_amount: number;
-  total_amount: number;
+  currency: string;
   status: PaymentStatus;
-  payment_method: 'card' | 'stripe_connect' | 'paypal' | 'bank_transfer';
-  stripe_payment_intent_id?: string;
-  stripe_transfer_id?: string;
+  payment_method: 'card' | 'bank_transfer' | 'mobile_money' | 'crypto';
+  payment_type: 'wallet_funding' | 'milestone_funding' | 'payout' | 'withdrawal';
+  reference?: string;
+  korapay_reference?: string;
+  metadata?: any;
+  created_at: Date;
+  updated_at: Date;
+}
+
+// Wallet
+export interface Wallet {
+  id: string;
+  user_id: string;
+  balance: number;
+  currency: string;
   created_at: Date;
   updated_at: Date;
 }
@@ -140,14 +151,14 @@ export interface Review {
   updated_at: Date;
 }
 
-// Application (Freelancer applies to project or Freelancer gets verified)
+// Application
 export interface Application {
   id: string;
   project_id: string;
   freelancer_id: string;
   cover_letter: string;
-  proposed_budget?: number;
-  proposed_timeline?: string;
+  proposed_rate?: number;
+  estimated_days?: number;
   status: 'pending' | 'accepted' | 'rejected' | 'withdrawn';
   created_at: Date;
   updated_at: Date;
@@ -165,7 +176,7 @@ export interface Notification {
   created_at: Date;
 }
 
-// Time Log (for hourly projects)
+// Time Log
 export interface TimeLog {
   id: string;
   project_id: string;
@@ -195,7 +206,7 @@ export interface Dispute {
   resolved_at?: Date;
 }
 
-// Message (for project communication)
+// Message
 export interface Message {
   id: string;
   project_id: string;
@@ -207,7 +218,7 @@ export interface Message {
   created_at: Date;
 }
 
-// Saved/Bookmarked Freelancers (for Clients)
+// Saved/Bookmarked Freelancers
 export interface SavedFreelancer {
   id: string;
   client_id: string;
@@ -241,12 +252,4 @@ export interface Referral {
   reward_amount: number;
   created_at: Date;
   completed_at?: Date;
-}
-
-// Feature Access Log
-export interface FeatureAccess {
-  id: string;
-  user_id: string;
-  feature_name: string;
-  timestamp: Date;
 }

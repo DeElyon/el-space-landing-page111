@@ -1,5 +1,6 @@
 import { FOOTER_SECTIONS } from '@/lib/constants'
 import Link from 'next/link'
+import Image from 'next/image'
 
 export function Footer() {
   return (
@@ -9,10 +10,15 @@ export function Footer() {
         <div className="grid grid-cols-1 gap-8 md:grid-cols-5 mb-8">
           {/* About */}
           <div>
-            <h3 className="mb-2 font-bold text-foreground">
-              {FOOTER_SECTIONS.about.title}
-            </h3>
-            <p className="mb-2 text-sm text-muted-foreground">
+            <div className="relative h-10 w-40 mb-4">
+              <Image
+                src="/logo.png"
+                alt="EL SPACE"
+                fill
+                className="object-contain"
+              />
+            </div>
+            <p className="mb-2 text-sm text-muted-foreground font-semibold">
               {FOOTER_SECTIONS.about.subtitle}
             </p>
             <p className="text-sm text-muted-foreground">

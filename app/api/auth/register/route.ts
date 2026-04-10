@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { sendWelcomeEmail } from '@/lib/email';
-
-// In-memory user store (use database in production)
-const users = new Map<string, any>();
+import { sendClientWelcomeEmail, sendFreelancerWelcomeEmail } from '@/lib/email';
+import { createUser, createWallet } from '@/lib/supabase';
 
 export async function POST(request: NextRequest) {
   try {
@@ -15,51 +13,39 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (!['client', 'freelancer'].includes(userType)) {
-      return NextResponse.json(
-        { error: 'Invalid user type' },
-        { status: 400 }
-      );
+    // 1. Create user in Supabase
+    const { data: user, error } = await createUser(email, name, userType);
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 400 });
     }
 
-    // Check if user already exists
-    if (users.has(email)) {
-      return NextResponse.json(
-        { error: 'User already exists' },
-        { status: 409 }
-      );
+    // 2. Create wallet for user
+    await createWallet(user.id);
+
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://elspace.tech';
+
+    // 3. Send welcome email
+    if (userType === 'client') {
+      await sendClientWelcomeEmail(email, {
+        clientName: name,
+        jobTitle: 'Your First Project', // Placeholder
+        dashboardUrl: `${appUrl}/dashboard`,
+        slackInviteUrl: 'https://slack.com/invite/elspace', // Placeholder
+      });
+    } else {
+      await sendFreelancerWelcomeEmail(email, {
+        freelancerName: name,
+        elitesUrl: 'https://elites.elspace.tech',
+        profileUrl: `${appUrl}/profile`,
+        slackInviteUrl: 'https://slack.com/invite/elspace',
+      });
     }
-
-    // Create user
-    const user = {
-      email,
-      name,
-      userType,
-      createdAt: new Date(),
-      verified: true,
-      profile: {
-        bio: '',
-        avatar: null,
-        skills: [],
-        portfolio: '',
-        hourlyRate: null,
-      },
-    };
-
-    users.set(email, user);
-
-    // Send welcome email
-    await sendWelcomeEmail(email, name, userType);
 
     return NextResponse.json(
       {
         success: true,
         message: 'Registration successful. Welcome email sent!',
-        user: {
-          email: user.email,
-          name: user.name,
-          userType: user.userType,
-        },
+        user,
       },
       { status: 201 }
     );

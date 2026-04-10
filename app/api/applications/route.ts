@@ -1,5 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createApplication, getApplicationsByProject, getApplicationsByFreelancer } from '@/lib/supabase';
+import { 
+  createApplication, 
+  getApplicationsByProject, 
+  getApplicationsByFreelancer, 
+  updateApplicationStatus, 
+  updateProjectStatus, 
+  createMilestone, 
+  getUserById, 
+  getProject 
+} from '@/lib/supabase';
+import { sendMilestoneFundedEmail } from '@/lib/email';
+import { calculateClientFee } from '@/lib/fees';
 
 export async function POST(request: NextRequest) {
   try {
@@ -25,6 +36,80 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ success: true, application: data }, { status: 201 });
   } catch (error: any) {
     console.error('Error creating application:', error);
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}
+
+export async function PATCH(request: NextRequest) {
+  try {
+    const { applicationId, status, clientId } = await request.json();
+
+    if (!applicationId || !status) {
+      return NextResponse.json({ error: 'applicationId and status required' }, { status: 400 });
+    }
+
+    // 1. Update application status
+    const { data: application, error: appError } = await updateApplicationStatus(applicationId, status);
+    if (appError) throw appError;
+
+    if (status === 'accepted') {
+        // 2. Mark project as in_progress
+        const { data: project, error: projError } = await getProject(application.project_id);
+        if (projError) throw projError;
+        
+        await updateProjectStatus(application.project_id, 'in_progress');
+
+        // 3. Create initial milestone
+        const milestoneAmount = application.proposed_rate || project.total_budget || 0;
+        const { data: milestone, error: mileError } = await createMilestone({
+            project_id: application.project_id,
+            freelancer_id: application.freelancer_id,
+            title: 'Initial Milestone',
+            description: 'Phase 1 of project delivery',
+            amount: milestoneAmount,
+            due_date: new Date(Date.now() + (application.estimated_days || 7) * 24 * 60 * 60 * 1000).toISOString(),
+            status: 'funded',
+        });
+        if (mileError) throw mileError;
+
+        // 4. Send emails
+        const { data: client } = await getUserById(clientId || project.client_id);
+        const { data: freelancer } = await getUserById(application.freelancer_id);
+        
+        if (client && freelancer) {
+            const clientFee = calculateClientFee(milestoneAmount);
+            const commonData = {
+                clientName: client.name,
+                freelancerName: freelancer.name,
+                projectTitle: project.title,
+                milestoneAmount: milestoneAmount,
+                platformFee: clientFee,
+                totalCharged: milestoneAmount + clientFee,
+                projectSlug: project.id,
+                timezone: 'UTC',
+                milestone1Description: milestone.description,
+                milestone1DueDate: milestone.due_date,
+                slackChannelUrl: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard`,
+                dashboardUrl: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard`,
+                receiptUrl: `${process.env.NEXT_PUBLIC_APP_URL}/receipts/${milestone.id}`,
+                paymentMethodLast4: 'XXXX',
+                transactionId: `TRX-${milestone.id}`,
+            };
+
+            await sendMilestoneFundedEmail(client.email, 'client', commonData);
+            await sendMilestoneFundedEmail(freelancer.email, 'freelancer', {
+                ...commonData,
+                feePercentage: '5%', // Should calculate based on project size
+                yourEarnings: milestoneAmount * 0.95,
+                milestone1Deliverables: 'To be provided by client',
+                slackChannelUrl: commonData.slackChannelUrl,
+            });
+        }
+    }
+
+    return NextResponse.json({ success: true, application });
+  } catch (error: any) {
+    console.error('Error updating application:', error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createProject, getProjectsByClient, getOpenProjects } from '@/lib/supabase';
+import { createProject, getProjectsByClient, getOpenProjects, getUserById } from '@/lib/supabase';
+import { sendClientWelcomeEmail } from '@/lib/email';
 
 export async function POST(request: NextRequest) {
   try {
@@ -22,8 +23,19 @@ export async function POST(request: NextRequest) {
     };
 
     const { data, error } = await createProject(projectData);
-
     if (error) throw error;
+
+    // Send confirmation email to client
+    const { data: client } = await getUserById(clientId);
+    if (client) {
+        const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://elspace.tech';
+        await sendClientWelcomeEmail(client.email, {
+            clientName: client.name,
+            jobTitle: title,
+            dashboardUrl: `${appUrl}/dashboard`,
+            slackInviteUrl: 'https://slack.com/invite/elspace',
+        });
+    }
 
     return NextResponse.json({ success: true, project: data }, { status: 201 });
   } catch (error: any) {

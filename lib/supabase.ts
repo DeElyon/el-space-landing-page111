@@ -150,12 +150,49 @@ export const updateMilestoneStatus = async (milestoneId: string, status: string)
   return { data: data?.[0], error };
 };
 
+// ============ WALLETS ============
+
+export const getWallet = async (userId: string) => {
+  const { data, error } = await supabase
+    .from('wallets')
+    .select('*')
+    .eq('user_id', userId)
+    .single();
+  
+  if (error && error.code === 'PGRST116') {
+    // Wallet doesn't exist, create one
+    return createWallet(userId);
+  }
+  return { data, error };
+};
+
+export const createWallet = async (userId: string) => {
+  const { data, error } = await supabase
+    .from('wallets')
+    .insert([{ user_id: userId, balance: 0, currency: 'USD' }])
+    .select();
+  return { data: data?.[0], error };
+};
+
+export const updateWalletBalance = async (userId: string, amount: number) => {
+  // Use a RPC call for atomic increment to avoid race conditions
+  const { data, error } = await supabase.rpc('increment_wallet_balance', {
+    user_id_param: userId,
+    amount_param: amount
+  });
+  return { data, error };
+};
+
 // ============ PAYMENTS ============
 
 export const createPayment = async (paymentData: any) => {
   const { data, error } = await supabase
     .from('payments')
-    .insert([{ ...paymentData, status: 'pending' }])
+    .insert([{ 
+      ...paymentData, 
+      status: 'pending',
+      created_at: new Date()
+    }])
     .select();
   return { data: data?.[0], error };
 };

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getFreelancerEarnings } from '@/lib/supabase';
+import { getFreelancerEarnings, getWallet, updateWalletBalance, createPayment } from '@/lib/supabase';
+import { calculateFreelancerPayout, calculateInstantPayFee } from '@/lib/fees';
 
 export async function GET(request: NextRequest) {
   try {
@@ -9,25 +10,24 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'freelancerId required' }, { status: 400 });
     }
 
-    const { data, error } = await getFreelancerEarnings(freelancerId);
-
-    if (error) throw error;
+    const { data: wallet } = await getWallet(freelancerId);
+    const { total, earnings } = await getFreelancerEarnings(freelancerId);
 
     // Calculate earnings statistics
-    const totalEarnings = data.reduce((sum: number, e: any) => sum + (e.total_amount || 0), 0);
-    const completedProjects = data.filter((e: any) => e.status === 'completed').length;
-    const pendingEarnings = data.reduce((sum: number, e: any) => {
-      if (e.status === 'pending' || e.status === 'processing') return sum + (e.total_amount || 0);
+    const completedProjects = earnings.length;
+    const pendingEarnings = earnings.reduce((sum: number, e: any) => {
+      if (e.status === 'pending' || e.status === 'processing') return sum + (e.amount - (e.fee_amount || 0));
       return sum;
     }, 0);
 
     return NextResponse.json({
-      earnings: data,
+      wallet,
+      earnings,
       stats: {
-        totalEarnings,
+        totalEarnings: total,
         completedProjects,
         pendingEarnings,
-        averageProjectValue: completedProjects > 0 ? (totalEarnings / completedProjects).toFixed(2) : 0,
+        averageProjectValue: completedProjects > 0 ? (total / completedProjects).toFixed(2) : 0,
       }
     });
   } catch (error: any) {
@@ -38,20 +38,47 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const { freelancerId, amount, reason } = await request.json();
+    const { freelancerId, amount, type } = await request.json();
 
     if (!freelancerId || !amount) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    // TODO: Process withdrawal request
+    const { data: wallet } = await getWallet(freelancerId);
+    if (!wallet || wallet.balance < amount) {
+        return NextResponse.json({ error: 'Insufficient balance' }, { status: 400 });
+    }
+
+    let payoutAmount = amount;
+    let fee = 0;
+
+    if (type === 'instant') {
+        fee = calculateInstantPayFee(amount);
+        payoutAmount = amount - fee;
+    }
+
+    // 1. Deduct from wallet
+    await updateWalletBalance(freelancerId, -amount);
+
+    // 2. Create withdrawal payment record
+    const { data: payment } = await createPayment({
+        user_id: freelancerId,
+        amount: amount,
+        fee_amount: fee,
+        currency: wallet.currency,
+        status: 'processing',
+        payment_type: 'withdrawal',
+        metadata: { withdrawal_type: type }
+    });
+
     return NextResponse.json({
       success: true,
-      message: 'Withdrawal request submitted',
+      message: type === 'instant' ? 'Instant withdrawal processed' : 'Standard withdrawal requested',
       withdrawal: {
-        id: Math.random().toString(36).substr(2, 9),
-        amount,
-        status: 'pending',
+        id: payment.id,
+        amount: payoutAmount,
+        fee,
+        status: 'processing',
         createdAt: new Date().toISOString(),
       }
     }, { status: 201 });
