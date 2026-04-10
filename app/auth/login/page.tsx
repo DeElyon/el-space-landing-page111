@@ -5,17 +5,12 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import Link from "next/link";
 import Image from "next/image";
 import { AlertCircle, CheckCircle, Loader, Mail, Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
+import { GoogleSignInButton } from "@/components/ui/google-signin-button";
+import { OTPNotification } from "@/components/ui/otp-notification";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -246,6 +241,23 @@ export default function LoginPage() {
                   "Continue"
                 )}
               </Button>
+
+              {/* Divider */}
+              <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-slate-600"></div>
+                </div>
+                <div className="relative flex justify-center text-sm">
+                  <span className="px-2 bg-slate-800/50 text-slate-400">or</span>
+                </div>
+              </div>
+
+              {/* Google Sign-In */}
+              <GoogleSignInButton
+                fullWidth
+                variant="outline"
+                text="Continue with Google"
+              />
             </form>
           )}
 
@@ -380,45 +392,16 @@ export default function LoginPage() {
         </p>
       </div>
 
-      {/* OTP Popup Dialog */}
-      <Dialog open={showOtpPopup} onOpenChange={setShowOtpPopup}>
-        <DialogContent className="bg-slate-800 border-slate-700 text-white">
-          <DialogHeader>
-            <DialogTitle className="text-xl font-bold flex items-center gap-2">
-              <Mail className="w-6 h-6 text-cyan-500" />
-              Your Login Code
-            </DialogTitle>
-            <DialogDescription className="text-slate-400">
-              We've sent this code to <strong className="text-white">{email}</strong>
-            </DialogDescription>
-          </DialogHeader>
-          <div className="space-y-6">
-            <div className="bg-slate-700/50 rounded-lg p-6 text-center">
-              <div className="text-4xl font-bold tracking-widest text-cyan-400 font-mono">
-                {generatedOtp}
-              </div>
-            </div>
-            <div className="space-y-2">
-              <p className="text-sm text-slate-300">
-                📧 This code has been sent to your email
-              </p>
-              <p className="text-xs text-slate-400">
-                ⏰ This code expires in 15 minutes
-              </p>
-            </div>
-            <Button
-              onClick={() => {
-                navigator.clipboard.writeText(generatedOtp);
-                toast.success("OTP copied to clipboard!");
-              }}
-              variant="outline"
-              className="w-full border-cyan-500 text-cyan-400 hover:bg-cyan-500/10"
-            >
-              Copy OTP
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
+      {/* OTP Notification */}
+      <OTPNotification
+        isOpen={showOtpPopup}
+        onOpenChange={setShowOtpPopup}
+        otp={generatedOtp}
+        email={email}
+        type="login"
+        showCopyButton={true}
+        expiryMinutes={15}
+      />
     </div>
   );
 }

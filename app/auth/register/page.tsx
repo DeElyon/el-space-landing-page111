@@ -13,13 +13,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import { PhoneInput } from "@/components/ui/phone-input";
 import { INDUSTRIES, TECH_STACKS, COMPANY_SIZES, BUSINESS_TYPES } from "@/lib/constants";
 import { cn } from "@/lib/utils";
@@ -27,6 +20,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { AlertCircle, CheckCircle, Loader, Mail, Upload, Eye, EyeOff, ArrowLeft, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
+import { OTPNotification } from '@/components/ui/otp-notification';
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -753,45 +747,16 @@ export default function RegisterPage() {
         </p>
       </div>
 
-      {/* OTP Popup Dialog */}
-      <Dialog open={showOtpPopup} onOpenChange={setShowOtpPopup}>
-        <DialogContent className="bg-slate-800 border-slate-700 text-white">
-          <DialogHeader>
-            <DialogTitle className="text-xl font-bold flex items-center gap-2">
-              <Mail className="w-6 h-6 text-cyan-500" />
-              Your Verification Code
-            </DialogTitle>
-            <DialogDescription className="text-slate-400">
-              We've sent this code to <strong className="text-white">{email}</strong>
-            </DialogDescription>
-          </DialogHeader>
-          <div className="space-y-6">
-            <div className="bg-slate-700/50 rounded-lg p-6 text-center">
-              <div className="text-4xl font-bold tracking-widest text-cyan-400 font-mono">
-                {generatedOtp}
-              </div>
-            </div>
-            <div className="space-y-2">
-              <p className="text-sm text-slate-300">
-                📧 This code has been sent to your email
-              </p>
-              <p className="text-xs text-slate-400">
-                ⏰ This code expires in 15 minutes
-              </p>
-            </div>
-            <Button
-              onClick={() => {
-                navigator.clipboard.writeText(generatedOtp);
-                toast.success("OTP copied to clipboard!");
-              }}
-              variant="outline"
-              className="w-full border-cyan-500 text-cyan-400 hover:bg-cyan-500/10"
-            >
-              Copy OTP
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
+      {/* OTP Notification - Only shows on registration step */}
+      <OTPNotification
+        isOpen={showOtpPopup}
+        onOpenChange={setShowOtpPopup}
+        otp={generatedOtp}
+        email={email}
+        type="register"
+        showCopyButton={true}
+        expiryMinutes={15}
+      />
     </div>
   );
 }

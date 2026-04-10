@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { sendClientWelcomeEmail, sendFreelancerWelcomeEmail } from '@/lib/email';
+// Email imports moved to inside POST function
 import { createUser, createWallet, createFreelancerProfile, createClientProfile } from '@/lib/supabase';
 import bcrypt from 'bcryptjs';
 
@@ -110,6 +110,7 @@ export async function POST(request: NextRequest) {
 
     // 4. Send welcome email
     if (userType === 'client') {
+      const { sendClientWelcomeEmail } = await import('@/lib/email');
       await sendClientWelcomeEmail(email, {
         clientName: name,
         companyName: companyName || name,
@@ -118,6 +119,7 @@ export async function POST(request: NextRequest) {
         slackInviteUrl: 'https://slack.com/invite/elspace',
       });
     } else {
+      const { sendFreelancerWelcomeEmail } = await import('@/lib/email');
       await sendFreelancerWelcomeEmail(email, {
         freelancerName: name,
         techStack: techStack?.slice(0, 3).join(', ') || 'your skills',

@@ -9,7 +9,6 @@ import {
   getUserById, 
   getProject 
 } from '@/lib/supabase';
-import { sendMilestoneFundedEmail } from '@/lib/email';
 import { calculateClientFee } from '@/lib/fees';
 
 export async function POST(request: NextRequest) {
@@ -60,13 +59,13 @@ export async function PATCH(request: NextRequest) {
         await updateProjectStatus(application.project_id, 'in_progress');
 
         // 3. Create initial milestone
-        const milestoneAmount = application.proposed_rate || project.total_budget || 0;
+        const milestoneAmountValue = application.proposed_rate || project.total_budget || 0;
         const { data: milestone, error: mileError } = await createMilestone({
             project_id: application.project_id,
             freelancer_id: application.freelancer_id,
             title: 'Initial Milestone',
             description: 'Phase 1 of project delivery',
-            amount: milestoneAmount,
+            amount: milestoneAmountValue,
             due_date: new Date(Date.now() + (application.estimated_days || 7) * 24 * 60 * 60 * 1000).toISOString(),
             status: 'funded',
         });
@@ -77,14 +76,14 @@ export async function PATCH(request: NextRequest) {
         const { data: freelancer } = await getUserById(application.freelancer_id);
         
         if (client && freelancer) {
-            const clientFee = calculateClientFee(milestoneAmount);
+            const clientFee = calculateClientFee(milestoneAmountValue);
             const commonData = {
                 clientName: client.name,
                 freelancerName: freelancer.name,
                 projectTitle: project.title,
-                milestoneAmount: milestoneAmount,
+                milestoneAmount: milestoneAmountValue,
                 platformFee: clientFee,
-                totalCharged: milestoneAmount + clientFee,
+                totalCharged: milestoneAmountValue + clientFee,
                 projectSlug: project.id,
                 timezone: 'UTC',
                 milestone1Description: milestone.description,
@@ -96,14 +95,19 @@ export async function PATCH(request: NextRequest) {
                 transactionId: `TRX-${milestone.id}`,
             };
 
-            await sendMilestoneFundedEmail(client.email, 'client', commonData);
-            await sendMilestoneFundedEmail(freelancer.email, 'freelancer', {
-                ...commonData,
-                feePercentage: '5%', // Should calculate based on project size
-                yourEarnings: milestoneAmount * 0.95,
-                milestone1Deliverables: 'To be provided by client',
-                slackChannelUrl: commonData.slackChannelUrl,
-            });
+            try {
+              const { sendMilestoneFundedEmail } = await import('@/lib/email');
+              await sendMilestoneFundedEmail(client.email, 'client', commonData);
+              await sendMilestoneFundedEmail(freelancer.email, 'freelancer', {
+                  ...commonData,
+                  feePercentage: '5%',
+                  yourEarnings: milestoneAmountValue * 0.95,
+                  milestone1Deliverables: 'To be provided by client',
+                  slackChannelUrl: commonData.slackChannelUrl,
+              });
+            } catch (emailError) {
+              console.warn('Email sending failed:', emailError);
+            }
         }
     }
 

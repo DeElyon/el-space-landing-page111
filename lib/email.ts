@@ -1,5 +1,4 @@
 import nodemailer from 'nodemailer';
-import * as templates from './email-templates';
 
 const transporter = nodemailer.createTransport({
   host: process.env.EMAIL_HOST,
@@ -14,39 +13,12 @@ const transporter = nodemailer.createTransport({
 function replacePlaceholders(content: string, data: Record<string, any>) {
   let result = content;
   
-  // Handle logoUrl
-  const logoUrl = `${process.env.NEXT_PUBLIC_APP_URL}/logo.png`;
-  result = result.replace(/{{logoUrl}}/g, logoUrl);
-
   for (const key in data) {
     const value = data[key];
-    if (Array.isArray(value)) {
-      // Simple array handling
-      const regex = new RegExp(`{{#each ${key}}}([\\s\\S]*?){{/each}}`, 'g');
-      result = result.replace(regex, (_, innerContent) => {
-        return value.map((item, index) => {
-          let replacedInner = innerContent.replace(/{{this}}/g, item);
-          if (typeof item === 'object') {
-            for (const subKey in item) {
-              replacedInner = replacedInner.replace(new RegExp(`{{${subKey}}}`, 'g'), item[subKey]);
-            }
-          }
-          replacedInner = replacedInner.replace(/{{@index}}/g, (index + 1).toString());
-          return replacedInner;
-        }).join('');
-      });
-    } else if (typeof value === 'boolean') {
-        const ifRegex = new RegExp(`{{#if ${key}}}([\\s\\S]*?){{/if}}`, 'g');
-        result = result.replace(ifRegex, (_, innerContent) => {
-            return value ? innerContent : '';
-        });
-    } else {
-      result = result.replace(new RegExp(`{{${key}}}`, 'g'), value);
+    if (typeof value === 'string' || typeof value === 'number') {
+      result = result.replace(new RegExp(`{{${key}}}`, 'g'), String(value));
     }
   }
-  
-  // Clean up remaining handlebars tags
-  result = result.replace(/{{#if [\s\S]*?}}([\s\S]*?){{\/if}}/g, '');
   
   return result;
 }
@@ -63,270 +35,399 @@ export async function sendEmail({
   text?: string;
 }) {
   try {
-    const mailOptions = {
-      from: process.env.NEXT_PUBLIC_EMAIL_FROM || 'hello@elspace.tech',
+    await transporter.sendMail({
+      from: process.env.EMAIL_USER || 'noreply@elspace.tech',
       to,
       subject,
-      html,
-      text,
-    };
-
-    const info = await transporter.sendMail(mailOptions);
-    console.log('Email sent:', info.response);
-    return { success: true, messageId: info.messageId };
+      html: html || text,
+      text: text || html,
+    });
   } catch (error) {
-    console.error('Error sending email:', error);
+    console.error('[Email] Error sending email:', error);
     throw error;
   }
 }
 
-export async function sendOTPEmail(email: string, otp: string, userName?: string) {
-  const logoUrl = `${process.env.NEXT_PUBLIC_APP_URL}/logo.png`;
-  return sendEmail({
-    to: email,
-    subject: `Your EL SPACE OTP: ${otp}`,
-    html: `
-        <!DOCTYPE html>
-        <html>
-          <head>
-            <meta charset="UTF-8">
-            <title>EL SPACE - OTP Verification</title>
-          </head>
-          <body style="font-family: Inter, sans-serif; background-color: #f3f4f6; padding: 20px;">
-            <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; padding: 40px;">
-              <div style="text-align: center; margin-bottom: 30px;">
-                 <img src="${logoUrl}" alt="EL SPACE" style="height: 48px; margin-bottom: 16px;">
-                <p style="color: #6B7280; margin: 5px 0; font-size: 14px;">Freelance Without the Friction</p>
-              </div>
-              
-              <h2 style="color: #1F2937; margin-bottom: 20px;">Welcome${userName ? `, ${userName}` : ''}!</h2>
-              
-              <p style="color: #4B5563; line-height: 1.6; margin-bottom: 20px;">
-                Your one-time password (OTP) to access your EL SPACE account is:
-              </p>
-              
-              <div style="background-color: #f9fafb; border: 2px solid #06B6D4; border-radius: 8px; padding: 20px; text-align: center; margin: 30px 0;">
-                <p style="font-size: 32px; font-weight: bold; color: #06B6D4; letter-spacing: 4px; margin: 0;">
-                  ${otp}
-                </p>
-              </div>
-              
-              <p style="color: #6B7280; font-size: 14px; margin: 20px 0;">
-                This code will expire in 15 minutes. If you didn't request this code, please ignore this email.
-              </p>
-              
-              <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 30px 0;">
-              
-              <div style="text-align: center; color: #9CA3AF; font-size: 12px;">
-                <p style="margin: 5px 0;">
-                  © 2026 EL VERSE TECHNOLOGIES. All rights reserved.
-                </p>
-              </div>
-            </div>
-          </body>
-        </html>
-      `,
-  });
+// Welcome Emails
+export async function sendClientWelcomeEmail(email: string, data: any) {
+  const subject = 'Welcome to EL SPACE - Your Freelancer Marketplace';
+  const text = `
+Welcome ${data.clientName}!
+
+You're now part of EL SPACE, where you can find and hire top freelancers.
+
+Get Started:
+- Browse Freelancers: {{dashboardUrl}}/browse
+- Post Your First Job: {{dashboardUrl}}/jobs/post
+- Join Our Community: {{slackInviteUrl}}
+
+Questions? We're here to help.
+Best,
+The EL SPACE Team
+  `.trim();
+  
+  return sendEmail({ to: email, subject, text: replacePlaceholders(text, data) });
 }
 
-export async function sendClientWelcomeEmail(email: string, data: {
-  clientName: string;
-  jobTitle: string;
-  dashboardUrl: string;
-  slackInviteUrl: string;
-  linkedinUrl?: string;
-  twitterUrl?: string;
-  privacyUrl?: string;
-  unsubscribeUrl?: string;
-}) {
-  const html = replacePlaceholders(templates.CLIENT_WELCOME_HTML, {
-    ...data,
-    linkedinUrl: data.linkedinUrl || '#',
-    twitterUrl: data.twitterUrl || '#',
-    privacyUrl: data.privacyUrl || '#',
-    unsubscribeUrl: data.unsubscribeUrl || '#',
-  });
-  return sendEmail({ to: email, subject: 'Welcome to EL SPACE', html });
+export async function sendFreelancerWelcomeEmail(email: string, data: any) {
+  const subject = 'Welcome to EL SPACE - Start Earning';
+  const text = `
+Welcome ${data.freelancerName}!
+
+You're now part of EL SPACE, where you can find exciting projects and earn great money.
+
+Get Started:
+- View Your Profile: {{profileUrl}}
+- Browse Available Projects: {{dashboardUrl}}/jobs
+- Complete ELITES Training: {{elitesUrl}}
+
+Questions? We're here to help.
+Best,
+The EL SPACE Team
+  `.trim();
+  
+  return sendEmail({ to: email, subject, text: replacePlaceholders(text, data) });
 }
 
-export async function sendFreelancerWelcomeEmail(email: string, data: {
-  freelancerName: string;
-  skills?: string[];
-  elitesUrl: string;
-  profileUrl: string;
-  slackInviteUrl: string;
-  linkedinUrl?: string;
-  twitterUrl?: string;
-  privacyUrl?: string;
-  unsubscribeUrl?: string;
-}) {
-  const html = replacePlaceholders(templates.FREELANCER_WELCOME_HTML, {
-    ...data,
-    skills: data.skills || [],
-    linkedinUrl: data.linkedinUrl || '#',
-    twitterUrl: data.twitterUrl || '#',
-    privacyUrl: data.privacyUrl || '#',
-    unsubscribeUrl: data.unsubscribeUrl || '#',
-  });
-  return sendEmail({ to: email, subject: 'Welcome to EL SPACE - You\'re In!', html });
+// OTP Email with HTML template
+export async function sendOTPEmail(email: string, otp: string, type: 'register' | 'login' | 'transfer' | 'withdrawal') {
+  const subject = type === 'register' 
+    ? 'Verify Your Email - EL SPACE'
+    : 'Your OTP Code - EL SPACE';
+  
+  const getTitle = () => {
+    switch(type) {
+      case 'register': return 'Verify Your Email';
+      case 'login': return 'Login Verification';
+      case 'transfer': return 'Confirm Transfer';
+      case 'withdrawal': return 'Confirm Withdrawal';
+      default: return 'Verification Code';
+    }
+  };
+
+  const getDescription = () => {
+    switch(type) {
+      case 'register': return 'Welcome to EL SPACE! Please verify your email to get started.';
+      case 'login': return 'Someone tried to log in to your account. Use this code to proceed.';
+      case 'transfer': return 'Please confirm this transfer with your verification code.';
+      case 'withdrawal': return 'Please confirm this withdrawal with your verification code.';
+      default: return 'Use this code to proceed with your verification.';
+    }
+  };
+
+  const html = `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      line-height: 1.6;
+      color: #333;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #f9fafb;
+    }
+    .email-body {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+    }
+    .header {
+      background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+      color: white;
+      padding: 30px 20px;
+      text-align: center;
+    }
+    .header h1 {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 700;
+    }
+    .header p {
+      margin: 10px 0 0 0;
+      font-size: 14px;
+      opacity: 0.9;
+    }
+    .content {
+      padding: 30px 20px;
+    }
+    .otp-box {
+      background: linear-gradient(135deg, #f0f9ff 0%, #f3e8ff 100%);
+      border: 2px solid #06b6d4;
+      border-radius: 8px;
+      padding: 20px;
+      text-align: center;
+      margin: 20px 0;
+    }
+    .otp-code {
+      font-size: 48px;
+      font-weight: 700;
+      color: #06b6d4;
+      font-family: 'Courier New', monospace;
+      letter-spacing: 8px;
+      margin: 0;
+      word-break: break-all;
+    }
+    .otp-expiry {
+      color: #666;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+    .info-box {
+      background: #f9fafb;
+      border-left: 4px solid #06b6d4;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 4px;
+    }
+    .info-box ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+    .info-box li {
+      color: #666;
+      font-size: 14px;
+      margin: 8px 0;
+    }
+    .footer {
+      background: #f9fafb;
+      border-top: 1px solid #e5e7eb;
+      padding: 20px;
+      text-align: center;
+      font-size: 12px;
+      color: #666;
+    }
+    .button {
+      display: inline-block;
+      background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+      color: white;
+      padding: 12px 30px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 600;
+      margin: 20px 0;
+    }
+    @media (max-width: 600px) {
+      .container {
+        padding: 10px;
+      }
+      .content {
+        padding: 20px 15px;
+      }
+      .otp-code {
+        font-size: 36px;
+        letter-spacing: 4px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="email-body">
+      <div class="header">
+        <h1>${getTitle()}</h1>
+        <p>${getDescription()}</p>
+      </div>
+      
+      <div class="content">
+        <p>Hi there,</p>
+        
+        <p>Use this verification code to complete your ${type === 'register' ? 'registration' : type === 'login' ? 'login' : type === 'transfer' ? 'transfer' : 'withdrawal'}:</p>
+        
+        <div class="otp-box">
+          <p class="otp-code">${otp.split('').join(' ')}</p>
+          <p class="otp-expiry">⏰ This code expires in 15 minutes</p>
+        </div>
+        
+        <div class="info-box">
+          <ul>
+            <li>✅ This code was sent to your registered email</li>
+            <li>🔒 Never share this code with anyone</li>
+            <li>⚠️ If you didn't request this, please ignore this email</li>
+          </ul>
+        </div>
+        
+        <p style="font-size: 14px; color: #666;">
+          If you're having trouble, copy and paste this code into the verification field:
+        </p>
+        <p style="background: #f0f9ff; padding: 10px; border-radius: 4px; text-align: center; font-family: 'Courier New', monospace; font-size: 16px; color: #06b6d4; font-weight: 600;">
+          ${otp}
+        </p>
+      </div>
+      
+      <div class="footer">
+        <p>© 2026 EL SPACE - Freelance Without Friction</p>
+        <p>This is an automated email. Please do not reply to this message.</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+  `;
+
+  return sendEmail({ to: email, subject, html });
 }
 
-export async function sendClientMatchNotification(email: string, data: {
-  clientName: string;
-  matchCount: number;
-  projectTitle: string;
-  matches: Array<{
-    name: string;
-    title: string;
-    verificationLevel: string;
-    rating: number;
-    completedProjects: number;
-    hourlyRate: number;
-    skillsList: string;
-    availability: string;
-    profileUrl: string;
-  }>;
-  dashboardUrl: string;
-  compareUrl: string;
-  supportUrl: string;
-  calendarUrl: string;
-  notificationSettingsUrl: string;
-}) {
-  const text = replacePlaceholders(templates.CLIENT_MATCHES_TEXT, data);
-  return sendEmail({ to: email, subject: `🎯 Your EL SPACE Matches Are Ready – ${data.matchCount} Vetted Freelancers for "${data.projectTitle}"`, text });
-}
-
-export async function sendFreelancerMatchNotification(email: string, data: {
-  freelancerName: string;
-  projectTitle: string;
-  budgetMin: number;
-  budgetMax: number;
-  timeline: string;
-  clientCompany: string;
-  clientIndustry: string;
-  projectDescription: string;
-  skillsRequired: string;
-  availabilityUrl: string;
-  portfolioUrl: string;
-  profileViews: number;
-  matchRate: number;
-  completedProjects: number;
-  dashboardUrl: string;
-  pauseMatchingUrl: string;
-}) {
-  const text = replacePlaceholders(templates.FREELANCER_MATCH_TEXT, data);
-  return sendEmail({ to: email, subject: `🎯 New Match – Client Interested in Your Profile for "${data.projectTitle}"`, text });
-}
-
+// Milestone Funded Email
 export async function sendMilestoneFundedEmail(to: string, type: 'client' | 'freelancer', data: any) {
-  const template = type === 'client' ? templates.CLIENT_MILESTONE_FUNDED_TEXT : templates.FREELANCER_MILESTONE_FUNDED_TEXT;
-  const subject = type === 'client' 
-    ? `✅ Milestone 1 Funded – "${data.projectTitle}" is Ready to Begin`
-    : `💰 Milestone 1 Funded – Start Working on "${data.projectTitle}"`;
-  
-  const text = replacePlaceholders(template, data);
-  return sendEmail({ to, subject, text });
-}
-
-export async function sendStandupReminder(email: string, data: {
-  freelancerName: string;
-  projectTitle: string;
-  clientName: string;
-  projectSlug: string;
-  slackChannelUrl: string;
-  dashboardStandupUrl: string;
-}) {
-  const text = replacePlaceholders(templates.DAILY_STANDUP_REMINDER_TEXT, data);
-  return sendEmail({ to: email, subject: `⏰ Daily Standup Reminder – "${data.projectTitle}"`, text });
-}
-
-export async function sendPaymentReceivedEmail(email: string, data: {
-  freelancerName: string;
-  clientName: string;
-  milestoneNumber: number;
-  projectTitle: string;
-  milestoneDescription: string;
-  milestoneAmount: number;
-  feePercentage: string;
-  platformFee: number;
-  yourEarnings: number;
-  walletBalance: number;
-  instantFeeAmount: number;
-  instantWithdrawUrl: string;
-  standardWithdrawUrl: string;
-  m1Amount: number;
-  m2Amount: number;
-  m3Amount: number;
-  totalProjectValue: number;
-  earnedSoFar: number;
-  remainingValue: number;
-  dashboardUrl: string;
-  clientFeedbackSnippet: string;
-  monthToDateEarnings: number;
-  monthlyCompletedProjects: number;
-  averageProjectValue: number;
-  earningsUrl: string;
-}) {
-  const text = replacePlaceholders(templates.PAYMENT_RECEIVED_TEXT, data);
-  return sendEmail({ to: email, subject: `💵 Payment Received – $${data.yourEarnings} for "${data.projectTitle}" Milestone ${data.milestoneNumber}`, text });
-}
-
-export async function sendProjectCompletionEmail(to: string, type: 'client' | 'freelancer', data: any) {
-  const template = type === 'client' ? templates.CLIENT_PROJECT_COMPLETE_TEXT : templates.FREELANCER_PROJECT_COMPLETE_TEXT;
   const subject = type === 'client'
-    ? `🎉 Project Complete – "${data.projectTitle}" + Leave a Review`
-    : `🎉 Project Complete – "${data.projectTitle}" + Leave a Review for ${data.clientName}`;
+    ? `✅ Milestone Funded – "${data.projectTitle}"`
+    : `💰 Milestone Funded – Start Working on "${data.projectTitle}"`;
   
-  const text = replacePlaceholders(template, data);
-  return sendEmail({ to, subject, text });
+  const baseText = type === 'client'
+    ? `
+Hi ${data.clientName},
+
+Your milestone payment of $${data.milestoneAmount} for "${data.projectTitle}" has been funded and is now in escrow.
+
+Freelancer: ${data.freelancerName}
+Amount: $${data.milestoneAmount}
+Platform Fee: $${data.platformFee}
+
+Next Steps:
+- Monitor progress in your Project Dashboard
+- Receive daily standups on Slack
+- Review and approve milestones
+
+Dashboard: {{dashboardUrl}}
+    `
+    : `
+Hi ${data.freelancerName},
+
+Great news! ${data.clientName} has funded Milestone 1 for "${data.projectTitle}".
+
+Amount: $${data.milestoneAmount}
+Your Earnings (after 5% fee): $${data.yourEarnings}
+
+You're now cleared to begin work!
+
+Next Steps:
+1. Join the Slack channel
+2. Post your first standup tomorrow at 9 AM
+3. Begin working on the deliverables
+
+Dashboard: {{dashboardUrl}}
+    `.trim();
+  
+  return sendEmail({ to, subject, text: replacePlaceholders(baseText, data) });
 }
 
-// ============ NEW COMPREHENSIVE NOTIFICATION EMAILS ============
-
-export async function sendPostMatchEmail(to: string, type: 'client' | 'freelancer', data: any) {
-  const template = type === 'client' ? templates.POST_MATCH_CLIENT : templates.POST_MATCH_FREELANCER;
-  const subject = type === 'client'
-    ? `🎯 Your EL SPACE Matches Are Ready – 3-5 Vetted Freelancers for "${data.projectTitle}"`
-    : `🎯 New Match – Client Interested in Your Profile for "${data.projectTitle}"`;
-  
-  const text = replacePlaceholders(template, data);
-  return sendEmail({ to, subject, text });
-}
-
-export async function sendMilestoneFoundedEmail(to: string, type: 'client' | 'freelancer', data: any) {
-  const template = type === 'client' ? templates.MILESTONE_FUNDED_CLIENT : templates.MILESTONE_FUNDED_FREELANCER;
-  const subject = type === 'client'
-    ? `✅ Milestone 1 Funded – "${data.projectTitle}" is Ready to Begin`
-    : `💰 Milestone 1 Funded – Start Working on "${data.projectTitle}"`;
-  
-  const text = replacePlaceholders(template, data);
-  return sendEmail({ to, subject, text });
-}
-
+// Daily Standup Reminder
 export async function sendDailyStandupReminderEmail(to: string, data: any) {
-  const template = templates.DAILY_STANDUP_REMINDER;
   const subject = `⏰ Daily Standup Reminder – "${data.projectTitle}"`;
   
-  const text = replacePlaceholders(template, data);
-  return sendEmail({ to, subject, text });
+  const text = `
+Hi {{freelancerName}},
+
+It's time for your daily standup on {{projectTitle}}.
+
+Please post in your Slack channel:
+1. What I shipped yesterday
+2. What I'm shipping today
+3. Any blockers
+
+Slack: {{slackChannelUrl}}
+Dashboard: {{dashboardUrl}}
+  `.trim();
+  
+  return sendEmail({ to, subject, text: replacePlaceholders(text, data) });
 }
 
+// Payment Received
 export async function sendPaymentReceivedEmail(to: string, data: any) {
-  const template = templates.PAYMENT_RECEIVED_FREELANCER;
-  const subject = `💵 Payment Received – $${data.amount} for "${data.projectTitle}" Milestone ${data.milestoneNumber}`;
+  const subject = `💵 Payment Received – $${data.yourEarnings} for "${data.projectTitle}"`;
   
-  const text = replacePlaceholders(template, data);
-  return sendEmail({ to, subject, text });
+  const text = `
+Hi {{freelancerName}},
+
+Great work! {{clientName}} has approved and released payment for {{projectTitle}}.
+
+Amount: ${{milestoneAmount}}
+Your Earnings (after 5% fee): ${{yourEarnings}}
+Available in your wallet
+
+Withdraw Options:
+- Instant (5% fee): {{instantWithdrawUrl}}
+- Standard (3 business days, free): {{standardWithdrawUrl}}
+
+Keep it up!
+The EL SPACE Team
+  `.trim();
+  
+  return sendEmail({ to, subject, text: replacePlaceholders(text, data) });
 }
 
+// Project Completion
 export async function sendProjectCompleteWithReviewEmail(to: string, type: 'client' | 'freelancer', data: any) {
-  const template = type === 'client' ? templates.PROJECT_COMPLETE_CLIENT : templates.PROJECT_COMPLETE_FREELANCER;
   const subject = type === 'client'
-    ? `🎉 Project Complete – "${data.projectTitle}" + Leave a Review`
-    : `🎉 Project Complete – "${data.projectTitle}" + Leave a Review for ${data.clientName}`;
+    ? `🎉 Project Complete – Leave a Review`
+    : `🎉 Project Complete – Leave a Review`;
   
-  const text = replacePlaceholders(template, data);
-  return sendEmail({ to, subject, text });
+  const baseText = type === 'client'
+    ? `
+Hi {{clientName}},
+
+Congratulations! "{{projectTitle}}" is complete.
+
+All milestones have been approved. Time to share your feedback!
+
+Rate {{freelancerName}}: {{reviewUrl}}
+
+Your review helps our community and recognizes great work.
+    `
+    : `
+Hi {{freelancerName}},
+
+Congratulations on completing "{{projectTitle}}"!
+
+All payment has been released to your wallet.
+
+Rate {{clientName}}: {{reviewUrl}}
+
+Your feedback helps other freelancers find great clients.
+    `.trim();
+  
+  return sendEmail({ to, subject, text: replacePlaceholders(baseText, data) });
+}
+
+// Alias for backwards compatibility
+export async function sendProjectCompletionEmail(to: string, type: 'client' | 'freelancer', data: any) {
+  return sendProjectCompleteWithReviewEmail(to, type, data);
+}
+
+// Post-Match Notifications
+export async function sendPostMatchEmail(to: string, type: 'client' | 'freelancer', data: any) {
+  const subject = type === 'client'
+    ? `🎯 Your Matches Are Ready for "{{projectTitle}}"`
+    : `🎯 New Match – Client Interested in Your Profile`;
+  
+  const baseText = type === 'client'
+    ? `
+Hi {{clientName}},
+
+We found {{matchCount}} vetted freelancers for "{{projectTitle}}"
+
+Browse Matches: {{dashboardUrl}}
+    `
+    : `
+Hi {{freelancerName}},
+
+A client has been shown your profile for a new project!
+
+Project: "{{projectTitle}}"
+Budget: ${{budgetMin}} - ${{budgetMax}}
+
+You don't need to take action now. We'll notify you if they want to interview.
+    `.trim();
+  
+  return sendEmail({ to, subject, text: replacePlaceholders(baseText, data) });
 }
 
 export async function verifyEmailConnection() {
