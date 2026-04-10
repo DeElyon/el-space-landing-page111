@@ -5,6 +5,7 @@ import { HowItWorksClients, HowItWorksFreelancers } from '@/components/sections/
 import { Pricing } from '@/components/sections/Pricing'
 import { EarningsCalculator } from '@/components/sections/EarningsCalculator'
 import { Features } from '@/components/sections/Features'
+import { TrustSafetyFeatures } from '@/components/sections/TrustSafetyFeatures'
 import { WhyClientsChoose, WhyFreelancersChoose } from '@/components/sections/WhyChoose'
 import { FeaturedTalent } from '@/components/sections/FeaturedTalent'
 import { Testimonials } from '@/components/sections/Testimonials'
@@ -20,6 +21,7 @@ export default function Home() {
       <TrustBar />
       <HowItWorksClients />
       <HowItWorksFreelancers />
+      <TrustSafetyFeatures />
       <Pricing />
       <EarningsCalculator />
       <Features />

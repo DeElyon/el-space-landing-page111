@@ -961,3 +961,511 @@ freelancers@elspace.tech
 
 EL SPACE is a product of EL VERSE TECHNOLOGIES
 `;
+
+// POST-MATCH NOTIFICATION EMAIL (CLIENT)
+export const POST_MATCH_CLIENT = `
+YOUR MATCHES ARE READY
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Hi {{clientName}},
+
+Good news. We've handpicked {{matchCount}} vetted freelancers for your project:
+
+"{{projectTitle}}"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+👤 YOUR MATCHES
+
+{{#each matches}}
+────────────────────────────────────────────
+{{@index}}. {{name}} – {{title}}
+────────────────────────────────────────────
+
+✅ Verified: {{verificationLevel}}
+⭐ Rating: {{rating}}/5 ({{completedProjects}} projects)
+💰 Rate: ${{hourlyRate}}/hr
+🛠️ Skills: {{skillsList}}
+📅 Availability: {{availability}}
+
+View Full Profile: {{profileUrl}}
+
+{{/each}}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📋 NEXT STEPS
+
+1. Review Profiles - Browse full portfolios, past work, and client reviews.
+2. Schedule Interviews - Book 15-min calls with your top choices.
+3. Select Your Freelancer - Click "Hire" to fund and start.
+4. Join Slack - Get added to a dedicated channel for daily standups.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔗 QUICK LINKS
+
+View All Matches: {{dashboardUrl}}
+Compare Side-by-Side: {{compareUrl}}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+⏰ MATCHES EXPIRE IN 72 HOURS
+
+These freelancers have been notified and are expecting to hear from you.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Best,
+
+The EL SPACE Team
+hello@elspace.tech
+`;
+
+// POST-MATCH NOTIFICATION EMAIL (FREELANCER)
+export const POST_MATCH_FREELANCER = `
+YOU'VE BEEN MATCHED
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Hi {{freelancerName}},
+
+A client has been shown your profile for a new project.
+
+This is NOT a bidding situation. The client is reviewing 3-5 handpicked freelancers.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📋 PROJECT DETAILS
+
+Title: {{projectTitle}}
+Budget: ${{budgetMin}} – ${{budgetMax}}
+Timeline: {{timeline}}
+Client: {{clientCompany}} ({{clientIndustry}})
+Description: {{projectDescription}}
+Required Skills: {{skillsRequired}}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+⏰ WHAT HAPPENS NEXT
+
+• Client reviews matches (typically 24-48 hours)
+• If selected: You'll receive an email with an interview link
+• If hired: First milestone is funded. Project begins.
+
+You do NOT need to take action right now.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+💡 INCREASE YOUR CHANCES
+
+• Keep your availability calendar updated: {{availabilityUrl}}
+• Add recent portfolio items: {{portfolioUrl}}
+• Respond quickly if selected for interview
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Good luck!
+
+The EL SPACE Team
+freelancers@elspace.tech
+`;
+
+// MILESTONE FUNDED CONFIRMATION (CLIENT)
+export const MILESTONE_FUNDED_CLIENT = `
+MILESTONE FUNDED – PROJECT READY TO START
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Hi {{clientName}},
+
+You've successfully funded Milestone 1 for:
+
+"{{projectTitle}}"
+
+Freelancer: {{freelancerName}}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+💰 PAYMENT DETAILS
+
+Milestone Amount: ${{milestoneAmount}}
+EL SPACE Fee: ${{platformFee}}
+Escrow Protection: Included
+Total Charged: ${{totalCharged}}
+
+Payment Method: {{paymentMethodLast4}}
+Transaction ID: {{transactionId}}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔒 YOUR FUNDS ARE SECURE
+
+The ${{milestoneAmount}} is held in escrow. Funds will ONLY be released when:
+
+1. Freelancer submits work
+2. You review and approve
+3. You click "Release Payment"
+
+You have full control. Request revisions or open a dispute if needed.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📋 WHAT HAPPENS NOW
+
+1. {{freelancerName}} has been notified and will begin work within 24 hours.
+2. You'll receive a Slack invitation to a dedicated channel.
+3. Daily standups start tomorrow at 9 AM ({{timezone}}).
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📅 MILESTONE TIMELINE
+
+Milestone 1: {{milestone1Description}}
+Due Date: {{milestone1DueDate}}
+Amount in Escrow: ${{milestoneAmount}}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔗 QUICK LINKS
+
+Project Dashboard: {{dashboardUrl}}
+Slack Channel: {{slackChannelUrl}}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Excited to see what you build together.
+
+The EL SPACE Team
+hello@elspace.tech
+`;
+
+// MILESTONE FUNDED CONFIRMATION (FREELANCER)
+export const MILESTONE_FUNDED_FREELANCER = `
+MILESTONE FUNDED – YOU'RE CLEARED TO START
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Hi {{freelancerName}},
+
+Great news. {{clientName}} has funded Milestone 1 for:
+
+"{{projectTitle}}"
+
+You are now cleared to begin work.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+💰 MILESTONE DETAILS
+
+Amount: ${{milestoneAmount}}
+Your Earnings (after {{feePercentage}} fee): ${{yourEarnings}}
+Status: Held in escrow – guaranteed upon approval
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📋 MILESTONE REQUIREMENTS
+
+Description: {{milestone1Description}}
+Due Date: {{milestone1DueDate}}
+Deliverables: {{milestone1Deliverables}}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🚀 NEXT STEPS (DO THESE TODAY)
+
+1. Join the Slack Channel: {{slackChannelUrl}}
+2. Send a Welcome Message to the client
+3. Review Project Details: {{dashboardUrl}}
+4. Post First Standup Tomorrow by 9 AM ({{timezone}})
+
+Format:
+- Yesterday: (N/A – first day)
+- Today's Goal: [What you'll accomplish]
+- Blockers: None
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+💡 REMINDERS
+
+• Daily standups are REQUIRED
+• If you hit a blocker, communicate immediately
+• Submit work 24-48 hours before due date
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📊 PAYMENT TIMELINE
+
+Submit Work → Client Reviews (3 days) → Approval → Funds Released
+
+Once approved, withdraw instantly (5% fee) or wait 3 days free.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Let's ship this.
+
+The EL SPACE Team
+freelancers@elspace.tech
+`;
+
+// DAILY STANDUP REMINDER EMAIL
+export const DAILY_STANDUP_REMINDER = `
+DAILY STANDUP REMINDER
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Hi {{freelancerName}},
+
+We noticed you haven't posted your daily standup in Slack yet for:
+
+Project: {{projectTitle}}
+Client: {{clientName}}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📋 PLEASE POST YOUR UPDATE NOW
+
+Reply in Slack #elspace-{{projectSlug}} with:
+
+1️⃣ What I shipped yesterday:
+2️⃣ What I'm shipping today:
+3️⃣ Any blockers:
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+⚠️ WHY THIS MATTERS
+
+• Clients expect daily visibility
+• Missing 2+ standups affects your match score
+• Standups protect you in disputes
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔗 QUICK LINKS
+
+Go to Slack: {{slackChannelUrl}}
+Update via Dashboard: {{dashboardStandupUrl}}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+If you've already posted, please ignore this email.
+
+If you're unable to work, message the client and CC support@elspace.tech.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+The EL SPACE Team
+support@elspace.tech
+`;
+
+// PAYMENT RECEIVED CONFIRMATION EMAIL (FREELANCER)
+export const PAYMENT_RECEIVED_FREELANCER = `
+PAYMENT RECEIVED
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Hi {{freelancerName}},
+
+Great work. {{clientName}} has approved Milestone {{milestoneNumber}} and released payment.
+
+Project: {{projectTitle}}
+Milestone: {{milestoneDescription}}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+💰 PAYMENT BREAKDOWN
+
+Milestone Amount: ${{milestoneAmount}}
+EL SPACE Fee ({{feePercentage}}): -${{platformFee}}
+────────────────────────────────────────────
+Your Earnings: ${{yourEarnings}}
+
+Status: ✅ Deposited to your EL SPACE Wallet
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+⚡ WITHDRAW YOUR FUNDS
+
+Available Balance: ${{walletBalance}}
+
+Option 1: Instant Withdrawal
+• Receive funds in minutes
+• 5% fee (${{instantFeeAmount}})
+• {{instantWithdrawUrl}}
+
+Option 2: Standard Withdrawal
+• Receive funds in 3 business days
+• No fee
+• {{standardWithdrawUrl}}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📊 PROJECT PROGRESS
+
+Milestone 1: ✅ Completed – ${{m1Amount}} earned
+Milestone 2: 🔄 In Progress – ${{m2Amount}} pending
+Milestone 3: ⏳ Not Started – ${{m3Amount}} pending
+
+Total Earned: ${{earnedSoFar}}
+Remaining: ${{remainingValue}}
+
+View Full Project: {{dashboardUrl}}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🌟 CLIENT FEEDBACK
+
+"{{clientFeedbackSnippet}}"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📈 YOUR EARNINGS THIS MONTH
+
+Total Earned (MTD): ${{monthToDateEarnings}}
+Projects Completed (MTD): {{monthlyCompletedProjects}}
+Average Project Value: ${{averageProjectValue}}
+
+View Earnings Dashboard: {{earningsUrl}}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Keep up the great work.
+
+The EL SPACE Team
+payments@elspace.tech
+`;
+
+// PROJECT COMPLETION EMAIL (CLIENT)
+export const PROJECT_COMPLETE_CLIENT = `
+PROJECT COMPLETE – CONGRATULATIONS
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Hi {{clientName}},
+
+Congratulations! All milestones for "{{projectTitle}}" have been completed.
+
+Freelancer: {{freelancerName}}
+Total Project Value: ${{totalProjectValue}}
+Duration: {{projectDuration}} days
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📊 PROJECT SUMMARY
+
+Milestones Completed: {{completedMilestones}}/{{totalMilestones}}
+Commits Made: {{commitCount}}
+Standups Posted: {{standupCount}}
+Files Delivered: {{fileCount}}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+⭐ LEAVE A REVIEW (2 MINUTES)
+
+Your feedback helps other clients and recognizes great work.
+
+Rate {{freelancerName}}: {{reviewUrl}}
+
+Your review will:
+• Help other clients find quality talent
+• Boost the freelancer's match score
+• Shape the EL SPACE community
+
+Both reviews are double-blind. Neither party sees until both submit.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔄 WHAT'S NEXT?
+
+Option 1: Start Another Project - {{postJobUrl}}
+Option 2: Rehire {{freelancerName}} - {{rehireUrl}}
+Option 3: Take Off-Platform - After 6 months, $199 one-time fee
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📁 PROJECT ARCHIVE
+
+All files available in your dashboard for 12 months.
+
+Download Archive: {{archiveUrl}}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Thank you for choosing EL SPACE.
+
+The EL SPACE Team
+hello@elspace.tech
+`;
+
+// PROJECT COMPLETION EMAIL (FREELANCER)
+export const PROJECT_COMPLETE_FREELANCER = `
+PROJECT COMPLETE – GREAT WORK
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Hi {{freelancerName}},
+
+Congratulations on completing "{{projectTitle}}" with {{clientName}}!
+
+All milestones approved. Final payment released to your wallet.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📊 PROJECT SUMMARY
+
+Total Earned: ${{totalEarned}}
+Duration: {{projectDuration}} days
+Milestones: {{completedMilestones}}/{{totalMilestones}}
+Client Satisfaction: Pending review
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+⭐ LEAVE A REVIEW FOR {{clientName}}
+
+Your feedback helps other freelancers find great clients.
+
+Rate {{clientName}}: {{reviewUrl}}
+
+Your review will:
+• Help other freelancers identify quality clients
+• Appear on the client's profile
+• Shape the EL SPACE community
+
+Both reviews double-blind.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🚀 WHAT'S NEXT?
+
+1. Update Your Availability - {{availabilityUrl}}
+2. Add This to Your Portfolio - {{portfolioUrl}}
+3. Browse New Matches - {{matchesUrl}}
+4. Upskill with ELITES - Free course on earning more
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📈 YOUR UPDATED STATS
+
+Completed Projects: {{totalCompletedProjects}}
+Average Rating: {{averageRating}}/5
+Total Earned: ${{lifetimeEarned}}
+Current Match Score: {{matchScore}}/100
+
+View Full Profile: {{profileUrl}}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+💡 TIP
+
+Freelancers with 5+ projects and 4.8+ ratings get priority matching.
+
+You're {{projectsNeeded}} projects away from Priority Status.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Amazing work. Proud to have you in EL SPACE.
+
+The EL SPACE Team
+freelancers@elspace.tech
+`;

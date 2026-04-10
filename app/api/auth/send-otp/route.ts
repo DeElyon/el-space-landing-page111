@@ -1,12 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { generateOTP, storeOTP } from '@/lib/otp';
 import { sendOTPEmail } from '@/lib/email';
+import { getUser } from '@/lib/supabase';
+import bcrypt from 'bcryptjs';
 
 const VALID_TYPES = ['register', 'login', 'transfer', 'withdrawal'] as const;
 
 export async function POST(request: NextRequest) {
   try {
-    const { email, type, metadata } = await request.json();
+    const { email, type, metadata, password } = await request.json();
 
     if (!email) {
       return NextResponse.json(
@@ -20,6 +22,42 @@ export async function POST(request: NextRequest) {
         { error: 'Invalid request type. Must be one of: ' + VALID_TYPES.join(', ') },
         { status: 400 }
       );
+    }
+
+    // For login type, verify password first
+    if (type === 'login') {
+      if (!password) {
+        return NextResponse.json(
+          { error: 'Password is required for login' },
+          { status: 400 }
+        );
+      }
+
+      // Get user and verify password
+      const { data: user, error: userError } = await getUser(email);
+      
+      if (userError || !user) {
+        return NextResponse.json(
+          { error: 'No account found with this email' },
+          { status: 404 }
+        );
+      }
+
+      if (!user.password_hash) {
+        return NextResponse.json(
+          { error: 'Account not properly configured. Please contact support.' },
+          { status: 400 }
+        );
+      }
+
+      // Verify password
+      const isValidPassword = await bcrypt.compare(password, user.password_hash);
+      if (!isValidPassword) {
+        return NextResponse.json(
+          { error: 'Invalid password' },
+          { status: 401 }
+        );
+      }
     }
 
     // Generate OTP

@@ -281,6 +281,54 @@ export async function sendProjectCompletionEmail(to: string, type: 'client' | 'f
   return sendEmail({ to, subject, text });
 }
 
+// ============ NEW COMPREHENSIVE NOTIFICATION EMAILS ============
+
+export async function sendPostMatchEmail(to: string, type: 'client' | 'freelancer', data: any) {
+  const template = type === 'client' ? templates.POST_MATCH_CLIENT : templates.POST_MATCH_FREELANCER;
+  const subject = type === 'client'
+    ? `🎯 Your EL SPACE Matches Are Ready – 3-5 Vetted Freelancers for "${data.projectTitle}"`
+    : `🎯 New Match – Client Interested in Your Profile for "${data.projectTitle}"`;
+  
+  const text = replacePlaceholders(template, data);
+  return sendEmail({ to, subject, text });
+}
+
+export async function sendMilestoneFoundedEmail(to: string, type: 'client' | 'freelancer', data: any) {
+  const template = type === 'client' ? templates.MILESTONE_FUNDED_CLIENT : templates.MILESTONE_FUNDED_FREELANCER;
+  const subject = type === 'client'
+    ? `✅ Milestone 1 Funded – "${data.projectTitle}" is Ready to Begin`
+    : `💰 Milestone 1 Funded – Start Working on "${data.projectTitle}"`;
+  
+  const text = replacePlaceholders(template, data);
+  return sendEmail({ to, subject, text });
+}
+
+export async function sendDailyStandupReminderEmail(to: string, data: any) {
+  const template = templates.DAILY_STANDUP_REMINDER;
+  const subject = `⏰ Daily Standup Reminder – "${data.projectTitle}"`;
+  
+  const text = replacePlaceholders(template, data);
+  return sendEmail({ to, subject, text });
+}
+
+export async function sendPaymentReceivedEmail(to: string, data: any) {
+  const template = templates.PAYMENT_RECEIVED_FREELANCER;
+  const subject = `💵 Payment Received – $${data.amount} for "${data.projectTitle}" Milestone ${data.milestoneNumber}`;
+  
+  const text = replacePlaceholders(template, data);
+  return sendEmail({ to, subject, text });
+}
+
+export async function sendProjectCompleteWithReviewEmail(to: string, type: 'client' | 'freelancer', data: any) {
+  const template = type === 'client' ? templates.PROJECT_COMPLETE_CLIENT : templates.PROJECT_COMPLETE_FREELANCER;
+  const subject = type === 'client'
+    ? `🎉 Project Complete – "${data.projectTitle}" + Leave a Review`
+    : `🎉 Project Complete – "${data.projectTitle}" + Leave a Review for ${data.clientName}`;
+  
+  const text = replacePlaceholders(template, data);
+  return sendEmail({ to, subject, text });
+}
+
 export async function verifyEmailConnection() {
   try {
     await transporter.verify();

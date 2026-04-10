@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { verifyOTP } from '@/lib/otp';
 import { getUser } from '@/lib/supabase';
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'el-space-secret-key';
 
@@ -38,9 +39,8 @@ export async function POST(request: NextRequest) {
         );
       }
 
-      // Verify password if provided
+      // Verify password if provided and user has password hash
       if (password && user.password_hash) {
-        const bcrypt = require('bcryptjs');
         const isValidPassword = await bcrypt.compare(password, user.password_hash);
         if (!isValidPassword) {
           return NextResponse.json(
@@ -51,12 +51,19 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    if (!user) {
+      return NextResponse.json(
+        { error: 'User not found' },
+        { status: 404 }
+      );
+    }
+
     // Create JWT token
     const payload = {
       email,
-      userId: user?.id,
-      userType: user?.user_type,
-      elSpaceId: user?.el_space_id,
+      userId: user.id,
+      userType: user.user_type,
+      elSpaceId: user.el_space_id,
       type: result.type || type,
       verified: true,
       timestamp: Date.now()
