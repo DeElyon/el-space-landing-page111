@@ -10,85 +10,40 @@ import { Search, Filter, Star, MapPin, Briefcase, DollarSign } from 'lucide-reac
 import Link from 'next/link'
 
 export default function FreelancersPage() {
+  interface Freelancer {
+    id: string;
+    name: string;
+    title: string;
+    hourlyRate: string;
+    rating: number;
+    reviews: number;
+    skills: string[];
+    badges: string[];
+    completedProjects: number;
+    responseTime: string;
+  }
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedSkill, setSelectedSkill] = useState('')
   const [sortBy, setSortBy] = useState('rating')
+  const [freelancers, setFreelancers] = useState<Freelancer[]>([])
+  const [loading, setLoading] = useState(true)
 
-  // Sample freelancer data
-  const freelancers = [
-    {
-      id: 1,
-      name: 'Sarah Johnson',
-      title: 'Full Stack Developer',
-      hourlyRate: '$85/hr',
-      rating: 4.9,
-      reviews: 127,
-      skills: ['React', 'Node.js', 'PostgreSQL'],
-      badges: ['Top Performer', 'Verified Expert'],
-      completedProjects: 245,
-      responseTime: '2 hours'
-    },
-    {
-      id: 2,
-      name: 'Ahmed Hassan',
-      title: 'UI/UX Designer',
-      hourlyRate: '$65/hr',
-      rating: 4.8,
-      reviews: 89,
-      skills: ['Figma', 'Web Design', 'Prototyping'],
-      badges: ['Top Performer', 'Client Favorite'],
-      completedProjects: 167,
-      responseTime: '1 hour'
-    },
-    {
-      id: 3,
-      name: 'Maria Garcia',
-      title: 'Python Developer',
-      hourlyRate: '$75/hr',
-      rating: 4.9,
-      reviews: 156,
-      skills: ['Python', 'Django', 'Data Science'],
-      badges: ['Top Performer', 'Verified Expert'],
-      completedProjects: 198,
-      responseTime: '3 hours'
-    },
-    {
-      id: 4,
-      name: 'James Wilson',
-      title: 'Mobile Developer',
-      hourlyRate: '$80/hr',
-      rating: 4.7,
-      reviews: 94,
-      skills: ['React Native', 'Swift', 'Firebase'],
-      badges: ['Top Performer', 'Quick Responder'],
-      completedProjects: 134,
-      responseTime: '30 minutes'
-    },
-    {
-      id: 5,
-      name: 'Lisa Chen',
-      title: 'Cloud Architect',
-      hourlyRate: '$95/hr',
-      rating: 4.9,
-      reviews: 78,
-      skills: ['AWS', 'Docker', 'Kubernetes'],
-      badges: ['Top Performer', 'Verified Expert'],
-      completedProjects: 112,
-      responseTime: '1 hour'
-    },
-    {
-      id: 6,
-      name: 'David Kumar',
-      title: 'Blockchain Developer',
-      hourlyRate: '$100/hr',
-      rating: 4.8,
-      reviews: 65,
-      skills: ['Solidity', 'Web3', 'Smart Contracts'],
-      badges: ['Verified Expert', 'In Demand'],
-      completedProjects: 89,
-      responseTime: '2 hours'
+  useEffect(() => {
+    const fetchFreelancers = async () => {
+      try {
+        const response = await fetch('/api/freelancers?limit=20')
+        const data = await response.json()
+        if (data.success) {
+          setFreelancers(data.freelancers)
+        }
+      } catch (error) {
+        console.error('Error fetching freelancers:', error)
+      } finally {
+        setLoading(false)
+      }
     }
-  ]
+    fetchFreelancers()
+  }, [])
 
   const allSkills = ['React', 'Node.js', 'Python', 'UI Design', 'AWS', 'Solidity']
 

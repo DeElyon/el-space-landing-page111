@@ -242,6 +242,18 @@ export const getFreelancerProfile = async (userId: string) => {
   return { data, error };
 };
 
+export const getFreelancers = async (limit = 10) => {
+  const { data, error } = await supabase
+    .from('freelancer_profiles')
+    .select(`
+      *,
+      user:users!user_id(name, email, avatar_url)
+    `)
+    .order('avg_rating', { ascending: false })
+    .limit(limit);
+  return { data, error };
+};
+
 export const getFreelancersBySkills = async (skills: string[], limit = 10) => {
   const { data, error } = await supabase
     .from('freelancer_profiles')

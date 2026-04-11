@@ -77,7 +77,7 @@ export function EarningsCalculator() {
                     ${earnings.toFixed(2)}
                   </p>
                   <p className="mt-3 text-sm font-semibold text-foreground">
-                    That's {((earnings / projectValue) * 100).toFixed(1)}% of the project value
+                    That&apos;s {((earnings / projectValue) * 100).toFixed(1)}% of the project value
                   </p>
                 </div>
               </>

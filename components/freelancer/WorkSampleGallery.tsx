@@ -179,7 +179,7 @@ export function WorkSampleGallery({
               {selectedSample.testimonial && (
                 <div className="bg-slate-700/50 border border-slate-600 rounded-lg p-4">
                   <p className="text-slate-300 text-sm italic">
-                    "{selectedSample.testimonial}"
+                    &quot;{selectedSample.testimonial}&quot;
                   </p>
                   <p className="text-slate-500 text-xs mt-2">— Client Feedback</p>
                 </div>

@@ -146,7 +146,7 @@ export function OTPNotification({
             {getTitle()}
           </AlertDialogTitle>
           <AlertDialogDescription className="text-slate-400">
-            We've sent a verification code to <strong className="text-white">{email}</strong>
+            We&apos;ve sent a verification code to <strong className="text-white">{email}</strong>
           </AlertDialogDescription>
         </AlertDialogHeader>
 

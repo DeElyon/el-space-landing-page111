@@ -58,7 +58,7 @@ export function SkillEndorsement({
       </CardHeader>
       <CardContent className="space-y-3">
         <p className="text-slate-400 text-sm">
-          Endorse skills you've seen demonstrated in action. This helps build trust in the community.
+          Endorse skills you&apos;ve seen demonstrated in action. This helps build trust in the community.
         </p>
         
         <div className="space-y-2">
