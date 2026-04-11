@@ -1,0 +1,147 @@
+'use client'
+
+import React, { createContext, useContext, useState, useEffect } from 'react'
+
+interface AuthUser {
+  id: string
+  email: string
+  name: string
+  role: 'client' | 'freelancer' | 'admin'
+  avatar?: string
+}
+
+interface AuthContextType {
+  user: AuthUser | null
+  loading: boolean
+  isAuthenticated: boolean
+  login: (email: string, password: string) => Promise<void>
+  logout: () => Promise<void>
+  register: (data: any) => Promise<void>
+  updateUser: (data: Partial<AuthUser>) => Promise<void>
+}
+
+const AuthContext = createContext<AuthContextType | null>(null)
+
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [user, setUser] = useState<AuthUser | null>(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    // Check if user is logged in from localStorage
+    const checkAuth = async () => {
+      try {
+        const storedUser = localStorage.getItem('user')
+        if (storedUser) {
+          setUser(JSON.parse(storedUser))
+        }
+      } catch (error) {
+        console.error('Auth check error:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    checkAuth()
+  }, [])
+
+  const login = async (email: string, password: string) => {
+    try {
+      setLoading(true)
+      // Call login API
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      })
+
+      const data = await response.json()
+      if (data.success && data.user) {
+        setUser(data.user)
+        localStorage.setItem('user', JSON.stringify(data.user))
+        localStorage.setItem('userId', data.user.id)
+        localStorage.setItem('email', data.user.email)
+      }
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const logout = async () => {
+    try {
+      setLoading(true)
+      localStorage.removeItem('user')
+      localStorage.removeItem('userId')
+      localStorage.removeItem('email')
+      setUser(null)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const register = async (data: any) => {
+    try {
+      setLoading(true)
+      const response = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      })
+
+      const result = await response.json()
+      if (result.success && result.user) {
+        setUser(result.user)
+        localStorage.setItem('user', JSON.stringify(result.user))
+        localStorage.setItem('userId', result.user.id)
+        localStorage.setItem('email', result.user.email)
+      }
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const updateUser = async (data: Partial<AuthUser>) => {
+    try {
+      setLoading(true)
+      if (!user) return
+
+      const response = await fetch(`/api/profile/${user.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      })
+
+      const result = await response.json()
+      if (result.success) {
+        const updated = { ...user, ...data }
+        setUser(updated)
+        localStorage.setItem('user', JSON.stringify(updated))
+      }
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return (
+    <AuthContext.Provider
+      value={{
+        user,
+        loading,
+        isAuthenticated: !!user,
+        login,
+        logout,
+        register,
+        updateUser,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  )
+}
+
+export const useAuth = () => {
+  const context = useContext(AuthContext)
+  if (!context) {
+    throw new Error('useAuth must be used within AuthProvider')
+  }
+  return context
+}
