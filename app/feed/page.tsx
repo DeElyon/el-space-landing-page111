@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { DashboardLayout } from '@/components/dashboard/auth-guard'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -41,63 +41,35 @@ export default function FeedPage() {
   const [searchQuery, setSearchQuery] = useState('')
   const [userType] = useState<'client' | 'freelancer'>('client')
   const [favorites, setFavorites] = useState<string[]>([])
+  const [freelancers, setFreelancers] = useState<Freelancer[]>([])
+  const [projects, setProjects] = useState<Project[]>([])
+  const [loading, setLoading] = useState(true)
 
-  // Mock data
-  const mockFreelancers: Freelancer[] = [
-    {
-      id: '1',
-      name: 'Sarah Johnson',
-      title: 'Full Stack Developer',
-      rate: 85,
-      rating: 4.9,
-      reviews: 127,
-      skills: ['React', 'Node.js', 'PostgreSQL', 'TypeScript'],
-      bio: 'Experienced full-stack developer specializing in modern web applications',
-      location: 'San Francisco, CA',
-      availability: 'Available now',
-    },
-    {
-      id: '2',
-      name: 'Ahmed Hassan',
-      title: 'UI/UX Designer',
-      rate: 65,
-      rating: 4.8,
-      reviews: 89,
-      skills: ['Figma', 'Web Design', 'Prototyping', 'User Research'],
-      bio: 'Creative designer focused on user-centered design solutions',
-      location: 'Remote',
-      availability: 'Available in 2 days',
-    },
-    {
-      id: '3',
-      name: 'Maria Garcia',
-      title: 'Python Developer',
-      rate: 75,
-      rating: 4.9,
-      reviews: 156,
-      skills: ['Python', 'Django', 'Data Science', 'AWS'],
-      bio: 'Data-driven developer experienced in building scalable systems',
-      location: 'Madrid, Spain',
-      availability: 'Available now',
-    },
-  ]
+  useEffect(() => {
+    fetchFeedData()
+  }, [])
 
-  const mockProjects: Project[] = [
-    {
-      id: '1',
-      title: 'E-commerce Platform Development',
-      description: 'Build a modern e-commerce platform with payment integration',
-      budget: 5000,
-      timeline: '3 months',
-      skills: ['React', 'Node.js', 'PostgreSQL', 'Stripe'],
-      postedBy: 'Tech Startup Inc',
-      proposals: 12,
-    },
-    {
-      id: '2',
-      title: 'Mobile App UI/UX Design',
-      description: 'Design a beautiful and intuitive mobile app interface',
-      budget: 2000,
+  const fetchFeedData = async () => {
+    try {
+      const userId = localStorage.getItem('userId') || ''
+      
+      // Fetch freelancers
+      const freelancerResponse = await fetch(`/api/freelancers?limit=10`)
+      const freelancerData = await freelancerResponse.json()
+      setFreelancers(freelancerData.freelancers || [])
+
+      // Fetch projects
+      const projectResponse = await fetch(`/api/projects?limit=10&status=open`)
+      const projectData = await projectResponse.json()
+      setProjects(projectData.projects || [])
+    } catch (error) {
+      console.error('Error fetching feed data:', error)
+      setFreelancers([])
+      setProjects([])
+    } finally {
+      setLoading(false)
+    }
+  }
       timeline: '2 weeks',
       skills: ['Figma', 'User Research', 'Prototyping'],
       postedBy: 'Creative Agency',

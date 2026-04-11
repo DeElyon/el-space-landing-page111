@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import {
   Bell,
   Check,
@@ -88,8 +88,7 @@ const typeConfig: Record<NotificationType, { icon: typeof FolderKanban; bg: stri
   },
 };
 
-// Mock data
-function generateMockNotifications(): Notification[] {
+// Notification Icon Component
   const now = new Date();
   return [
     {
@@ -199,9 +198,7 @@ function generateMockNotifications(): Notification[] {
       avatarFallback: "$$",
       relatedId: "pay-785",
       relatedUrl: "/earnings",
-    },
-  ];
-}
+};
 
 // Notification Icon Component
 function NotificationIcon({ type, size = "default" }: { type: NotificationType; size?: "sm" | "default" }) {
@@ -336,8 +333,37 @@ function StatsCard({ icon: Icon, label, value, color }: { icon: typeof Bell; lab
 
 // Main Page Component
 export default function NotificationsPage() {
-  const [notifications, setNotifications] = useState<Notification[]>(generateMockNotifications);
+  const [notifications, setNotifications] = useState<Notification[]>([]);
   const [activeFilter, setActiveFilter] = useState<FilterType>("all");
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchNotifications();
+  }, []);
+
+  const fetchNotifications = async () => {
+    try {
+      const userId = localStorage.getItem('userId') || '';
+      if (!userId) {
+        setLoading(false);
+        return;
+      }
+
+      const response = await fetch(`/api/notifications?userId=${userId}`);
+      const data = await response.json();
+      
+      if (data.success && data.notifications) {
+        setNotifications(data.notifications);
+      } else {
+        setNotifications([]);
+      }
+    } catch (error) {
+      console.error('Error fetching notifications:', error);
+      setNotifications([]);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   // Computed values
   const unreadCount = useMemo(() => notifications.filter((n) => !n.read).length, [notifications]);

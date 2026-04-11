@@ -21,6 +21,7 @@ import Image from "next/image";
 import { AlertCircle, CheckCircle, Loader, Mail, Upload, Eye, EyeOff, ArrowLeft, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
 import { OTPNotification } from '@/components/ui/otp-notification';
+import { GoogleSignInButton } from '@/components/ui/google-signin-button';
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -402,6 +403,23 @@ export default function RegisterPage() {
                   </SelectContent>
                 </Select>
               </div>
+
+              {/* Divider */}
+              <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-slate-600"></div>
+                </div>
+                <div className="relative flex justify-center text-sm">
+                  <span className="px-2 bg-slate-800/50 text-slate-400">or</span>
+                </div>
+              </div>
+
+              {/* Google Sign-In */}
+              <GoogleSignInButton
+                fullWidth
+                variant="outline"
+                text="Continue with Google"
+              />
 
               <Button
                 type="button"

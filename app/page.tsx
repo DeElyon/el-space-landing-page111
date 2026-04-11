@@ -1,4 +1,4 @@
-import { Navbar } from '@/components/sections/Navbar'
+import { NavbarWrapper } from '@/components/navbar-wrapper'
 import { Hero } from '@/components/sections/Hero'
 import { TrustBar } from '@/components/sections/TrustBar'
 import { HowItWorksClients, HowItWorksFreelancers } from '@/components/sections/HowItWorks'
@@ -16,7 +16,7 @@ import { Footer } from '@/components/sections/Footer'
 export default function Home() {
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
+      <NavbarWrapper />
       <Hero />
       <TrustBar />
       <HowItWorksClients />

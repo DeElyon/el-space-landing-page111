@@ -363,6 +363,16 @@ export const getPaymentsByProject = async (projectId: string) => {
   return { data, error };
 };
 
+export const getAllUserPayments = async (userId: string) => {
+  const { data, error } = await supabase
+    .from('payments')
+    .select('*')
+    .eq('user_id', userId)
+    .order('created_at', { ascending: false })
+    .limit(100);
+  return data || [];
+};
+
 export const updatePaymentStatus = async (paymentId: string, status: string) => {
   const { data, error } = await supabase
     .from('payments')

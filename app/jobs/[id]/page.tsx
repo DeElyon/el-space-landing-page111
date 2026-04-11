@@ -10,6 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
+import { ApplicationCard } from '@/components/freelancer/ApplicationCard';
 import { Briefcase, MapPin, DollarSign, Calendar, User, MessageSquare } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -82,6 +83,49 @@ export default function ProjectDetailPage() {
     } catch (error) {
       console.error('Error:', error);
       toast.error('Failed to submit application');
+    }
+  };
+
+  const handleAcceptApplication = async (applicationId: string) => {
+    try {
+      const response = await fetch('/api/applications', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          applicationId,
+          status: 'accepted',
+          clientId: 'user-123', // TODO: Get from auth
+        }),
+      });
+
+      if (!response.ok) throw new Error('Failed to accept application');
+
+      toast.success('Application accepted! Freelancer has been hired.');
+      fetchProjectDetails();
+    } catch (error) {
+      console.error('Error:', error);
+      toast.error('Failed to accept application');
+    }
+  };
+
+  const handleRejectApplication = async (applicationId: string) => {
+    try {
+      const response = await fetch('/api/applications', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          applicationId,
+          status: 'rejected',
+        }),
+      });
+
+      if (!response.ok) throw new Error('Failed to reject application');
+
+      toast.success('Application rejected.');
+      fetchProjectDetails();
+    } catch (error) {
+      console.error('Error:', error);
+      toast.error('Failed to reject application');
     }
   };
 
@@ -185,20 +229,15 @@ export default function ProjectDetailPage() {
               </CardHeader>
               <CardContent>
                 {applications.length > 0 ? (
-                  <div className="space-y-3">
+                  <div className="space-y-4">
                     {applications.map((app) => (
-                      <div key={app.id} className="p-4 rounded-lg bg-slate-700/50 border border-slate-600">
-                        <div className="flex justify-between items-start">
-                          <div>
-                            <p className="font-medium text-white">{app.freelancer_id}</p>
-                            <p className="text-sm text-slate-400 mt-1">{app.cover_letter}</p>
-                          </div>
-                          <div className="text-right">
-                            <p className="font-semibold text-cyan-400">${app.proposed_rate}/hr</p>
-                            <Badge className="text-xs mt-1">{app.status}</Badge>
-                          </div>
-                        </div>
-                      </div>
+                      <ApplicationCard 
+                        key={app.id} 
+                        application={app}
+                        isClientView={true}
+                        onAccept={(appId) => handleAcceptApplication(appId)}
+                        onReject={(appId) => handleRejectApplication(appId)}
+                      />
                     ))}
                   </div>
                 ) : (

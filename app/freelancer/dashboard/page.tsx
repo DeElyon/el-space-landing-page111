@@ -22,7 +22,11 @@ export default function FreelancerDashboardPage() {
 
   const fetchDashboardData = async () => {
     try {
-      const freelancerId = 'user-123'; // TODO: Get from auth
+      const freelancerId = localStorage.getItem('userId') || '';
+      if (!freelancerId) {
+        setLoading(false);
+        return;
+      }
 
       // Fetch applications
       const appResponse = await fetch(`/api/applications?freelancerId=${freelancerId}`);
@@ -34,27 +38,14 @@ export default function FreelancerDashboardPage() {
       const earningsData = await earningsResponse.json();
       setEarnings(earningsData.stats);
 
-      // Mock active projects
-      setActiveProjects([
-        {
-          id: 1,
-          title: 'React Dashboard Development',
-          client: 'Tech Startup',
-          status: 'in_progress',
-          progress: 65,
-          budget: 2500,
-        },
-        {
-          id: 2,
-          title: 'UI/UX Design for Mobile App',
-          client: 'Creative Agency',
-          status: 'in_progress',
-          progress: 40,
-          budget: 1500,
-        },
-      ]);
+      // Fetch active projects
+      const projectsResponse = await fetch(`/api/projects?freelancerId=${freelancerId}&status=in_progress`);
+      const projectsData = await projectsResponse.json();
+      setActiveProjects(projectsData.projects || []);
     } catch (error) {
       console.error('Error fetching dashboard data:', error);
+      setApplications([]);
+      setActiveProjects([]);
     } finally {
       setLoading(false);
     }

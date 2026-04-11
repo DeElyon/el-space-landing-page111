@@ -399,6 +399,13 @@ export default function LoginPage() {
         otp={generatedOtp}
         email={email}
         type="login"
+        onOTPCopied={(otpCode) => {
+          setOtp(otpCode);
+          toast.success('Use the OTP to verify your login!');
+        }}
+        onVerified={() => {
+          setOtp(generatedOtp);
+        }}
         showCopyButton={true}
         expiryMinutes={15}
       />

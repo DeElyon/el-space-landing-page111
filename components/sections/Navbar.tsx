@@ -105,17 +105,30 @@ export function Navbar() {
             </div>
             <div className="space-y-2 border-t border-border pt-4">
               <Link href="/auth/login" onClick={() => setMobileMenuOpen(false)}>
-                <Button variant="ghost" size="sm" className="w-full text-muted-foreground hover:text-foreground">
+                <Button variant="ghost" className="w-full text-muted-foreground hover:text-foreground">
                   Login
                 </Button>
               </Link>
               <Link href="/auth/register" onClick={() => setMobileMenuOpen(false)}>
                 <Button
                   variant="outline"
-                  size="sm"
                   className="w-full border-accent text-accent hover:bg-accent/10"
                 >
                   Post a Job
+                </Button>
+              </Link>
+              <Link href="/auth/register" onClick={() => setMobileMenuOpen(false)}>
+                <Button
+                  className="w-full bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white"
+                >
+                  Apply Now
+                </Button>
+              </Link>
+            </div>
+            <div className="border-t border-border pt-4">
+              <Link href="/contact" onClick={() => setMobileMenuOpen(false)}>
+                <Button variant="ghost" className="w-full text-muted-foreground hover:text-foreground">
+                  Contact Support
                 </Button>
               </Link>
             </div>

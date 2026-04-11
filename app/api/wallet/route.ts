@@ -4,7 +4,8 @@ import {
   updateWalletBalance, 
   createPayment, 
   getPaymentsByProject,
-  getUserById 
+  getUserById,
+  getAllUserPayments 
 } from '@/lib/supabase';
 
 const INSTANT_WITHDRAWAL_FEE = 0.05; // 5%
@@ -31,13 +32,38 @@ export async function GET(request: NextRequest) {
     }
 
     if (action === 'transactions') {
-      // Get transaction history - simplified for now
-      return NextResponse.json({
-        success: true,
-        transactions: [],
-        total: 0,
-        message: 'Transaction history coming soon'
-      });
+      // Get transaction history from database
+      try {
+        const transactions = await getAllUserPayments(userId);
+        
+        const formattedTransactions = transactions.map((tx: any) => ({
+          id: tx.id,
+          type: tx.type === 'income' || tx.type === 'release' ? 'earning' : 
+                tx.type.includes('withdrawal') ? 'withdrawal' : 
+                tx.type === 'refund' ? 'refund' : 'fee',
+          amount: tx.amount,
+          description: tx.description || 'Transaction',
+          status: tx.status === 'completed' ? 'completed' : 
+                 tx.status === 'pending' ? 'pending' : 'failed',
+          date: tx.created_at || new Date().toISOString(),
+          metadata: tx.metadata,
+        }));
+
+        return NextResponse.json({
+          success: true,
+          transactions: formattedTransactions.sort((a: any, b: any) => 
+            new Date(b.date).getTime() - new Date(a.date).getTime()
+          ),
+          total: formattedTransactions.length,
+        });
+      } catch (error) {
+        console.error('[Wallet] Error fetching transactions:', error);
+        return NextResponse.json({
+          success: true,
+          transactions: [],
+          total: 0,
+        });
+      }
     }
 
     // Get wallet

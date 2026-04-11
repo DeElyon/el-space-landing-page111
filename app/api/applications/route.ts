@@ -7,7 +7,8 @@ import {
   updateProjectStatus, 
   createMilestone, 
   getUserById, 
-  getProject 
+  getProject,
+  getFreelancerProfile 
 } from '@/lib/supabase';
 import { calculateClientFee } from '@/lib/fees';
 
@@ -126,7 +127,24 @@ export async function GET(request: NextRequest) {
     if (projectId) {
       const { data, error } = await getApplicationsByProject(projectId);
       if (error) throw error;
-      return NextResponse.json({ applications: data });
+      
+      // Enhance applications with freelancer data
+      const applicationsWithFreelancer = await Promise.all(
+        (data || []).map(async (app: any) => {
+          const { data: freelancer } = await getFreelancerProfile(app.freelancer_id);
+          const { data: user } = await getUserById(app.freelancer_id);
+          return {
+            ...app,
+            freelancer: freelancer ? {
+              ...freelancer,
+              full_name: user?.user_metadata?.full_name || user?.email || 'Anonymous',
+              profile_picture: user?.user_metadata?.profile_picture || null,
+            } : null,
+          };
+        })
+      );
+      
+      return NextResponse.json({ applications: applicationsWithFreelancer });
     }
 
     if (freelancerId) {

@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
 
 async function handleInitializePayment(payload: any) {
   try {
-    const { amount, currency, email, name, projectId, milestoneId } = payload;
+    const { amount, currency, email, name, projectId, milestoneId, userId, type, fullName } = payload;
 
     if (!amount || !currency || !email || !name) {
       return NextResponse.json(
@@ -43,40 +43,59 @@ async function handleInitializePayment(payload: any) {
       );
     }
 
+    // For wallet funding, use different reference and description
+    const isWalletFunding = type === 'wallet_funding';
+    const reference = isWalletFunding 
+      ? `WALLET-${userId}-${Date.now()}`
+      : `EL-${projectId}-${milestoneId}-${Date.now()}`;
+    
+    const description = isWalletFunding
+      ? `Wallet funding - $${amount}`
+      : `Payment for milestone on project ${projectId}`;
+
     // Initialize Korapay payment
     const paymentData = await initializePayment({
       amount,
       currency,
-      customer: { name, email },
-      reference: `EL-${projectId}-${milestoneId}-${Date.now()}`,
-      description: `Payment for milestone on project ${projectId}`,
-      redirect_url: `${process.env.NEXT_PUBLIC_APP_URL}/payment/callback`,
-      notification_url: `${process.env.NEXT_PUBLIC_APP_URL}/api/payments?action=webhook`,
+      customer: { name: fullName || name, email },
+      reference,
+      description,
+      redirect_url: `${process.env.NEXT_PUBLIC_APP_URL}/wallet?status=success`,
+      notification_url: `${process.env.NEXT_PUBLIC_APP_URL}/api/payments/korapay?action=webhook`,
     });
 
-    // Save payment record in our database
-    const { data: payment, error } = await createPayment({
-      project_id: projectId,
-      milestone_id: milestoneId,
-      amount,
-      currency,
-      korapay_reference: paymentData.reference,
-      charge_code: paymentData.charge_code,
-      checkout_url: paymentData.checkout_url,
-      status: 'pending',
-    });
+    // Save payment record in our database if not wallet funding (wallet funding is handled separately)
+    if (!isWalletFunding) {
+      const { data: payment, error } = await createPayment({
+        project_id: projectId,
+        milestone_id: milestoneId,
+        amount,
+        currency,
+        korapay_reference: paymentData.reference,
+        charge_code: paymentData.charge_code,
+        checkout_url: paymentData.checkout_url,
+        status: 'pending',
+      });
 
-    if (error) {
-      return NextResponse.json(
-        { error: 'Failed to save payment record' },
-        { status: 500 }
-      );
+      if (error) {
+        return NextResponse.json(
+          { error: 'Failed to save payment record' },
+          { status: 500 }
+        );
+      }
+
+      return NextResponse.json({
+        success: true,
+        payment,
+        authorization_url: paymentData.checkout_url,
+      });
     }
 
+    // For wallet funding, return simpler response
     return NextResponse.json({
       success: true,
-      payment,
-      checkoutUrl: paymentData.checkout_url,
+      authorization_url: paymentData.checkout_url,
+      reference: paymentData.reference,
     });
   } catch (error) {
     console.error('Payment initialization error:', error);

@@ -447,9 +447,9 @@ export const PROJECT_CATEGORIES = [
 
 // Navigation links
 export const NAV_LINKS = [
-  { label: "How It Works", href: "#how-it-works" },
-  { label: "Features", href: "#features" },
-  { label: "Pricing", href: "#pricing" },
+  { label: "How It Works", href: "/how-it-works" },
+  { label: "Pricing", href: "/pricing" },
+  { label: "Browse Freelancers", href: "/freelancers" },
   { label: "FAQ", href: "#faq" },
 ];
 
@@ -637,10 +637,11 @@ export const FOOTER_SECTIONS = {
   ecosystem: {
     title: "Ecosystem",
     links: [
-      { label: "EL CODERS", href: "https://elcoders.com" },
-      { label: "EL SPACE", href: "#" },
-      { label: "ELITES", href: "https://elites.com" },
-      { label: "ELACCESS", href: "https://elaccess.com" },
+      { label: "EL CODERS", href: "https://elcoders-devs.vercel.app/" },
+      { label: "EL SPACE", href: "https://el-space-fpa.vercel.app/" },
+      { label: "ELITES", href: "https://elites-learn.vercel.app/" },
+      { label: "ELACCESS", href: "https://elaccess-interns.vercel.app/" },
+      { label: "NEXEL", href: "https://nexel-sma.vercel.app/" },
     ],
   },
   legal: {
