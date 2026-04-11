@@ -72,38 +72,11 @@ export default function ReviewsPage() {
           setStats(data.stats)
         }
       } else {
-        // Mock data
-        const mockReviews: Review[] = [
-          {
-            id: '1',
-            author: 'Sarah Johnson',
-            authorRole: 'client',
-            rating: 5,
-            title: 'Excellent work, highly recommended!',
-            comment: 'The developer delivered exceptional results. Great communication and attention to detail.',
-            project: 'Website Redesign',
-            date: new Date(Date.now() - 86400000).toISOString(),
-            verified: true,
-            helpful: 24,
-          },
-          {
-            id: '2',
-            author: 'Mike Chen',
-            authorRole: 'client',
-            rating: 4,
-            title: 'Very good, minor delays',
-            comment: 'Overall satisfied with the work. Had a few minor delays but quality was good.',
-            project: 'Mobile App Development',
-            date: new Date(Date.now() - 172800000).toISOString(),
-            verified: true,
-            helpful: 12,
-          },
-        ]
-        setReviews(mockReviews)
+        setReviews([])
         setStats({
-          averageRating: 4.5,
-          totalReviews: 2,
-          ratingBreakdown: { 5: 1, 4: 1, 3: 0, 2: 0, 1: 0 },
+          averageRating: 0,
+          totalReviews: 0,
+          ratingBreakdown: { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 },
         })
       }
       hideLoader()

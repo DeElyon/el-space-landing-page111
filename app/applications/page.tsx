@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { DashboardLayout } from '@/components/dashboard/auth-guard'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -60,184 +60,45 @@ interface Application {
 
 export default function ApplicationsPage() {
   const [userType] = useState<'freelancer' | 'client'>('client')
-  const [selectedApplicationId, setSelectedApplicationId] = useState<string | null>('1')
+  const [selectedApplicationId, setSelectedApplicationId] = useState<string | null>(null)
   const [viewMode, setViewMode] = useState<'list' | 'comparison' | 'recommendations'>('list')
+  const [applications, setApplications] = useState<Application[]>([])
+  const [loading, setLoading] = useState(true)
 
-  // Mock data with freelancer profiles
-  const mockApplications: Application[] = [
-    {
-      id: '1',
-      jobTitle: 'E-Commerce Platform Development',
-      company: 'Tech Startup Inc',
-      budget: 5000,
-      status: 'pending',
-      appliedDate: '2 days ago',
-      deadline: '5 days left',
-      skills: ['React', 'Node.js', 'PostgreSQL'],
-      freelancer: {
-        id: 'f1',
-        full_name: 'Alex Johnson',
-        hourly_rate: 75,
-        years_experience: 8,
-        avg_rating: 4.9,
-        total_projects: 45,
-        skills: ['React', 'Node.js', 'PostgreSQL', 'AWS', 'TypeScript', 'Next.js'],
-        bio: 'Full-stack developer with 8+ years of experience building scalable web applications.',
-        cv_url: 'https://example.com/cv/alex.pdf',
-        profile_picture: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Alex',
-        availability: 'available',
-        response_time: '2 hours',
-        completion_rate: 98,
-      },
-      proposedRate: 70,
-      estimatedDays: 21,
-      coverLetter: 'I have extensive experience with React and Node.js projects similar to your requirements. I can start immediately and deliver quality code with proper testing.'
-    },
-    {
-      id: '2',
-      jobTitle: 'Mobile App UI/UX Design',
-      company: 'Creative Agency',
-      budget: 2000,
-      status: 'accepted',
-      appliedDate: '1 week ago',
-      deadline: 'In progress',
-      skills: ['Figma', 'Prototyping', 'UI Design'],
-      freelancer: {
-        id: 'f2',
-        full_name: 'Sarah Design',
-        hourly_rate: 65,
-        years_experience: 6,
-        avg_rating: 4.7,
-        total_projects: 32,
-        skills: ['Figma', 'Prototyping', 'UI Design', 'Wireframing', 'Adobe XD'],
-        bio: 'Creative UI/UX designer specializing in mobile applications with a focus on user-centered design.',
-        profile_picture: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah',
-        availability: 'busy',
-        response_time: '4 hours',
-        completion_rate: 95,
-      },
-      proposedRate: 60,
-      estimatedDays: 14,
-      coverLetter: 'Your project looks interesting! I have a strong portfolio of mobile app designs and can provide excellent design results.'
-    },
-    {
-      id: '3',
-      jobTitle: 'Website Redesign',
-      company: 'Digital Marketing',
-      budget: 1500,
-      status: 'rejected',
-      appliedDate: '3 days ago',
-      deadline: 'Closed',
-      skills: ['Web Design', 'CSS', 'HTML'],
-      freelancer: {
-        id: 'f3',
-        full_name: 'Mike Frontend',
-        hourly_rate: 55,
-        years_experience: 5,
-        avg_rating: 4.5,
-        total_projects: 28,
-        skills: ['Web Design', 'CSS', 'HTML', 'React', 'JavaScript'],
-        bio: 'Front-end developer passionate about creating beautiful and responsive websites.',
-        profile_picture: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Mike',
-        availability: 'available',
-        completion_rate: 92,
-      },
-      proposedRate: 50,
-      estimatedDays: 10,
-      coverLetter: 'I can redesign your website to be more modern and responsive.'
-    },
-  ]
+  useEffect(() => {
+    fetchApplications()
+  }, [])
 
-  const mockRecommendations = [
-    {
-      id: 'f1',
-      name: 'Alex Johnson',
-      rating: 4.9,
-      rate: 75,
-      match_score: 98,
-      match_reason: 'Perfect match - Has all required skills with extensive experience',
-      skills: ['React', 'Node.js', 'PostgreSQL', 'AWS', 'TypeScript'],
-      completed_projects: 45,
-      availability: 'available' as const,
-    },
-    {
-      id: 'f4',
-      name: 'Emma Stack',
-      rating: 4.8,
-      rate: 80,
-      match_score: 95,
-      match_reason: 'Strong background with all key technologies',
-      skills: ['React', 'Node.js', 'MongoDB', 'AWS'],
-      completed_projects: 52,
-      availability: 'available' as const,
-    },
-    {
-      id: 'f5',
-      name: 'David Code',
-      rating: 4.6,
-      rate: 65,
-      match_score: 92,
-      match_reason: 'Good match - Familiar with most required technologies',
-      skills: ['React', 'Node.js', 'MySQL', 'JavaScript'],
-      completed_projects: 38,
-      availability: 'busy' as const,
-    },
-  ]
+  const fetchApplications = async () => {
+    try {
+      setLoading(true)
+      const userId = localStorage.getItem('userId') || ''
+      const response = await fetch(`/api/applications?userId=${userId}`)
+      const data = await response.json()
+      
+      if (data.success && data.applications) {
+        setApplications(data.applications)
+        if (data.applications.length > 0) {
+          setSelectedApplicationId(data.applications[0].id)
+        }
+      } else {
+        setApplications([])
+      }
+    } catch (error) {
+      console.error('Error fetching applications:', error)
+      setApplications([])
+    } finally {
+      setLoading(false)
+    }
+  }
 
-  const mockMilestones = [
-    {
-      id: 'm1',
-      title: 'Backend API Development',
-      description: 'Setup database and create REST API endpoints',
-      dueDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-      amount: 1500,
-      status: 'in_progress' as const,
-      deliverables: ['Database schema', 'API endpoints', 'Authentication system'],
-    },
-    {
-      id: 'm2',
-      title: 'Frontend Implementation',
-      description: 'Build React components and integrate with API',
-      dueDate: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
-      amount: 2000,
-      status: 'pending' as const,
-      deliverables: ['UI Components', 'API Integration', 'Testing'],
-    },
-    {
-      id: 'm3',
-      title: 'Testing & Deployment',
-      description: 'QA testing and deploy to production',
-      dueDate: new Date(Date.now() + 21 * 24 * 60 * 60 * 1000),
-      amount: 1500,
-      status: 'pending' as const,
-      deliverables: ['End-to-end testing', 'Performance optimization', 'Deployment'],
-    },
-  ]
-
-  const mockWorkSamples = [
-    {
-      id: 'w1',
-      title: 'E-Commerce Platform for Fashion Retail',
-      description: 'Full-stack e-commerce platform with payment integration',
-      imageUrl: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=400&h=300&fit=crop',
-      projectUrl: 'https://example-shop.com',
-      completedAt: new Date('2024-06-15'),
-      testimonial: 'Alex delivered a high-quality platform with excellent performance.',
-      technologies: ['React', 'Node.js', 'PostgreSQL', 'Stripe'],
-    },
-    {
-      id: 'w2',
-      title: 'SaaS Dashboard',
-      description: 'Analytics dashboard for B2B SaaS application',
-      imageUrl: 'https://images.unsplash.com/photo-1551091718-5a7707a4c6ea?w=400&h=300&fit=crop',
-      completedAt: new Date('2024-05-10'),
-      testimonial: 'Great work on the dashboard. The UX is intuitive.',
-      technologies: ['React', 'TypeScript', 'D3.js'],
-    },
-  ]
-
-  const selectedApp = mockApplications.find(app => app.id === selectedApplicationId)
+  const selectedApp = applications.find(app => app.id === selectedApplicationId)
   const freelancer = selectedApp?.freelancer
+
+  // Mock arrays for recommendations, milestones, work samples
+  const mockRecommendations: any[] = []
+  const mockMilestones: any[] = []
+  const mockWorkSamples: any[] = []
 
   const statusConfig = {
     pending: { color: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/50', label: 'Pending' },
@@ -266,25 +127,25 @@ export default function ApplicationsPage() {
           <div className="bg-slate-800 border border-slate-700 rounded-lg p-4">
             <p className="text-slate-400 text-sm mb-1">Total Applications</p>
             <p className="text-3xl font-bold text-white">
-              {mockApplications.length}
+              {applications.length}
             </p>
           </div>
           <div className="bg-slate-800 border border-slate-700 rounded-lg p-4">
             <p className="text-slate-400 text-sm mb-1">Pending Review</p>
             <p className="text-3xl font-bold text-yellow-400">
-              {mockApplications.filter(a => a.status === 'pending').length}
+              {applications.filter(a => a.status === 'pending').length}
             </p>
           </div>
           <div className="bg-slate-800 border border-slate-700 rounded-lg p-4">
             <p className="text-slate-400 text-sm mb-1">Accepted</p>
             <p className="text-3xl font-bold text-green-400">
-              {mockApplications.filter(a => a.status === 'accepted').length}
+              {applications.filter(a => a.status === 'accepted').length}
             </p>
           </div>
           <div className="bg-slate-800 border border-slate-700 rounded-lg p-4">
             <p className="text-slate-400 text-sm mb-1">Completed</p>
             <p className="text-3xl font-bold text-blue-400">
-              {mockApplications.filter(a => a.status === 'completed').length}
+              {applications.filter(a => a.status === 'completed').length}
             </p>
           </div>
         </div>
@@ -311,7 +172,7 @@ export default function ApplicationsPage() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               {/* Applications List */}
               <div className="lg:col-span-1 space-y-2">
-                {mockApplications.map((app) => (
+                {applications.map((app) => (
                   <Card
                     key={app.id}
                     className={`cursor-pointer transition-all ${
@@ -518,9 +379,9 @@ export default function ApplicationsPage() {
           {/* Comparison View */}
           <TabsContent value="comparison">
             <FreelancerComparison 
-              freelancers={mockApplications.slice(0, 3).map(a => a.freelancer!).filter(Boolean)}
+              freelancers={applications.slice(0, 3).map(a => a.freelancer!).filter(Boolean)}
               onSelectFreelancer={(freelancerId) => {
-                const app = mockApplications.find(a => a.freelancer?.id === freelancerId);
+                const app = applications.find(a => a.freelancer?.id === freelancerId);
                 if (app) setSelectedApplicationId(app.id);
               }}
             />
@@ -532,7 +393,7 @@ export default function ApplicationsPage() {
               projectSkills={['React', 'Node.js', 'PostgreSQL']}
               recommendations={mockRecommendations}
               onSelectFreelancer={(freelancerId) => {
-                const app = mockApplications.find(a => a.freelancer?.id === freelancerId);
+                const app = applications.find(a => a.freelancer?.id === freelancerId);
                 if (app) setSelectedApplicationId(app.id);
               }}
             />

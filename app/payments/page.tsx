@@ -82,67 +82,13 @@ export default function PaymentsPage() {
           setStats(data.stats)
         }
       } else {
-        // Mock data
-        const mockPayments: Payment[] = [
-          {
-            id: '1',
-            transactionId: 'TXN-2024-001',
-            type: 'income',
-            amount: 1500,
-            currency: 'USD',
-            status: 'completed',
-            description: 'Project milestone payment',
-            projectName: 'Website Redesign',
-            relatedPerson: 'John Developer',
-            date: new Date(Date.now() - 86400000).toISOString(),
-            method: 'Bank Transfer',
-          },
-          {
-            id: '2',
-            transactionId: 'TXN-2024-002',
-            type: 'fee',
-            amount: 75,
-            currency: 'USD',
-            status: 'completed',
-            description: 'Platform fee',
-            projectName: 'Website Redesign',
-            relatedPerson: 'EL SPACE',
-            date: new Date(Date.now() - 86400000).toISOString(),
-          },
-          {
-            id: '3',
-            transactionId: 'TXN-2024-003',
-            type: 'income',
-            amount: 2000,
-            currency: 'USD',
-            status: 'completed',
-            description: 'Project completion payment',
-            projectName: 'Mobile App Development',
-            relatedPerson: 'Sarah Johnson',
-            date: new Date(Date.now() - 172800000).toISOString(),
-            method: 'Bank Transfer',
-          },
-          {
-            id: '4',
-            transactionId: 'TXN-2024-004',
-            type: 'expense',
-            amount: 500,
-            currency: 'USD',
-            status: 'pending',
-            description: 'Withdrawal request',
-            projectName: 'N/A',
-            relatedPerson: 'Your Bank Account',
-            date: new Date(Date.now() - 259200000).toISOString(),
-            method: 'Bank Withdrawal',
-          },
-        ]
-        setPayments(mockPayments)
+        setPayments([])
         setStats({
-          totalIncome: 3500,
-          totalExpenses: 500,
-          totalFees: 75,
+          totalIncome: 0,
+          totalExpenses: 0,
+          totalFees: 0,
           totalRefunds: 0,
-          averageTransaction: 1018.75,
+          averageTransaction: 0,
         })
       }
       hideLoader()

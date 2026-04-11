@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { DashboardLayout } from '@/components/dashboard/auth-guard'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -28,60 +28,62 @@ interface Message {
 
 export default function MessagesPage() {
   const [searchQuery, setSearchQuery] = useState('')
-  const [selectedConversation, setSelectedConversation] = useState<string | null>('1')
+  const [selectedConversation, setSelectedConversation] = useState<string | null>(null)
   const [messageInput, setMessageInput] = useState('')
   const [userType] = useState<'client' | 'freelancer'>('client')
+  const [conversations, setConversations] = useState<Conversation[]>([])
+  const [messages, setMessages] = useState<Message[]>([])
+  const [loading, setLoading] = useState(true)
 
-  const mockConversations: Conversation[] = [
-    {
-      id: '1',
-      name: 'Sarah Johnson',
-      lastMessage: 'Looking forward to working with you!',
-      timestamp: '2 min',
-      unread: true,
-      online: true,
-    },
-    {
-      id: '2',
-      name: 'Ahmed Hassan',
-      lastMessage: 'I can start the project immediately',
-      timestamp: '1 hour',
-      unread: false,
-      online: false,
-    },
-    {
-      id: '3',
-      name: 'Maria Garcia',
-      lastMessage: 'The final deliverables are ready for review',
-      timestamp: '3 hours',
-      unread: false,
-      online: true,
-    },
-  ]
+  useEffect(() => {
+    fetchConversations()
+  }, [])
 
-  const mockMessages: Message[] = [
-    {
-      id: '1',
-      sender: 'Sarah Johnson',
-      text: 'Hi! I saw your project posting and I think I\'d be a great fit.',
-      timestamp: '10:30 AM',
-      read: true,
-    },
-    {
-      id: '2',
-      sender: 'You',
-      text: 'Thanks for your interest! Can you tell me more about your experience?',
-      timestamp: '10:35 AM',
-      read: true,
-    },
-    {
-      id: '3',
-      sender: 'Sarah Johnson',
-      text: 'Looking forward to working with you!',
-      timestamp: '10:40 AM',
-      read: false,
-    },
-  ]
+  useEffect(() => {
+    if (selectedConversation) {
+      fetchMessages(selectedConversation)
+    }
+  }, [selectedConversation])
+
+  const fetchConversations = async () => {
+    try {
+      setLoading(true)
+      const userId = localStorage.getItem('userId') || ''
+      const response = await fetch(`/api/messages?userId=${userId}`)
+      const data = await response.json()
+      
+      if (data.success && data.conversations) {
+        setConversations(data.conversations)
+        if (data.conversations.length > 0) {
+          setSelectedConversation(data.conversations[0].id)
+        }
+      } else {
+        setConversations([])
+      }
+    } catch (error) {
+      console.error('Error fetching conversations:', error)
+      setConversations([])
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const fetchMessages = async (conversationId: string) => {
+    try {
+      const userId = localStorage.getItem('userId') || ''
+      const response = await fetch(`/api/messages?userId=${userId}&conversationId=${conversationId}`)
+      const data = await response.json()
+      
+      if (data.success && data.messages) {
+        setMessages(data.messages)
+      } else {
+        setMessages([])
+      }
+    } catch (error) {
+      console.error('Error fetching messages:', error)
+      setMessages([])
+    }
+  }
 
   const handleSendMessage = async () => {
     if (messageInput.trim()) {
@@ -135,7 +137,7 @@ export default function MessagesPage() {
               </div>
             </div>
             <ScrollArea className="flex-1">
-              {mockConversations.map((conv) => (
+              {conversations.map((conv) => (
                 <button
                   key={conv.id}
                   onClick={() => setSelectedConversation(conv.id)}
@@ -176,14 +178,14 @@ export default function MessagesPage() {
                 <div className="p-4 border-b border-slate-700 flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-500 to-blue-500 flex items-center justify-center text-white font-bold">
-                      {mockConversations.find(c => c.id === selectedConversation)?.name.charAt(0)}
+                      {conversations.find(c => c.id === selectedConversation)?.name.charAt(0)}
                     </div>
                     <div>
                       <h3 className="font-semibold text-white">
-                        {mockConversations.find(c => c.id === selectedConversation)?.name}
+                        {conversations.find(c => c.id === selectedConversation)?.name}
                       </h3>
                       <p className="text-xs text-slate-400">
-                        {mockConversations.find(c => c.id === selectedConversation)?.online ? 'Online' : 'Offline'}
+                        {conversations.find(c => c.id === selectedConversation)?.online ? 'Online' : 'Offline'}
                       </p>
                     </div>
                   </div>
@@ -194,7 +196,7 @@ export default function MessagesPage() {
 
                 {/* Messages */}
                 <ScrollArea className="flex-1 p-4 space-y-4">
-                  {mockMessages.map((msg) => (
+                  {messages.map((msg) => (
                     <div
                       key={msg.id}
                       className={`flex ${msg.sender === 'You' ? 'justify-end' : 'justify-start'} mb-4`}

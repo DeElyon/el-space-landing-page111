@@ -72,35 +72,7 @@ export default function DisputesPage() {
       if (data.success && data.disputes) {
         setDisputes(data.disputes)
       } else {
-        // Mock data for demo
-        const mockDisputes: Dispute[] = [
-          {
-            id: '1',
-            projectId: 'proj-1',
-            projectName: 'Website Redesign',
-            clientName: 'John Developer',
-            freelancerName: 'You',
-            reason: 'Quality concerns - missing features',
-            amount: 1500,
-            status: 'in_review',
-            createdAt: new Date(Date.now() - 86400000).toISOString(),
-            messages: [
-              {
-                id: '1',
-                sender: 'John Developer',
-                message: 'The website is missing several features we discussed',
-                timestamp: new Date().toISOString(),
-              },
-              {
-                id: '2',
-                sender: 'You',
-                message: 'Those features were out of scope. Let me clarify...',
-                timestamp: new Date().toISOString(),
-              },
-            ],
-          },
-        ]
-        setDisputes(mockDisputes)
+        setDisputes([])
       }
       hideLoader()
     } catch (error) {
