@@ -31,8 +31,19 @@ export default function AdminDashboard() {
 
   const ADMIN_PASSWORD = 'Elspace12345@'
 
+  useEffect(() => {
+    // Check if already authenticated via localStorage
+    const adminToken = localStorage.getItem('adminToken')
+    if (adminToken === 'true') {
+      setIsAuthenticated(true)
+      fetchAdminData()
+    }
+  }, [])
+
   const handleLogin = () => {
     if (password === ADMIN_PASSWORD) {
+      localStorage.setItem('adminToken', 'true')
+      localStorage.setItem('adminLoginTime', new Date().getTime().toString())
       setIsAuthenticated(true)
       toast.success('Admin authenticated')
       fetchAdminData()
@@ -43,6 +54,8 @@ export default function AdminDashboard() {
   }
 
   const handleLogout = () => {
+    localStorage.removeItem('adminToken')
+    localStorage.removeItem('adminLoginTime')
     setIsAuthenticated(false)
     setPassword('')
     router.push('/')

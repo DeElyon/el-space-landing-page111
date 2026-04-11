@@ -63,14 +63,21 @@ export default function EarningsPage() {
     }
   };
 
-  const chartData = [
-    { month: 'Jan', earnings: 2400 },
-    { month: 'Feb', earnings: 1398 },
-    { month: 'Mar', earnings: 9800 },
-    { month: 'Apr', earnings: 3908 },
-    { month: 'May', earnings: 4800 },
-    { month: 'Jun', earnings: 3800 },
-  ];
+  // Generate chart data from last 6 months
+  const generateChartData = () => {
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
+    return months.map((month, index) => {
+      const monthEarnings = earnings
+        .filter((e) => {
+          const date = new Date(e.created_at || e.date);
+          return date.getMonth() === index;
+        })
+        .reduce((sum, e) => sum + (e.amount || 0), 0);
+      return { month, earnings: monthEarnings };
+    });
+  };
+
+  const chartData = generateChartData();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 pt-24 pb-12">

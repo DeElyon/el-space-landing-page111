@@ -95,11 +95,6 @@ export default function ApplicationsPage() {
   const selectedApp = applications.find(app => app.id === selectedApplicationId)
   const freelancer = selectedApp?.freelancer
 
-  // Mock arrays for recommendations, milestones, work samples
-  const mockRecommendations: any[] = []
-  const mockMilestones: any[] = []
-  const mockWorkSamples: any[] = []
-
   const statusConfig = {
     pending: { color: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/50', label: 'Pending' },
     accepted: { color: 'bg-green-500/20 text-green-400 border-green-500/50', label: 'Accepted' },
@@ -345,7 +340,7 @@ export default function ApplicationsPage() {
 
                       <TabsContent value="samples">
                         <WorkSampleGallery
-                          samples={mockWorkSamples}
+                          samples={[]}
                           freelancerName={freelancer.full_name}
                         />
                       </TabsContent>
@@ -353,12 +348,12 @@ export default function ApplicationsPage() {
                       <TabsContent value="timeline">
                         <div className="space-y-4">
                           <ProjectTimeline
-                            milestones={mockMilestones}
+                            milestones={[]}
                             projectDeadline={new Date(Date.now() + 21 * 24 * 60 * 60 * 1000)}
                             estimatedDays={selectedApp.estimatedDays}
                           />
                           <MilestonePaymentTracker
-                            milestones={mockMilestones}
+                            milestones={[]}
                             totalBudget={selectedApp.budget}
                           />
                         </div>
@@ -391,7 +386,7 @@ export default function ApplicationsPage() {
           <TabsContent value="recommendations">
             <SmartRecommendations 
               projectSkills={['React', 'Node.js', 'PostgreSQL']}
-              recommendations={mockRecommendations}
+              recommendations={[]}
               onSelectFreelancer={(freelancerId) => {
                 const app = applications.find(a => a.freelancer?.id === freelancerId);
                 if (app) setSelectedApplicationId(app.id);

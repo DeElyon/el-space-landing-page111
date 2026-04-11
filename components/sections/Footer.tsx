@@ -1,6 +1,7 @@
 import { FOOTER_SECTIONS } from '@/lib/constants'
 import Link from 'next/link'
 import Image from 'next/image'
+import { AdminLoginDialog } from '@/components/admin-login-dialog'
 
 export function Footer() {
   return (
@@ -109,12 +110,7 @@ export function Footer() {
             © 2026 EL VERSE TECHNOLOGIES. Freelance Without Friction.
           </p>
           <div className="flex gap-4 items-center">
-            <Link 
-              href="/admin" 
-              className="text-xs text-muted-foreground hover:text-accent transition-colors opacity-30 hover:opacity-100"
-            >
-              Admin
-            </Link>
+            <AdminLoginDialog />
           </div>
         </div>
       </div>
