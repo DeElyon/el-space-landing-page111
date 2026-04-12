@@ -106,13 +106,13 @@ export default function DashboardPage() {
                 Quick Actions
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                <Button className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white font-semibold py-6 text-base">
+                <Button className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white font-semibold py-6 text-base shadow-lg hover:shadow-cyan-500/50 transition-all">
                   Post a Project
                 </Button>
-                <Button className="bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white font-semibold py-6 text-base">
+                <Button className="bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white font-semibold py-6 text-base shadow-lg hover:shadow-purple-500/50 transition-all">
                   Browse Talent
                 </Button>
-                <Button className="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-semibold py-6 text-base">
+                <Button className="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-semibold py-6 text-base shadow-lg hover:shadow-emerald-500/50 transition-all">
                   View My Profile
                 </Button>
               </div>
@@ -123,29 +123,29 @@ export default function DashboardPage() {
                 Dashboard Features (Coming Soon)
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="flex items-center gap-3 p-4 rounded-lg bg-slate-800/30 border border-slate-700/30 hover:border-cyan-500/30 hover:bg-cyan-500/5 transition-all">
+                <div className="flex items-center gap-3 p-4 rounded-lg bg-gradient-to-br from-cyan-500/10 to-blue-500/5 border border-cyan-500/30 hover:border-cyan-500/50 hover:shadow-[0_0_20px_rgba(34,211,238,0.15)] transition-all cursor-pointer">
                   <span className="text-cyan-400 text-xl">📊</span>
-                  <span className="text-slate-300">Project Management</span>
+                  <span className="text-slate-300 font-medium">Project Management</span>
                 </div>
-                <div className="flex items-center gap-3 p-4 rounded-lg bg-slate-800/30 border border-slate-700/30 hover:border-emerald-500/30 hover:bg-emerald-500/5 transition-all">
+                <div className="flex items-center gap-3 p-4 rounded-lg bg-gradient-to-br from-emerald-500/10 to-teal-500/5 border border-emerald-500/30 hover:border-emerald-500/50 hover:shadow-[0_0_20px_rgba(16,185,129,0.15)] transition-all cursor-pointer">
                   <span className="text-emerald-400 text-xl">💰</span>
-                  <span className="text-slate-300">Earnings Dashboard</span>
+                  <span className="text-slate-300 font-medium">Earnings Dashboard</span>
                 </div>
-                <div className="flex items-center gap-3 p-4 rounded-lg bg-slate-800/30 border border-slate-700/30 hover:border-purple-500/30 hover:bg-purple-500/5 transition-all">
+                <div className="flex items-center gap-3 p-4 rounded-lg bg-gradient-to-br from-purple-500/10 to-pink-500/5 border border-purple-500/30 hover:border-purple-500/50 hover:shadow-[0_0_20px_rgba(168,85,247,0.15)] transition-all cursor-pointer">
                   <span className="text-purple-400 text-xl">🎯</span>
-                  <span className="text-slate-300">Milestone Tracking</span>
+                  <span className="text-slate-300 font-medium">Milestone Tracking</span>
                 </div>
-                <div className="flex items-center gap-3 p-4 rounded-lg bg-slate-800/30 border border-slate-700/30 hover:border-blue-500/30 hover:bg-blue-500/5 transition-all">
+                <div className="flex items-center gap-3 p-4 rounded-lg bg-gradient-to-br from-blue-500/10 to-cyan-500/5 border border-blue-500/30 hover:border-blue-500/50 hover:shadow-[0_0_20px_rgba(59,130,246,0.15)] transition-all cursor-pointer">
                   <span className="text-blue-400 text-xl">📝</span>
-                  <span className="text-slate-300">Daily Standups</span>
+                  <span className="text-slate-300 font-medium">Daily Standups</span>
                 </div>
-                <div className="flex items-center gap-3 p-4 rounded-lg bg-slate-800/30 border border-slate-700/30 hover:border-yellow-500/30 hover:bg-yellow-500/5 transition-all">
+                <div className="flex items-center gap-3 p-4 rounded-lg bg-gradient-to-br from-yellow-500/10 to-amber-500/5 border border-yellow-500/30 hover:border-yellow-500/50 hover:shadow-[0_0_20px_rgba(234,179,8,0.15)] transition-all cursor-pointer">
                   <span className="text-yellow-400 text-xl">⭐</span>
-                  <span className="text-slate-300">Review System</span>
+                  <span className="text-slate-300 font-medium">Review System</span>
                 </div>
-                <div className="flex items-center gap-3 p-4 rounded-lg bg-slate-800/30 border border-slate-700/30 hover:border-pink-500/30 hover:bg-pink-500/5 transition-all">
+                <div className="flex items-center gap-3 p-4 rounded-lg bg-gradient-to-br from-pink-500/10 to-rose-500/5 border border-pink-500/30 hover:border-pink-500/50 hover:shadow-[0_0_20px_rgba(236,72,153,0.15)] transition-all cursor-pointer">
                   <span className="text-pink-400 text-xl">✓</span>
-                  <span className="text-slate-300">Verified Badge Status</span>
+                  <span className="text-slate-300 font-medium">Verified Badge Status</span>
                 </div>
               </div>
             </div>
