@@ -36,16 +36,16 @@ export function FreelancerApplicationForm() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto rounded-lg border border-border bg-card p-8">
-      <h3 className="mb-2 text-2xl font-bold text-foreground">Apply as a Freelancer</h3>
-      <p className="mb-6 text-muted-foreground">Join the top 5% of tech talent on EL SPACE.</p>
+    <div className="max-w-2xl mx-auto rounded-lg border border-slate-700/50 bg-slate-900/40 backdrop-blur-sm p-8">
+      <h3 className="mb-2 text-2xl font-bold text-white">Apply as a Freelancer</h3>
+      <p className="mb-6 text-slate-400">Join the top 5% of tech talent on EL SPACE.</p>
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Personal Info */}
         <div className="space-y-4">
-          <h4 className="font-semibold text-foreground">Personal Information</h4>
+          <h4 className="font-semibold text-white">Personal Information</h4>
           <div>
-            <label className="mb-2 block text-sm font-semibold text-foreground">
+            <label className="mb-2 block text-sm font-semibold text-white">
               Full Name
             </label>
             <Input
@@ -53,10 +53,11 @@ export function FreelancerApplicationForm() {
               value={formData.name}
               onChange={(e) => handleChange('name', e.target.value)}
               required
+              className="bg-slate-800/50 border-slate-700 text-white"
             />
           </div>
           <div>
-            <label className="mb-2 block text-sm font-semibold text-foreground">
+            <label className="mb-2 block text-sm font-semibold text-white">
               Email Address
             </label>
             <Input
@@ -65,15 +66,16 @@ export function FreelancerApplicationForm() {
               value={formData.email}
               onChange={(e) => handleChange('email', e.target.value)}
               required
+              className="bg-slate-800/50 border-slate-700 text-white"
             />
           </div>
         </div>
 
         {/* Portfolio & Links */}
-        <div className="space-y-4 border-t border-border pt-6">
-          <h4 className="font-semibold text-foreground">Portfolio & Links</h4>
+        <div className="space-y-4 border-t border-slate-700/50 pt-6">
+          <h4 className="font-semibold text-white">Portfolio & Links</h4>
           <div>
-            <label className="mb-2 block text-sm font-semibold text-foreground">
+            <label className="mb-2 block text-sm font-semibold text-white">
               Portfolio URL
             </label>
             <Input
@@ -81,10 +83,11 @@ export function FreelancerApplicationForm() {
               placeholder="https://yourportfolio.com"
               value={formData.portfolio}
               onChange={(e) => handleChange('portfolio', e.target.value)}
+              className="bg-slate-800/50 border-slate-700 text-white"
             />
           </div>
           <div>
-            <label className="mb-2 block text-sm font-semibold text-foreground">
+            <label className="mb-2 block text-sm font-semibold text-white">
               GitHub / LinkedIn URL (Optional)
             </label>
             <Input
@@ -92,15 +95,16 @@ export function FreelancerApplicationForm() {
               placeholder="https://github.com/yourprofile"
               value={formData.github}
               onChange={(e) => handleChange('github', e.target.value)}
+              className="bg-slate-800/50 border-slate-700 text-white"
             />
           </div>
         </div>
 
         {/* Skills & Experience */}
-        <div className="space-y-4 border-t border-border pt-6">
-          <h4 className="font-semibold text-foreground">Skills & Experience</h4>
+        <div className="space-y-4 border-t border-slate-700/50 pt-6">
+          <h4 className="font-semibold text-white">Skills & Experience</h4>
           <div>
-            <label className="mb-2 block text-sm font-semibold text-foreground">
+            <label className="mb-2 block text-sm font-semibold text-white">
               Your Skills
             </label>
             <Input
@@ -108,17 +112,18 @@ export function FreelancerApplicationForm() {
               value={formData.skills}
               onChange={(e) => handleChange('skills', e.target.value)}
               required
+              className="bg-slate-800/50 border-slate-700 text-white"
             />
           </div>
           <div>
-            <label className="mb-2 block text-sm font-semibold text-foreground">
+            <label className="mb-2 block text-sm font-semibold text-white">
               Years of Experience
             </label>
             <Select value={formData.experience} onValueChange={(val) => handleChange('experience', val)}>
-              <SelectTrigger>
+              <SelectTrigger className="bg-slate-800/50 border-slate-700 text-white">
                 <SelectValue placeholder="Select experience level" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-slate-900 border-slate-700">
                 <SelectItem value="0-1">0-1 years</SelectItem>
                 <SelectItem value="1-3">1-3 years</SelectItem>
                 <SelectItem value="3-5">3-5 years</SelectItem>
@@ -127,7 +132,7 @@ export function FreelancerApplicationForm() {
             </Select>
           </div>
           <div>
-            <label className="mb-2 block text-sm font-semibold text-foreground">
+            <label className="mb-2 block text-sm font-semibold text-white">
               Hourly Rate (USD)
             </label>
             <Input
@@ -136,15 +141,16 @@ export function FreelancerApplicationForm() {
               value={formData.hourlyRate}
               onChange={(e) => handleChange('hourlyRate', e.target.value)}
               required
+              className="bg-slate-800/50 border-slate-700 text-white"
             />
           </div>
         </div>
 
         {/* Bio */}
-        <div className="space-y-4 border-t border-border pt-6">
-          <h4 className="font-semibold text-foreground">About You</h4>
+        <div className="space-y-4 border-t border-slate-700/50 pt-6">
+          <h4 className="font-semibold text-white">About You</h4>
           <div>
-            <label className="mb-2 block text-sm font-semibold text-foreground">
+            <label className="mb-2 block text-sm font-semibold text-white">
               Short Bio
             </label>
             <Textarea
@@ -153,17 +159,18 @@ export function FreelancerApplicationForm() {
               onChange={(e) => handleChange('bio', e.target.value)}
               rows={4}
               required
+              className="bg-slate-800/50 border-slate-700 text-white"
             />
           </div>
           <div>
-            <label className="mb-2 block text-sm font-semibold text-foreground">
+            <label className="mb-2 block text-sm font-semibold text-white">
               How did you hear about EL SPACE?
             </label>
             <Select value={formData.heardFrom} onValueChange={(val) => handleChange('heardFrom', val)}>
-              <SelectTrigger>
+              <SelectTrigger className="bg-slate-800/50 border-slate-700 text-white">
                 <SelectValue placeholder="Select an option" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-slate-900 border-slate-700">
                 <SelectItem value="social">Social Media</SelectItem>
                 <SelectItem value="friend">Friend Referral</SelectItem>
                 <SelectItem value="elaccess">ELACCESS</SelectItem>
@@ -175,14 +182,14 @@ export function FreelancerApplicationForm() {
         </div>
 
         {/* Submit */}
-        <div className="border-t border-border pt-6">
+        <div className="border-t border-slate-700/50 pt-6">
           <Button
             type="submit"
-            className="w-full bg-accent text-white hover:bg-accent/90"
+            className="w-full bg-gradient-to-r from-purple-500 to-pink-600 text-white hover:from-purple-600 hover:to-pink-700"
           >
             Apply to Join EL SPACE
           </Button>
-          <p className="mt-4 text-center text-sm text-muted-foreground">
+          <p className="mt-4 text-center text-sm text-slate-400">
             Our team reviews applications within 48 hours.
           </p>
         </div>

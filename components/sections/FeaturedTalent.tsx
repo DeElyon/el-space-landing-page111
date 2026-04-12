@@ -37,7 +37,7 @@ export function FeaturedTalent() {
   }, [])
 
   return (
-    <section className="py-16 md:py-24 lg:py-32">
+    <section className="py-16 md:py-24 lg:py-32 bg-gradient-to-b from-slate-950 to-slate-900/50">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionHeader
           subheading="Meet Our Vetted Freelancers"
@@ -54,23 +54,23 @@ export function FeaturedTalent() {
             freelancers.map((freelancer) => (
               <div
                 key={freelancer.id}
-                className="rounded-lg border border-border bg-card p-6 transition-all hover:border-accent hover:shadow-lg flex flex-col h-full"
+                className="rounded-lg border border-slate-700/50 bg-slate-900/40 backdrop-blur-sm p-6 transition-all hover:border-blue-500/50 hover:shadow-[0_0_20px_rgba(59,130,246,0.15)] flex flex-col h-full"
               >
                 {/* Avatar Placeholder */}
-                <div className="mb-4 h-24 w-24 rounded-full bg-gradient-to-br from-accent to-primary/80 flex items-center justify-center text-2xl font-bold text-white">
+                <div className="mb-4 h-24 w-24 rounded-full bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center text-2xl font-bold text-white">
                   {freelancer.name.charAt(0)}
                 </div>
 
                 {/* Name & Title */}
-                <h3 className="mb-1 font-bold text-foreground">{freelancer.name}</h3>
-                <p className="mb-3 text-sm text-muted-foreground">{freelancer.title}</p>
+                <h3 className="mb-1 font-bold text-white">{freelancer.name}</h3>
+                <p className="mb-3 text-sm text-slate-400">{freelancer.title}</p>
 
                 {/* Skills */}
                 <div className="mb-4 flex flex-wrap gap-2 flex-grow">
                   {freelancer.skills.slice(0, 3).map((skill: string) => (
                     <span
                       key={skill}
-                      className="rounded-full bg-secondary px-3 py-1 text-xs font-medium text-foreground"
+                      className="rounded-full bg-blue-500/20 px-3 py-1 text-xs font-medium text-blue-300 border border-blue-500/30"
                     >
                       {skill}
                     </span>
@@ -78,18 +78,18 @@ export function FeaturedTalent() {
                 </div>
 
                 {/* Rate & Availability */}
-                <div className="mb-4 border-t border-border pt-4 mt-auto">
-                  <p className="mb-2 text-sm font-semibold text-amber-400">
+                <div className="mb-4 border-t border-slate-700/50 pt-4 mt-auto">
+                  <p className="mb-2 text-sm font-semibold text-emerald-400">
                     {freelancer.hourlyRate}
                   </p>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-xs text-slate-400">
                     {freelancer.availability}
                   </p>
                 </div>
 
                 {/* CTA */}
                 <Link href={`/freelancer/${freelancer.id}`} className="w-full">
-                  <Button variant="outline" size="sm" className="w-full">
+                  <Button variant="outline" size="sm" className="w-full border-cyan-400/50 text-cyan-300 hover:bg-cyan-500/20">
                     View Profile →
                   </Button>
                 </Link>

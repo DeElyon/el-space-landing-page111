@@ -4,7 +4,7 @@ import { StepCard } from '@/components/ui/StepCard'
 
 export function HowItWorksClients() {
   return (
-    <section className="py-16 md:py-24 lg:py-32">
+    <section className="py-16 md:py-24 lg:py-32 bg-gradient-to-b from-slate-950 to-slate-900/50">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionHeader
           subheading="For Clients"
@@ -29,7 +29,7 @@ export function HowItWorksClients() {
 
 export function HowItWorksFreelancers() {
   return (
-    <section className="py-16 md:py-24 lg:py-32 bg-secondary/30">
+    <section className="py-16 md:py-24 lg:py-32 bg-gradient-to-b from-slate-900/50 to-slate-950">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionHeader
           subheading="For Freelancers"
