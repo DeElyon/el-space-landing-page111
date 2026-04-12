@@ -11,21 +11,17 @@ export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
+    <nav className="sticky top-0 z-50 border-b border-slate-800/50 bg-slate-900/95 backdrop-blur">
+      <div className="mx-auto max-w-7xl px-4 py-3 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
           {/* Logo with text */}
-          <Link href="/" className="flex items-center gap-2 sm:gap-3">
-            <div className="relative h-8 w-8 sm:h-10 sm:w-10 flex-shrink-0">
-              <Image
-                src="/logo.png"
-                alt="EL SPACE"
-                fill
-                className="object-contain"
-                priority
-              />
+          <Link href="/" className="flex items-center gap-2 sm:gap-3 hover:opacity-80 transition-opacity">
+            <div className="relative h-9 w-9 sm:h-11 sm:w-11 flex-shrink-0">
+              <div className="h-full w-full bg-gradient-to-br from-cyan-500 to-blue-600 rounded-lg flex items-center justify-center font-bold text-white text-sm">
+                EL
+              </div>
             </div>
-            <span className="hidden text-lg sm:text-xl font-bold bg-gradient-to-r from-cyan-500 to-blue-500 bg-clip-text text-transparent sm:inline-block">
+            <span className="hidden text-xl sm:text-2xl font-bold bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent sm:inline-block">
               EL SPACE
             </span>
           </Link>
@@ -36,7 +32,7 @@ export function Navbar() {
               <Link
                 key={link.label}
                 href={link.href}
-                className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+                className="text-sm font-medium text-slate-300 hover:text-white transition-colors duration-200 hover:underline underline-offset-4"
               >
                 {link.label}
               </Link>
@@ -44,17 +40,16 @@ export function Navbar() {
           </div>
 
           {/* CTA Buttons & Links */}
-          <div className="hidden lg:flex items-center gap-2">
+          <div className="hidden lg:flex items-center gap-3">
             <Link href="/auth/login">
-              <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
+              <Button variant="ghost" size="sm" className="text-slate-300 hover:text-white hover:bg-slate-800">
                 Login
               </Button>
             </Link>
             <Link href="/auth/register">
               <Button
-                variant="outline"
                 size="sm"
-                className="border-accent text-accent hover:bg-accent/10"
+                className="border border-purple-500/50 text-purple-300 hover:bg-purple-500/10 font-medium"
               >
                 Post a Job
               </Button>
@@ -62,7 +57,7 @@ export function Navbar() {
             <Link href="/auth/register">
               <Button
                 size="sm"
-                className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white"
+                className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white font-medium shadow-lg shadow-cyan-500/20"
               >
                 Apply Now
               </Button>
@@ -74,14 +69,14 @@ export function Navbar() {
             <Link href="/auth/register">
               <Button
                 size="sm"
-                className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white"
+                className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white font-medium"
               >
                 Apply Now
               </Button>
             </Link>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 text-muted-foreground hover:text-foreground"
+              className="p-2 text-slate-400 hover:text-white transition-colors"
             >
               {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
@@ -90,36 +85,35 @@ export function Navbar() {
 
         {/* Mobile menu */}
         {mobileMenuOpen && (
-          <div className="mt-4 space-y-4 border-t border-border pt-4 md:hidden">
+          <div className="mt-4 space-y-4 border-t border-slate-700 pt-4 md:hidden">
             <div className="flex flex-col gap-2">
               {NAV_LINKS.map((link) => (
                 <Link
                   key={link.label}
                   href={link.href}
-                  className="block px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent/5 rounded-md transition-colors"
+                  className="block px-4 py-2 text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800/50 rounded-md transition-colors"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {link.label}
                 </Link>
               ))}
             </div>
-            <div className="space-y-2 border-t border-border pt-4">
+            <div className="space-y-2 border-t border-slate-700 pt-4">
               <Link href="/auth/login" onClick={() => setMobileMenuOpen(false)}>
-                <Button variant="ghost" className="w-full text-muted-foreground hover:text-foreground">
+                <Button variant="ghost" className="w-full text-slate-300 hover:text-white">
                   Login
                 </Button>
               </Link>
               <Link href="/auth/register" onClick={() => setMobileMenuOpen(false)}>
                 <Button
-                  variant="outline"
-                  className="w-full border-accent text-accent hover:bg-accent/10"
+                  className="w-full border border-purple-500/50 text-purple-300 hover:bg-purple-500/10"
                 >
                   Post a Job
                 </Button>
               </Link>
               <Link href="/auth/register" onClick={() => setMobileMenuOpen(false)}>
                 <Button
-                  className="w-full bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white"
+                  className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white"
                 >
                   Apply Now
                 </Button>
