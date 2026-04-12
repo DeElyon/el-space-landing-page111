@@ -120,9 +120,9 @@ export function Navbar() {
                 </Button>
               </Link>
             </div>
-            <div className="border-t border-border pt-4">
+            <div className="border-t border-slate-700 pt-4">
               <Link href="/contact" onClick={() => setMobileMenuOpen(false)}>
-                <Button variant="ghost" className="w-full text-muted-foreground hover:text-foreground">
+                <Button variant="ghost" className="w-full text-slate-400 hover:text-white">
                   Contact Support
                 </Button>
               </Link>
