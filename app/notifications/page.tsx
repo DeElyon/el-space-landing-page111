@@ -310,17 +310,17 @@ export default function NotificationsPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-950">
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
       <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-8 flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-white">Notifications</h1>
-            <p className="mt-1 text-slate-400">Stay updated with your latest activity</p>
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">Notifications</h1>
+            <p className="mt-1 text-slate-300">Stay updated with your latest activity</p>
           </div>
           <div className="flex items-center gap-2">
             {unreadCount > 0 && (
-              <Button variant="outline" size="sm" onClick={markAllRead} className="border-slate-600 text-white hover:bg-slate-800/50">
+              <Button variant="outline" size="sm" onClick={markAllRead} className="border-slate-600 text-white hover:bg-slate-800/50 transition-all">
                 <CheckCheck className="mr-2 h-4 w-4" />
                 Mark all read
               </Button>
@@ -330,7 +330,7 @@ export default function NotificationsPage() {
 
         {/* Stats */}
         <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <div className="rounded-lg border border-slate-700/50 bg-slate-900/40 backdrop-blur-sm p-4 hover:border-slate-600/50 transition-all">
+          <div className="rounded-lg border border-cyan-500/30 bg-gradient-to-br from-cyan-500/10 to-blue-500/5 backdrop-blur-sm p-4 hover:border-cyan-500/50 transition-all">
             <div className="flex items-center gap-3">
               <div className="flex items-center justify-center rounded-lg h-10 w-10 bg-cyan-500/20 text-cyan-400">
                 <Bell className="h-5 w-5" />

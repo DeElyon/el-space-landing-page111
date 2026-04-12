@@ -63,18 +63,18 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-950">
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
       {/* Header */}
-      <header className="bg-gradient-to-r from-slate-900 to-slate-800 border-b border-slate-700/50 sticky top-0 z-50">
+      <header className="bg-gradient-to-r from-slate-950 via-purple-900/20 to-slate-950 border-b border-slate-700/50 sticky top-0 z-50 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex items-center justify-between">
           <h1 className="text-3xl font-bold">
-            <span className="bg-gradient-to-r from-cyan-500 to-blue-600 bg-clip-text text-transparent">EL</span>
-            <span className="text-white"> SPACE</span>
+            <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">EL</span>
+            <span className="text-white ml-2">SPACE</span>
           </h1>
           <Button
             onClick={handleLogout}
             variant="outline"
-            className="flex gap-2 border-slate-600 text-white hover:bg-slate-800/50"
+            className="flex gap-2 border-slate-600 text-white hover:bg-slate-800/50 hover:text-cyan-400 transition-all"
           >
             <LogOut className="w-4 h-4" />
             Logout
@@ -84,11 +84,11 @@ export default function DashboardPage() {
 
       {/* Main */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="bg-slate-900/40 backdrop-blur-sm rounded-lg border border-slate-700/50 p-8 hover:border-slate-600/50 transition-all">
+        <div className="bg-gradient-to-br from-slate-900/60 to-slate-950/60 backdrop-blur-md rounded-lg border border-cyan-500/20 p-8 hover:border-cyan-500/40 transition-all shadow-xl">
           <h2 className="text-3xl font-bold text-white mb-2">
             Welcome to your Dashboard! 🎉
           </h2>
-          <p className="text-slate-400 mb-8">Manage your freelance business and track your progress</p>
+          <p className="text-slate-300 mb-8">Manage your freelance business and track your progress</p>
           <div className="flex flex-wrap gap-6 mb-8 pb-8 border-b border-slate-700/50">
             <div>
               <p className="text-slate-400 text-sm">User</p>
@@ -96,7 +96,7 @@ export default function DashboardPage() {
             </div>
             <div>
               <p className="text-slate-400 text-sm">EL SPACE ID</p>
-              <p className="bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent font-bold text-lg">{elSpaceId}</p>
+              <p className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent font-bold text-lg">{elSpaceId}</p>
             </div>
           </div>
 

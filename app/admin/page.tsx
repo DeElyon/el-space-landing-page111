@@ -235,23 +235,23 @@ export default function AdminDashboard() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
       {/* Top Navigation Bar */}
-      <div className="sticky top-0 z-50 bg-slate-900/95 backdrop-blur border-b border-slate-800/50">
+      <div className="sticky top-0 z-50 bg-gradient-to-r from-slate-900 via-purple-900/20 to-slate-900 backdrop-blur border-b border-slate-800/50">
         <div className="max-w-7xl mx-auto px-4 md:px-8 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-gradient-to-br from-purple-600 to-blue-600 rounded-lg">
+            <div className="p-2 bg-gradient-to-br from-purple-600 to-blue-600 rounded-lg shadow-lg shadow-purple-500/40">
               <LayoutDashboard className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-white">EL SPACE Control Center</h1>
+              <h1 className="text-xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">EL SPACE Control Center</h1>
               <p className="text-xs text-slate-400">Real-time Platform Monitoring</p>
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <Button variant="outline" size="sm" className="border-slate-700 text-slate-300 hover:text-white">
+            <Button variant="outline" size="sm" className="border-slate-700 text-slate-300 hover:text-white hover:bg-slate-800/50 transition-all">
               <Bell className="w-4 h-4 mr-2" />
               Alerts
             </Button>
-            <Button onClick={handleLogout} variant="outline" size="sm" className="border-red-500/50 text-red-400 hover:text-red-300">
+            <Button onClick={handleLogout} variant="outline" size="sm" className="border-red-500/50 text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-all">
               <LogOut className="w-4 h-4 mr-2" />
               Logout
             </Button>
