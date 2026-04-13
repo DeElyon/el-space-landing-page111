@@ -42,20 +42,20 @@ export function Navbar() {
 
           {/* CTA Buttons & Links */}
           <div className="hidden lg:flex items-center gap-3">
-            <Link href="/auth/login">
+            <Link href="/login">
               <Button variant="ghost" size="sm" className="text-slate-300 hover:text-white hover:bg-slate-800/50 transition-all">
                 Login
               </Button>
             </Link>
-            <Link href="/auth/register">
+            <Link href="/signup?role=client">
               <Button
                 size="sm"
-                className="border border-purple-500/50 bg-purple-500/5 text-purple-300 hover:bg-purple-500/15 hover:border-purple-500/80 font-medium transition-all"
+                className="border border-cyan-500/50 bg-cyan-500/5 text-cyan-300 hover:bg-cyan-500/15 hover:border-cyan-500/80 font-medium transition-all"
               >
                 Post a Job
               </Button>
             </Link>
-            <Link href="/auth/register">
+            <Link href="/signup?role=freelancer">
               <Button
                 size="sm"
                 className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white font-medium shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 transition-all active:scale-95"
@@ -67,7 +67,7 @@ export function Navbar() {
 
           {/* Mobile menu button and Apply Now button */}
           <div className="flex items-center gap-2 md:hidden">
-            <Link href="/auth/register">
+            <Link href="/signup?role=freelancer">
               <Button
                 size="sm"
                 className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white font-medium transition-all"
@@ -100,19 +100,19 @@ export function Navbar() {
               ))}
             </div>
             <div className="space-y-2 border-t border-slate-700 pt-4">
-              <Link href="/auth/login" onClick={() => setMobileMenuOpen(false)}>
+              <Link href="/login" onClick={() => setMobileMenuOpen(false)}>
                 <Button variant="ghost" className="w-full text-slate-300 hover:text-white">
                   Login
                 </Button>
               </Link>
-              <Link href="/auth/register" onClick={() => setMobileMenuOpen(false)}>
+              <Link href="/signup?role=client" onClick={() => setMobileMenuOpen(false)}>
                 <Button
-                  className="w-full border border-purple-500/50 text-purple-300 hover:bg-purple-500/10"
+                  className="w-full border border-cyan-500/50 text-cyan-300 hover:bg-cyan-500/10"
                 >
                   Post a Job
                 </Button>
               </Link>
-              <Link href="/auth/register" onClick={() => setMobileMenuOpen(false)}>
+              <Link href="/signup?role=freelancer" onClick={() => setMobileMenuOpen(false)}>
                 <Button
                   className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white"
                 >
