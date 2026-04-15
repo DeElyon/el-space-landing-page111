@@ -10,6 +10,7 @@ import Image from "next/image";
 import { AlertCircle, CheckCircle, Loader, Mail, Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
 import { GoogleSignInButton } from "@/components/ui/google-signin-button";
+import { GitHubSignInButton } from "@/components/ui/github-signin-button";
 import { OTPNotification } from "@/components/ui/otp-notification";
 
 export default function LoginPage() {
@@ -139,7 +140,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-gradient-to-br from-white via-red-50 to-white flex items-center justify-center px-4">
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="flex flex-col items-center mb-8">
@@ -152,7 +153,7 @@ export default function LoginPage() {
               priority
             />
           </div>
-          <p className="text-slate-400">Login to your account</p>
+          <p className="text-gray-600">Login to your account</p>
         </div>
 
         {/* Progress Bar */}
@@ -171,8 +172,8 @@ export default function LoginPage() {
                   <div
                     className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm transition-all ${
                       isActive
-                        ? "bg-cyan-500 text-white"
-                        : "bg-slate-700 text-slate-500"
+                        ? "bg-red-600 text-white"
+                        : "bg-gray-300 text-gray-500"
                     }`}
                   >
                     {i + 1}
@@ -180,7 +181,7 @@ export default function LoginPage() {
                   {i < 2 && (
                     <div
                       className={`w-20 h-1 mx-2 transition-all ${
-                        i < currentIndex ? "bg-cyan-500" : "bg-slate-700"
+                        i < currentIndex ? "bg-red-600" : "bg-gray-300"
                       }`}
                     />
                   )}
@@ -188,7 +189,7 @@ export default function LoginPage() {
               );
             })}
           </div>
-          <p className="text-center text-sm text-slate-400">
+          <p className="text-center text-sm text-gray-600">
             {step === "email" && "Step 1: Enter Email"}
             {step === "password" && "Step 2: Enter Password"}
             {step === "otp" && "Step 3: Verify OTP"}
@@ -196,7 +197,7 @@ export default function LoginPage() {
         </div>
 
         {/* Card */}
-        <div className="bg-slate-800/50 backdrop-blur border border-slate-700/50 rounded-lg p-8">
+        <div className="bg-white/90 backdrop-blur border border-red-200 rounded-lg p-8">
           {/* Error */}
           {error && (
             <div className="mb-4 p-4 bg-red-500/10 border border-red-500/30 rounded-lg flex gap-3">
@@ -217,20 +218,20 @@ export default function LoginPage() {
           {step === "email" && (
             <form onSubmit={handleCheckEmail} className="space-y-4">
               <div>
-                <Label className="text-slate-200 mb-2 block">Email Address</Label>
+                <Label className="text-gray-900 mb-2 block">Email Address</Label>
                 <Input
                   type="email"
                   placeholder="you@example.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  className="bg-slate-700/50 border-slate-600 text-white placeholder-slate-500"
+                  className="bg-white border-red-300 text-gray-900 placeholder-gray-500"
                 />
               </div>
               <Button
                 type="submit"
                 disabled={loading || !email}
-                className="w-full bg-cyan-500 hover:bg-cyan-600 text-white font-semibold"
+                className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold"
               >
                 {loading ? (
                   <>
@@ -245,10 +246,10 @@ export default function LoginPage() {
               {/* Divider */}
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-slate-600"></div>
+                  <div className="w-full border-t border-red-300"></div>
                 </div>
                 <div className="relative flex justify-center text-sm">
-                  <span className="px-2 bg-slate-800/50 text-slate-400">or</span>
+                  <span className="px-2 bg-white/90 text-gray-600">or</span>
                 </div>
               </div>
 
@@ -258,6 +259,13 @@ export default function LoginPage() {
                 variant="outline"
                 text="Continue with Google"
               />
+
+              {/* GitHub Sign-In */}
+              <GitHubSignInButton
+                fullWidth
+                variant="outline"
+                text="Continue with GitHub"
+              />
             </form>
           )}
 
@@ -265,13 +273,13 @@ export default function LoginPage() {
           {step === "password" && (
             <form onSubmit={handleSendOTP} className="space-y-4">
               <div className="text-center mb-4">
-                <p className="text-slate-400 text-sm">
-                  Logging in as <strong className="text-white">{email}</strong>
+                <p className="text-gray-600 text-sm">
+                  Logging in as <strong className="text-gray-900">{email}</strong>
                 </p>
               </div>
               
               <div>
-                <Label className="text-slate-200 mb-2 block">Password</Label>
+                <Label className="text-gray-900 mb-2 block">Password</Label>
                 <div className="relative">
                   <Input
                     type={showPassword ? "text" : "password"}
@@ -279,12 +287,12 @@ export default function LoginPage() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
-                    className="bg-slate-700/50 border-slate-600 text-white placeholder-slate-500 pr-10"
+                    className="bg-white border-red-300 text-gray-900 placeholder-gray-500 pr-10"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 hover:text-gray-900"
                   >
                     {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
@@ -294,7 +302,7 @@ export default function LoginPage() {
               <Button
                 type="submit"
                 disabled={loading || !password}
-                className="w-full bg-cyan-500 hover:bg-cyan-600 text-white font-semibold"
+                className="w-full bg-gold hover:bg-amber-600 text-white font-semibold"
               >
                 {loading ? (
                   <>
@@ -314,7 +322,7 @@ export default function LoginPage() {
                   setPassword("");
                   setSuccess("");
                 }}
-                className="w-full border-slate-600 text-slate-300 hover:bg-slate-700"
+                className="w-full border-red-300 text-red-600 hover:bg-red-50"
               >
                 Back
               </Button>
@@ -325,13 +333,13 @@ export default function LoginPage() {
           {step === "otp" && (
             <form onSubmit={handleVerifyOTP} className="space-y-4">
               <div className="text-center mb-4">
-                <p className="text-slate-400 text-sm">
-                  Enter the 6-digit code sent to <strong className="text-white">{email}</strong>
+                <p className="text-gray-600 text-sm">
+                  Enter the 6-digit code sent to <strong className="text-gray-900">{email}</strong>
                 </p>
               </div>
               
               <div>
-                <Label className="text-slate-200 mb-2 block">Verification Code</Label>
+                <Label className="text-gray-900 mb-2 block">Verification Code</Label>
                 <Input
                   type="text"
                   placeholder="000000"
@@ -339,14 +347,14 @@ export default function LoginPage() {
                   onChange={(e) => setOtp(e.target.value.replace(/\D/g, "").slice(0, 6))}
                   maxLength={6}
                   required
-                  className="bg-slate-700/50 border-slate-600 text-white placeholder-slate-500 text-center text-2xl tracking-widest font-mono"
+                  className="bg-white border-red-300 text-gray-900 placeholder-gray-500 text-center text-2xl tracking-widest font-mono"
                 />
               </div>
               
               <Button
                 type="submit"
                 disabled={loading || otp.length !== 6}
-                className="w-full bg-amber-500 hover:bg-amber-600 text-white font-semibold"
+                className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold"
               >
                 {loading ? (
                   <>
@@ -366,19 +374,19 @@ export default function LoginPage() {
                   setOtp("");
                   setSuccess("");
                 }}
-                className="w-full border-slate-600 text-slate-300 hover:bg-slate-700"
+                className="w-full border-red-300 text-red-600 hover:bg-red-50"
               >
                 Back
               </Button>
             </form>
           )}
 
-          <div className="mt-6 pt-6 border-t border-slate-700">
-            <p className="text-center text-slate-400 text-sm">
+          <div className="mt-6 pt-6 border-t border-red-300">
+            <p className="text-center text-gray-600 text-sm">
               Don't have an account?{" "}
               <Link
                 href="/auth/register"
-                className="text-cyan-400 hover:text-cyan-300 font-semibold"
+                className="text-red-600 hover:text-red-700 font-semibold"
               >
                 Register here
               </Link>
@@ -387,8 +395,8 @@ export default function LoginPage() {
         </div>
 
         {/* Footer */}
-        <p className="text-center text-slate-500 text-xs mt-8">
-          © 2026 EL VERSE TECHNOLOGIES. Freelance Without Friction.
+        <p className="text-center text-gray-500 text-xs mt-8">
+          © 2026 EL SPACE. Freelance Without Friction.
         </p>
       </div>
 

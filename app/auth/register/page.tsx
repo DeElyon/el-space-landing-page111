@@ -22,6 +22,7 @@ import { AlertCircle, CheckCircle, Loader, Mail, Upload, Eye, EyeOff, ArrowLeft,
 import { toast } from "sonner";
 import { OTPNotification } from '@/components/ui/otp-notification';
 import { GoogleSignInButton } from '@/components/ui/google-signin-button';
+import { GitHubSignInButton } from '@/components/ui/github-signin-button';
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -246,7 +247,7 @@ export default function RegisterPage() {
   ).slice(0, 20);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center px-4 py-12">
+    <div className="min-h-screen bg-gradient-to-br from-white via-red-50 to-white flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-2xl">
         {/* Logo */}
         <div className="flex flex-col items-center mb-8">
@@ -259,7 +260,7 @@ export default function RegisterPage() {
               priority
             />
           </div>
-          <p className="text-slate-400">Create your account</p>
+          <p className="text-gray-600">Create your account</p>
         </div>
 
         {/* Progress Bar */}
@@ -275,8 +276,8 @@ export default function RegisterPage() {
                     className={cn(
                       "w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm transition-all",
                       isActive
-                        ? "bg-cyan-500 text-white"
-                        : "bg-slate-700 text-slate-500"
+                        ? "bg-red-600 text-white"
+                        : "bg-gray-300 text-gray-500"
                     )}
                   >
                     {i + 1}
@@ -285,7 +286,7 @@ export default function RegisterPage() {
                     <div
                       className={cn(
                         "w-20 h-1 mx-2 transition-all",
-                        i < currentIndex ? "bg-cyan-500" : "bg-slate-700"
+                        i < currentIndex ? "bg-red-600" : "bg-gray-300"
                       )}
                     />
                   )}
@@ -293,7 +294,7 @@ export default function RegisterPage() {
               );
             })}
           </div>
-          <p className="text-center text-sm text-slate-400">
+          <p className="text-center text-sm text-gray-600">
             {step === "info" && "Step 1: Basic Information"}
             {step === "details" && `Step 2: ${userType === "client" ? "Company" : "Professional"} Details`}
             {step === "otp" && "Step 3: Verify Email"}
@@ -301,7 +302,7 @@ export default function RegisterPage() {
         </div>
 
         {/* Card */}
-        <div className="bg-slate-800/50 backdrop-blur border border-slate-700/50 rounded-lg p-8">
+        <div className="bg-white/90 backdrop-blur border border-red-200 rounded-lg p-8">
           {/* Error */}
           {error && (
             <div className="mb-4 p-4 bg-red-500/10 border border-red-500/30 rounded-lg flex gap-3">
@@ -322,26 +323,26 @@ export default function RegisterPage() {
           {step === "info" && (
             <div className="space-y-4">
               <div>
-                <Label className="text-slate-200 mb-2 block">Full Name *</Label>
+                <Label className="text-gray-900 mb-2 block">Full Name *</Label>
                 <Input
                   type="text"
                   placeholder="John Doe"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   required
-                  className="bg-slate-700/50 border-slate-600 text-white placeholder-slate-500"
+                  className="bg-white border-red-300 text-gray-900 placeholder-gray-500"
                 />
               </div>
 
               <div>
-                <Label className="text-slate-200 mb-2 block">Email Address *</Label>
+                <Label className="text-gray-900 mb-2 block">Email Address *</Label>
                 <Input
                   type="email"
                   placeholder="you@example.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  className="bg-slate-700/50 border-slate-600 text-white placeholder-slate-500"
+                  className="bg-white border-red-300 text-gray-900 placeholder-gray-500"
                 />
               </div>
 

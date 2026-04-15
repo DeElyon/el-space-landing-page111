@@ -4,46 +4,50 @@
   --font-sans: 'Inter', 'Geist', 'Geist Fallback', sans-serif;
   --font-mono: 'Geist Mono', 'Geist Mono Fallback', monospace;
   
-  /* shadcn/ui theme variables */
+  /* EL SPACE Red, White, and Gold theme */
   --background: 0 0% 100%;
-  --foreground: 222.2 84% 4.9%;
+  --foreground: 0 0% 15%;
   --card: 0 0% 100%;
-  --card-foreground: 222.2 84% 4.9%;
+  --card-foreground: 0 0% 15%;
   --popover: 0 0% 100%;
-  --popover-foreground: 222.2 84% 4.9%;
-  --primary: 222.2 47.4% 11.2%;
-  --primary-foreground: 210 40% 98%;
-  --secondary: 210 40% 96.1%;
-  --secondary-foreground: 222.2 47.4% 11.2%;
-  --muted: 210 40% 96.1%;
-  --muted-foreground: 215.4 16.3% 46.9%;
-  --accent: 210 40% 96.1%;
-  --accent-foreground: 222.2 47.4% 11.2%;
+  --popover-foreground: 0 0% 15%;
+  /* Primary: Red #DC2626 */
+  --primary: 0 86.9% 50.2%;
+  --primary-foreground: 0 0% 100%;
+  /* Secondary: White */
+  --secondary: 0 0% 100%;
+  --secondary-foreground: 0 86.9% 50.2%;
+  /* Muted: Gold #F59E0B */
+  --muted: 38 92.1% 50.4%;
+  --muted-foreground: 0 0% 20%;
+  /* Accent: Gold #F59E0B */
+  --accent: 38 92.1% 50.4%;
+  --accent-foreground: 0 0% 20%;
   --destructive: 0 84.2% 60.2%;
-  --destructive-foreground: 210 40% 98%;
-  --border: 214.3 31.8% 91.4%;
-  --input: 214.3 31.8% 91.4%;
-  --ring: 222.2 84% 4.9%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 0 0% 92%;
+  --input: 0 0% 96%;
+  --ring: 0 86.9% 50.2%;
   --radius: 0.5rem;
   
-  /* Color palette for utilities */
+  /* Color palette for utilities - Red, White, Gold */
   --color-background: 0 0% 100%;
-  --color-foreground: 222.2 84% 4.9%;
+  --color-foreground: 0 0% 15%;
   --color-card: 0 0% 100%;
-  --color-card-foreground: 222.2 84% 4.9%;
-  --color-primary: 222.2 47.4% 11.2%;
-  --color-primary-foreground: 210 40% 98%;
-  --color-secondary: 210 40% 96.1%;
-  --color-secondary-foreground: 222.2 47.4% 11.2%;
-  --color-muted: 210 40% 96.1%;
-  --color-muted-foreground: 215.4 16.3% 46.9%;
-  --color-accent: 210 40% 96.1%;
-  --color-accent-foreground: 222.2 47.4% 11.2%;
+  --color-card-foreground: 0 0% 15%;
+  --color-primary: 0 86.9% 50.2%;
+  --color-primary-foreground: 0 0% 100%;
+  --color-secondary: 0 0% 100%;
+  --color-secondary-foreground: 0 86.9% 50.2%;
+  --color-muted: 38 92.1% 50.4%;
+  --color-muted-foreground: 0 0% 20%;
+  --color-accent: 38 92.1% 50.4%;
+  --color-accent-foreground: 0 0% 20%;
   --color-destructive: 0 84.2% 60.2%;
-  --color-destructive-foreground: 210 40% 98%;
-  --color-border: 214.3 31.8% 91.4%;
-  --color-input: 214.3 31.8% 91.4%;
-  --color-ring: 222.2 84% 4.9%;
+  --color-destructive-foreground: 0 0% 100%;
+  --color-border: 0 0% 92%;
+  --color-input: 0 0% 96%;
+  --color-ring: 0 86.9% 50.2%;
 }
 
 @layer base {
