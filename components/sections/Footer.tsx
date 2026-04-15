@@ -58,6 +58,7 @@ export function Footer() {
                     href={link.href}
                     className="text-sm text-slate-400 hover:text-purple-400 transition-colors duration-200"
                   >
+                    {link.label}
                   </Link>
                 </li>
               ))}

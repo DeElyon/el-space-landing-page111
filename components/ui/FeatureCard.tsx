@@ -32,12 +32,12 @@ export function FeatureCard({
   colorScheme = 'cyan'
 }: FeatureCardProps) {
   return (
-    <div className={`rounded-lg border border-slate-700/50 bg-slate-900/40 backdrop-blur-sm p-6 transition-all duration-300 hover:border-opacity-100 ${borderColors[colorScheme]}`}>
-      <div className={`mb-4 inline-block p-3 rounded-lg ${iconBackgrounds[colorScheme]} text-3xl`}>
+    <div className={`rounded-lg border border-slate-700/50 bg-gradient-to-br from-slate-900/60 to-slate-950/60 backdrop-blur-sm p-6 md:p-8 transition-all duration-300 hover:border-opacity-100 group ${borderColors[colorScheme]}`}>
+      <div className={`mb-4 inline-flex items-center justify-center p-3 rounded-xl ${iconBackgrounds[colorScheme]} text-4xl group-hover:scale-110 transition-transform duration-300`}>
         {icon}
       </div>
-      <h3 className="mb-2 font-bold text-white">{title}</h3>
-      <p className="text-sm text-slate-400">{description}</p>
+      <h3 className="mb-3 text-xl font-bold text-white group-hover:text-slate-100 transition-colors">{title}</h3>
+      <p className="text-sm leading-relaxed text-slate-300 group-hover:text-slate-200 transition-colors">{description}</p>
     </div>
   )
 }
